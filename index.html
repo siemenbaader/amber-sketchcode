@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+    <link rel="stylesheet" href="bower_components/bootstrap/css/bootstrap.min.css">
+    <script
+      type='text/javascript'
+      src='bower_components/amber/support/requirejs/require.min.js'>
+    </script>
+    <script
+      type='text/javascript'
+      src='bower_components/amber/support/amber.js'>
+    </script>
+    
+    <script type='text/javascript'>
+      require.config({
+        paths: {
+          'amber-sketchcode': 'src', // mapping for our project files
+        }
+      });
+
+      // Load Amber
+      require(['amber/devel',
+               'amber-sketchcode/SketchCode',
+               'amber-sketchcode/SketchCode-ConceptEditors'], function (amber) {
+
+        // Initialize Amber
+        amber.initialize({
+          // Configure the default AMD namespace for new packages
+          "transport.defaultAmdNamespace": "amber-sketchcode"
+        });
+
+        // Start the IDE
+        amber.popupHelios();
+      });
+    </script>
+  </head>
+  <body>
+    <div class='container' id='main'></div>
+  </body>
+</html> 
