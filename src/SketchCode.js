@@ -7,10 +7,10 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "bar",
 protocol: 'as yet unclassified',
-fn: function (){
+fn: function () {
 var self=this;
 var temporary,variable,names;
-return self},
+return self;},
 args: [],
 source: "bar\x0a\x09\x22comment stating purpose of message\x22\x0a\x0a\x09| temporary variable names |\x0a\x09",
 messageSends: [],
