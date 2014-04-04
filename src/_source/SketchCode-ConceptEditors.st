@@ -118,7 +118,7 @@ renderOn: html
 ! !
 
 Object subclass: #StateMachine
-	instanceVariableNames: 'states transitions initialState currentState stateTable events'
+	instanceVariableNames: 'states events transitions initialState currentState'
 	package: 'SketchCode-ConceptEditors'!
 !StateMachine commentStamp!
 I am a Finite State Machine. I hold State*s* and Transition*s*.
@@ -158,8 +158,11 @@ At run-time, I will respond to events and trigger my transitions appropriately.
 
 !StateMachine methodsFor: 'initialization'!
 
+addEvent: aString
+	events add: aString.
+!
+
 addState: aState
-	
 	states add: aState
 !
 
@@ -175,6 +178,10 @@ addTransition: aTransition
 currentState
 	
 	^ currentState.
+!
+
+events
+	^ events
 !
 
 events: aListOfStrings
@@ -200,6 +207,7 @@ initialize
 
 
 	states := Array new.
+	events := Array new.
 	transitions := Array new.
 	stateTable := HashedCollection new.
 	
@@ -211,22 +219,18 @@ stateNamed: aString
 	^ states detect: [:state | state name = aString ].
 !
 
+states
+	^ states
+!
+
 states: aListOfStrings
 	states := aListOfStrings.
 	
 	states do: [ :aString | stateTable at: aString put: (HashedCollection new) ].
 !
 
-when: state on: event do: actions andEnter: aState
-
-	| transition |
-	transition := Transition new
-		actions: actions; 
-		targetState: aState; 
-		yourself.
-	
-	( stateTable at: state )
-		at: event put: transition.
+transitionForState: aState event: aString
+	^ aState transitionForEvent: aString
 ! !
 
 StateMachine class instanceVariableNames: 'dummy'!
@@ -277,9 +281,14 @@ on: anEventNameString do: anActionBlockClosure andBe: aStateNameString
 
 	assigningState addTransition:
 		(Transition 
+			stateMachine: stateMachine
 			event: anEventNameString 
 			actions: anActionBlockClosure 
 			targetState: aStateNameString).
+
+	(stateMachine events includes: anEventNameString) ifFalse: [
+		stateMachine addEvent: anEventNameString
+	].
 !
 
 when: aStateString
@@ -290,50 +299,135 @@ when: aStateString
 ! !
 
 Widget subclass: #StateMachineEditor
-	instanceVariableNames: ''
+	instanceVariableNames: 'stateMachine stateTable'
 	package: 'SketchCode-ConceptEditors'!
+!StateMachineEditor commentStamp!
+I am a widget to edit State Machines. I hold both a StateChart and a StateTable view.
+
+I observe a StateMachine model object, update its properties, and my views are updated whenever the model changes.!
+
+!StateMachineEditor methodsFor: 'accessing'!
+
+stateMachine
+	^ stateMachine
+!
+
+stateMachine: anObject
+	stateMachine := anObject
+!
+
+stateTable
+	^ stateTable
+!
+
+stateTable: anObject
+	stateTable := anObject
+! !
+
+!StateMachineEditor methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+
+	stateMachine := StateMachine new.
+	stateTable := StateTable for: stateMachine.
+! !
+
+!StateMachineEditor methodsFor: 'rendering'!
+
+renderOn: html
+	html div 
+		style: 'border: 1px solid gray;
+				border-radius: 5px;
+				box-shadow: 10px 10px 5px #888888;				
+			   ' ;
+		class: 'concept-editor state-machine'; with: [
+
+		html ul class: 'nav nav-tabs'; with: [
+			html li 
+				with: [ html a href: '#'; with: 'StateChart' ].
+			html li
+				class: 'active';
+				with: [ html a href: '#'; with: 'StateTable' ].
+			html li
+				with: [ html a href: '#'; with: 'DSL' ].
+
+		].
+		
+		
+		stateTable renderOn: html.
+		
+	]
+! !
+
+!StateMachineEditor class methodsFor: 'as yet unclassified'!
+
+for: aStateMachine
+	^ self new 
+		stateMachine: aStateMachine ;
+		stateTable: (StateTable for: aStateMachine).
+! !
 
 Widget subclass: #StateTable
-	instanceVariableNames: ''
+	instanceVariableNames: 'stateMachine'
 	package: 'SketchCode-ConceptEditors'!
+
+!StateTable methodsFor: 'accessing'!
+
+stateMachine
+	^ stateMachine
+!
+
+stateMachine: aStateMachine
+	stateMachine := aStateMachine
+!
+
+transitionForState: aState event: aString
+! !
 
 !StateTable methodsFor: 'initialization'!
 
 initialize
 	super initialize.
-!
+! !
+
+!StateTable methodsFor: 'rendering'!
 
 renderOn: html
-	"comment stating purpose of message"
-	html div 
-		style:'border:1px solid black;' ;
-		with: [
-		html table class: 'table table-condensed table-hover'; with: [
-			html thead with: [
-				html th with: '&nbsp'.
-				html th with: 'inactive'.
-				html th with: 'paused'.
-				html th with: 'fading-in'.
-				html th with: 'shown'.
-				html th with: 'fading-out'.
+
+	html table class: 'table table-striped table-condensed table-hover'; with: [
+		html thead with: [
+			html th with: 'States\Events'.
+			
+			stateMachine states do: [ :state |
+				html th with: state name.
 			].
-			html tbody with: [
+		].
+		html tbody with: [
+			stateMachine events do: [ :event |
+			
 				html tr with: [
-					html th with: 'mouseover'.
-					html td with: 'foo [dropdown]'.
-					html td ; td; td; td. ].
-				html tr with: [
-					html th with: 'mouseover'.
-					html td with: 'foo [ddsfsddown]'.
-					html td ; td; td; td.
+					html th with: event.
+					
+					stateMachine states do: [:state |
+						html td with: 
+							(TransitionCellEditor for: 
+								(stateMachine transitionForState: state event: event)).
+					].
 				].
 			].
 		].
 	].
 ! !
 
+!StateTable class methodsFor: 'as yet unclassified'!
+
+for: aStateMachine
+	^ self new stateMachine: aStateMachine.
+! !
+
 Object subclass: #Transition
-	instanceVariableNames: 'event actions targetState'
+	instanceVariableNames: 'stateMachine event actions targetState'
 	package: 'SketchCode-ConceptEditors'!
 !Transition commentStamp!
 I am a Transition.
@@ -358,11 +452,23 @@ event: aString
 	event := aString
 !
 
+possibleTargetStates
+	^ stateMachine states
+!
+
 processEvent: aString
 
 	[ aString = event ] ifTrue: [
 		
 	]
+!
+
+stateMachine
+	^ stateMachine
+!
+
+stateMachine: anObject
+	stateMachine := anObject
 !
 
 targetState
@@ -384,12 +490,61 @@ initialize
 
 !Transition class methodsFor: 'as yet unclassified'!
 
-event: anEventNameString actions: aBlockClosure targetState: aStateNameString
+stateMachine: aStateMachine event: anEventNameString actions: aBlockClosure targetState: aStateNameString
 
 	^ self new 
+		stateMachine: aStateMachine ;
 		event: anEventNameString ;
 		actions: aBlockClosure ;
 		targetState: aStateNameString ;
 		yourself.
+! !
+
+Widget subclass: #TransitionCellEditor
+	instanceVariableNames: 'transition stateMachine'
+	package: 'SketchCode-ConceptEditors'!
+!TransitionCellEditor commentStamp!
+I am an editor for a `Transition` inside a cell in `TransitionTable`.!
+
+!TransitionCellEditor methodsFor: 'accessing'!
+
+stateMachine
+	^ stateMachine
+!
+
+stateMachine: anObject
+	stateMachine := anObject
+!
+
+transition
+	^ transition
+!
+
+transition: anObject
+	transition := anObject
+! !
+
+!TransitionCellEditor methodsFor: 'rendering'!
+
+renderOn: html
+	html div with: 
+		'transition actions compiledSource'.
+	html select with: [
+		transition possibleTargetStates do:[ :state |
+			html option
+				value: state name ;
+				with: state name.
+			]
+		]
+! !
+
+!TransitionCellEditor class methodsFor: 'as yet unclassified'!
+
+for: aTransition
+	"comment stating purpose of message"
+
+	^self new 
+		transition: aTransition ;
+		yourself
 ! !
 
