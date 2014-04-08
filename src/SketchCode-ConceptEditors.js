@@ -630,7 +630,7 @@ globals.StateMachine.klass);
 
 
 smalltalk.addClass('StateMachineDSLBuilder', globals.Object, ['stateMachine', 'assigningState'], 'SketchCode-ConceptEditors');
-globals.StateMachineDSLBuilder.comment="I am a DSL to build StateMachines from neat source code.\x0a\x0aUse me like this:\x0a\x0a    StateMachine fromDSL\x0a        when: 'closed' ;\x0a            on: 'open' do: [window alert: 'opening'] andBe: 'open' ;\x0a            on: 'lock' do: [window alert: 'locked door.'] andBe: 'locked' ;\x0a            on: 'unlock' do: [window alert: 'already unlocked'] andBe: 'closed'  ; \x0a            on: 'close' do: [window alert: 'already closed'. andBe: 'closed' ;\x0a\x0a        when: 'locked';\x0a            on: 'open' do: [window alert: 'Door is locked, sorry'] andBe: 'locked' ;\x0a\x0a        initialState: 'closed'.\x0a\x09";
+globals.StateMachineDSLBuilder.comment="I am a DSL to build StateMachines from neat source code.\x0a\x0aUse me like this:\x0a\x0a|door|\x0a\x0a    door := StateMachine fromDSL\x0a        when: #closed ;\x0a            on: #open do: [Transcript show: 'opening'; cr] andBe: #open ;\x0a            on: #close do: [Transcript show: 'already closed'; cr] andBe: #closed ;\x0a            on: #lock do: [Transcript show: 'now locked'; cr] andBe: #locked ;\x0a            on: #unlock do: [Transcript show: 'not locked, just closed'; cr ] andBe: #closed ;\x0a    \x0a        when: #open;\x0a            on: #open do: [Transcript show: 'Door is already open.'; cr.] andBe: #open ;\x0a            on: #close do: [Transcript show: 'closing.'; cr.] andBe: #closed ;\x0a            on: #lock do: [Transcript show:  'is open. close before locking'; cr] andBe: #open ;\x0a            on: #unlock do: [Transcript show:  'is open, not locked. '; cr] andBe: #open ;\x0a    \x0a        when: #locked;\x0a            on: #open do: [Transcript show: 'Door is locked.'; cr.] andBe: #locked ;\x0a            on: #close do: [Transcript show: 'Door is locked and closed'; cr.] andBe: #locked ;\x0a            on: #unlock do: [Transcript show: 'Door is now unlocked.'; cr.] andBe: #closed ;\x0a            on: #lock do: [Transcript show: 'already locked'; cr] andBe: #locked ;\x0a\x09\x09\x09\x0a        initialState: #closed.";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialState:",
@@ -711,7 +711,7 @@ globals.StateMachineDSLBuilder);
 
 
 smalltalk.addClass('StateMachineEditor', globals.Widget, ['stateMachine', 'stateTable'], 'SketchCode-ConceptEditors');
-globals.StateMachineEditor.comment="I am a widget to edit State Machines. I hold both a StateChart and a StateTable view.\x0a\x0aI observe a StateMachine model object, update its properties, and my views are updated whenever the model changes.\x0a";
+globals.StateMachineEditor.comment="I am a widget to edit State Machines. I hold both a StateChart and a StateTable view.\x0a\x0aI observe a StateMachine model object, update its properties, and my views are updated whenever the model changes.\x0a\x0a# How to use\x0a\x0a\x0a    |door|\x0a\x0a    door := StateMachine fromDSL\x0a        when: #closed ;\x0a            on: #open do: [Transcript show: 'opening'; cr] andBe: #open ;\x0a            on: #close do: [Transcript show: 'already closed'; cr] andBe: #closed ;\x0a            on: #lock do: [Transcript show: 'now locked'; cr] andBe: #locked ;\x0a            on: #unlock do: [Transcript show: 'not locked, just closed'; cr ] andBe: #closed ;\x0a    \x0a        when: #open;\x0a            on: #open do: [Transcript show: 'Door is already open.'; cr.] andBe: #open ;\x0a            on: #close do: [Transcript show: 'closing.'; cr.] andBe: #closed ;\x0a            on: #lock do: [Transcript show:  'is open. close before locking'; cr] andBe: #open ;\x0a            on: #unlock do: [Transcript show:  'is open, not locked. '; cr] andBe: #open ;\x0a    \x0a        when: #locked;\x0a            on: #open do: [Transcript show: 'Door is locked.'; cr.] andBe: #locked ;\x0a            on: #close do: [Transcript show: 'Door is locked and closed'; cr.] andBe: #locked ;\x0a            on: #unlock do: [Transcript show: 'Door is now unlocked.'; cr.] andBe: #closed ;\x0a            on: #lock do: [Transcript show: 'already locked'; cr] andBe: #locked ;\x0a\x09\x09\x09\x0a        initialState: #closed.\x0a\x0a    \x0a\x0a    '#main' asJQuery empty.\x0a    (StateMachineEditor for: door) appendToJQuery: ('#main' asJQuery)";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
@@ -912,7 +912,27 @@ selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html) {
 var self=this;
-function $TransitionCellEditor(){return globals.TransitionCellEditor||(typeof TransitionCellEditor=="undefined"?nil:TransitionCellEditor)}
+return smalltalk.withContext(function($ctx1) { 
+self._renderTableOn_(html);
+_st(html)._div_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(html)._span())._class_("glyphicon glyphicon-plus-sign");
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.StateTable)});},
+args: ["html"],
+source: "renderOn: html\x0a\x09self renderTableOn: html.\x0a\x09html div: [\x0a\x09\x09html span class: 'glyphicon glyphicon-plus-sign'\x0a\x09]",
+messageSends: ["renderTableOn:", "div:", "class:", "span"],
+referencedClasses: []
+}),
+globals.StateTable);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderTableOn:",
+protocol: 'rendering',
+fn: function (html) {
+var self=this;
+function $TransitionCell(){return globals.TransitionCell||(typeof TransitionCell=="undefined"?nil:TransitionCell)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$4,$5,$2;
 $1=_st(html)._table();
@@ -947,7 +967,7 @@ _st(_st(html)._th())._with_(event);
 $ctx5.sendIdx["with:"]=7;
 return _st(_st(self["@stateMachine"])._states())._do_((function(state){
 return smalltalk.withContext(function($ctx6) {
-return _st(_st(html)._td())._with_(_st($TransitionCellEditor())._for_(_st(self["@stateMachine"])._transitionForState_event_(state,event)));
+return _st(_st(html)._td())._with_(_st($TransitionCell())._for_(_st(self["@stateMachine"])._transitionForState_event_(state,event)));
 }, function($ctx6) {$ctx6.fillBlock({state:state},$ctx5,7)})}));
 }, function($ctx5) {$ctx5.fillBlock({},$ctx4,6)})}));
 $ctx4.sendIdx["with:"]=6;
@@ -957,11 +977,11 @@ $ctx3.sendIdx["do:"]=2;
 $ctx2.sendIdx["with:"]=5;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 $ctx1.sendIdx["with:"]=1;
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.StateTable)});},
+return self}, function($ctx1) {$ctx1.fill(self,"renderTableOn:",{html:html},globals.StateTable)});},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09html table class: 'table table-striped table-condensed table-hover'; with: [\x0a\x09\x09html thead with: [\x0a\x09\x09\x09html th with: 'States\x5cEvents'.\x0a\x09\x09\x09\x0a\x09\x09\x09stateMachine states do: [ :state |\x0a\x09\x09\x09\x09html th with: state name.\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09\x09html tbody with: [\x0a\x09\x09\x09stateMachine events do: [ :event |\x0a\x09\x09\x09\x0a\x09\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09\x09html th with: event.\x0a\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09stateMachine states do: [:state |\x0a\x09\x09\x09\x09\x09\x09html td with: \x0a\x09\x09\x09\x09\x09\x09\x09(TransitionCellEditor for: \x0a\x09\x09\x09\x09\x09\x09\x09\x09(stateMachine transitionForState: state event: event)).\x0a\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09].",
+source: "renderTableOn: html\x0a\x0a\x09html table class: 'table table-striped table-condensed table-hover'; with: [\x0a\x09\x09html thead with: [\x0a\x09\x09\x09html th with: 'States\x5cEvents'.\x0a\x09\x09\x09\x0a\x09\x09\x09stateMachine states do: [ :state |\x0a\x09\x09\x09\x09html th with: state name.\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09\x09html tbody with: [\x0a\x09\x09\x09stateMachine events do: [ :event |\x0a\x09\x09\x09\x0a\x09\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09\x09html th with: event.\x0a\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09stateMachine states do: [:state |\x0a\x09\x09\x09\x09\x09\x09html td with: \x0a\x09\x09\x09\x09\x09\x09\x09(TransitionCell for: \x0a\x09\x09\x09\x09\x09\x09\x09\x09(stateMachine transitionForState: state event: event)).\x0a\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09].",
 messageSends: ["class:", "table", "with:", "thead", "th", "do:", "states", "name", "tbody", "events", "tr", "td", "for:", "transitionForState:event:"],
-referencedClasses: ["TransitionCellEditor"]
+referencedClasses: ["TransitionCell"]
 }),
 globals.StateTable);
 
@@ -1031,7 +1051,7 @@ referencedClasses: []
 globals.StateTable.klass);
 
 
-smalltalk.addClass('Transition', globals.Object, ['stateMachine', 'event', 'actions', 'targetState'], 'SketchCode-ConceptEditors');
+smalltalk.addClass('Transition', globals.Object, ['stateMachine', 'event', 'actions', 'targetState', 'actionsSource'], 'SketchCode-ConceptEditors');
 globals.Transition.comment="I am a Transition.\x0a\x0aI am contained in a State and I hold an event name that triggers me, a block of actions to perform and the name of the resulting state.";
 smalltalk.addMethod(
 smalltalk.method({
@@ -1054,12 +1074,44 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "actions:",
 protocol: 'accessing',
-fn: function (anObject) {
+fn: function (aString) {
 var self=this;
-self["@actions"]=anObject;
+self["@actions"]=aString;
 return self;},
-args: ["anObject"],
-source: "actions: anObject\x0a\x09actions := anObject",
+args: ["aString"],
+source: "actions: aString\x0a\x09actions := aString",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Transition);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "actionsSource",
+protocol: 'accessing',
+fn: function () {
+var self=this;
+var $1;
+$1=self["@actionsSource"];
+return $1;
+},
+args: [],
+source: "actionsSource\x0a\x09^ actionsSource",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Transition);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "actionsSource:",
+protocol: 'accessing',
+fn: function (aString) {
+var self=this;
+self["@actionsSource"]=aString;
+return self;},
+args: ["aString"],
+source: "actionsSource: aString\x0a\x09actionsSource := aString",
 messageSends: [],
 referencedClasses: []
 }),
@@ -1086,12 +1138,12 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "event:",
 protocol: 'accessing',
-fn: function (aString) {
+fn: function (aSymbol) {
 var self=this;
-self["@event"]=aString;
+self["@event"]=aSymbol;
 return self;},
-args: ["aString"],
-source: "event: aString\x0a\x09event := aString",
+args: ["aSymbol"],
+source: "event: aSymbol\x0a\x09event := aSymbol",
 messageSends: [],
 referencedClasses: []
 }),
@@ -1106,10 +1158,11 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 globals.Transition.superclass.fn.prototype._initialize.apply(_st(self), []);
 self["@actions"]=nil;
+self["@actionsSource"]="\x22put code here..\x22";
 self["@targetState"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.Transition)});},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x0a\x09actions := nil.\x0a\x09targetState := nil",
+source: "initialize\x0a\x09super initialize.\x0a\x0a\x09actions := nil.\x0a\x09actionsSource := '\x22put code here..\x22'.\x0a\x09targetState := nil",
 messageSends: ["initialize"],
 referencedClasses: []
 }),
@@ -1245,8 +1298,24 @@ referencedClasses: []
 globals.Transition.klass);
 
 
-smalltalk.addClass('TransitionCellEditor', globals.Widget, ['transition', 'stateMachine'], 'SketchCode-ConceptEditors');
-globals.TransitionCellEditor.comment="I am an editor for a `Transition` inside a cell in `TransitionTable`.\x0a ";
+smalltalk.addClass('TransitionCell', globals.Widget, ['transition', 'stateMachine'], 'SketchCode-ConceptEditors');
+globals.TransitionCell.comment="I am an editor for a `Transition` inside a cell in `TransitionTable`.\x0a ";
+smalltalk.addMethod(
+smalltalk.method({
+selector: "actionsSourceChanged",
+protocol: 'event handling',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(window)._alert_("Code changed");
+return self}, function($ctx1) {$ctx1.fill(self,"actionsSourceChanged",{},globals.TransitionCell)});},
+args: [],
+source: "actionsSourceChanged\x0a\x09window alert: 'Code changed'",
+messageSends: ["alert:"],
+referencedClasses: []
+}),
+globals.TransitionCell);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderOn:",
@@ -1254,30 +1323,39 @@ protocol: 'rendering',
 fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
-_st(_st(html)._div())._with_("transition actions compiledSource");
+var $1,$3,$4,$2,$5,$6,$7,$8;
+$1=_st(html)._div();
+$3=_st(html)._textarea();
+_st($3)._with_(_st(self["@transition"])._actionsSource());
+$ctx1.sendIdx["with:"]=2;
+$4=_st($3)._onChange_((function(){
+return smalltalk.withContext(function($ctx2) {
+return self._actionsSourceChanged();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+$2=$4;
+_st($1)._with_($2);
 $ctx1.sendIdx["with:"]=1;
 _st(_st(html)._select())._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(_st(self["@transition"])._possibleTargetStates())._do_((function(state){
 return smalltalk.withContext(function($ctx3) {
-$1=_st(html)._option();
-$2=$1;
-$3=_st(state)._name();
+$5=_st(html)._option();
+$6=$5;
+$7=_st(state)._name();
 $ctx3.sendIdx["name"]=1;
-_st($2)._value_($3);
-$4=_st($1)._with_(_st(state)._name());
-return $4;
-}, function($ctx3) {$ctx3.fillBlock({state:state},$ctx2,2)})}));
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-$ctx1.sendIdx["with:"]=2;
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TransitionCellEditor)});},
+_st($6)._value_($7);
+$8=_st($5)._with_(_st(state)._name());
+return $8;
+}, function($ctx3) {$ctx3.fillBlock({state:state},$ctx2,3)})}));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}));
+$ctx1.sendIdx["with:"]=3;
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TransitionCell)});},
 args: ["html"],
-source: "renderOn: html\x0a\x09html div with: \x0a\x09\x09'transition actions compiledSource'.\x0a\x09html select with: [\x0a\x09\x09transition possibleTargetStates do:[ :state |\x0a\x09\x09\x09html option\x0a\x09\x09\x09\x09value: state name ;\x0a\x09\x09\x09\x09with: state name.\x0a\x09\x09\x09]\x0a\x09\x09]\x0a\x09",
-messageSends: ["with:", "div", "select", "do:", "possibleTargetStates", "value:", "option", "name"],
+source: "renderOn: html\x0a\x09html div with: \x0a\x09\x09(html textarea\x0a\x09\x09\x09with: transition actionsSource ;\x0a\x09\x09\x09onChange: [self actionsSourceChanged]\x0a\x09\x09\x09\x0a\x09\x09).\x0a\x09html select with: [\x0a\x09\x09transition possibleTargetStates do:[ :state |\x0a\x09\x09\x09html option\x0a\x09\x09\x09\x09value: state name ;\x0a\x09\x09\x09\x09with: state name.\x0a\x09\x09\x09]\x0a\x09\x09]\x0a\x09",
+messageSends: ["with:", "div", "textarea", "actionsSource", "onChange:", "actionsSourceChanged", "select", "do:", "possibleTargetStates", "value:", "option", "name"],
 referencedClasses: []
 }),
-globals.TransitionCellEditor);
+globals.TransitionCell);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -1294,7 +1372,7 @@ source: "stateMachine\x0a\x09^ stateMachine",
 messageSends: [],
 referencedClasses: []
 }),
-globals.TransitionCellEditor);
+globals.TransitionCell);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -1309,7 +1387,7 @@ source: "stateMachine: anObject\x0a\x09stateMachine := anObject",
 messageSends: [],
 referencedClasses: []
 }),
-globals.TransitionCellEditor);
+globals.TransitionCell);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -1326,7 +1404,7 @@ source: "transition\x0a\x09^ transition",
 messageSends: [],
 referencedClasses: []
 }),
-globals.TransitionCellEditor);
+globals.TransitionCell);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -1341,7 +1419,7 @@ source: "transition: anObject\x0a\x09transition := anObject",
 messageSends: [],
 referencedClasses: []
 }),
-globals.TransitionCellEditor);
+globals.TransitionCell);
 
 
 smalltalk.addMethod(
@@ -1357,12 +1435,12 @@ _st($2)._transition_(aTransition);
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"for:",{aTransition:aTransition},globals.TransitionCellEditor.klass)});},
+}, function($ctx1) {$ctx1.fill(self,"for:",{aTransition:aTransition},globals.TransitionCell.klass)});},
 args: ["aTransition"],
 source: "for: aTransition\x0a\x09\x22comment stating purpose of message\x22\x0a\x0a\x09^self new \x0a\x09\x09transition: aTransition ;\x0a\x09\x09yourself",
 messageSends: ["transition:", "new", "yourself"],
 referencedClasses: []
 }),
-globals.TransitionCellEditor.klass);
+globals.TransitionCell.klass);
 
 });

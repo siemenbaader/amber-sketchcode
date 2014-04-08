@@ -249,17 +249,28 @@ I am a DSL to build StateMachines from neat source code.
 
 Use me like this:
 
-    StateMachine fromDSL
-        when: 'closed' ;
-            on: 'open' do: [window alert: 'opening'] andBe: 'open' ;
-            on: 'lock' do: [window alert: 'locked door.'] andBe: 'locked' ;
-            on: 'unlock' do: [window alert: 'already unlocked'] andBe: 'closed'  ; 
-            on: 'close' do: [window alert: 'already closed'. andBe: 'closed' ;
+|door|
 
-        when: 'locked';
-            on: 'open' do: [window alert: 'Door is locked, sorry'] andBe: 'locked' ;
-
-        initialState: 'closed'.!
+    door := StateMachine fromDSL
+        when: #closed ;
+            on: #open do: [Transcript show: 'opening'; cr] andBe: #open ;
+            on: #close do: [Transcript show: 'already closed'; cr] andBe: #closed ;
+            on: #lock do: [Transcript show: 'now locked'; cr] andBe: #locked ;
+            on: #unlock do: [Transcript show: 'not locked, just closed'; cr ] andBe: #closed ;
+    
+        when: #open;
+            on: #open do: [Transcript show: 'Door is already open.'; cr.] andBe: #open ;
+            on: #close do: [Transcript show: 'closing.'; cr.] andBe: #closed ;
+            on: #lock do: [Transcript show:  'is open. close before locking'; cr] andBe: #open ;
+            on: #unlock do: [Transcript show:  'is open, not locked. '; cr] andBe: #open ;
+    
+        when: #locked;
+            on: #open do: [Transcript show: 'Door is locked.'; cr.] andBe: #locked ;
+            on: #close do: [Transcript show: 'Door is locked and closed'; cr.] andBe: #locked ;
+            on: #unlock do: [Transcript show: 'Door is now unlocked.'; cr.] andBe: #closed ;
+            on: #lock do: [Transcript show: 'already locked'; cr] andBe: #locked ;
+			
+        initialState: #closed.!
 
 !StateMachineDSLBuilder methodsFor: 'initialization'!
 
@@ -304,7 +315,38 @@ Widget subclass: #StateMachineEditor
 !StateMachineEditor commentStamp!
 I am a widget to edit State Machines. I hold both a StateChart and a StateTable view.
 
-I observe a StateMachine model object, update its properties, and my views are updated whenever the model changes.!
+I observe a StateMachine model object, update its properties, and my views are updated whenever the model changes.
+
+# How to use
+
+
+    |door|
+
+    door := StateMachine fromDSL
+        when: #closed ;
+            on: #open do: [Transcript show: 'opening'; cr] andBe: #open ;
+            on: #close do: [Transcript show: 'already closed'; cr] andBe: #closed ;
+            on: #lock do: [Transcript show: 'now locked'; cr] andBe: #locked ;
+            on: #unlock do: [Transcript show: 'not locked, just closed'; cr ] andBe: #closed ;
+    
+        when: #open;
+            on: #open do: [Transcript show: 'Door is already open.'; cr.] andBe: #open ;
+            on: #close do: [Transcript show: 'closing.'; cr.] andBe: #closed ;
+            on: #lock do: [Transcript show:  'is open. close before locking'; cr] andBe: #open ;
+            on: #unlock do: [Transcript show:  'is open, not locked. '; cr] andBe: #open ;
+    
+        when: #locked;
+            on: #open do: [Transcript show: 'Door is locked.'; cr.] andBe: #locked ;
+            on: #close do: [Transcript show: 'Door is locked and closed'; cr.] andBe: #locked ;
+            on: #unlock do: [Transcript show: 'Door is now unlocked.'; cr.] andBe: #closed ;
+            on: #lock do: [Transcript show: 'already locked'; cr] andBe: #locked ;
+			
+        initialState: #closed.
+
+    
+
+    '#main' asJQuery empty.
+    (StateMachineEditor for: door) appendToJQuery: ('#main' asJQuery)!
 
 !StateMachineEditor methodsFor: 'accessing'!
 
@@ -394,6 +436,13 @@ initialize
 !StateTable methodsFor: 'rendering'!
 
 renderOn: html
+	self renderTableOn: html.
+	html div: [
+		html span class: 'glyphicon glyphicon-plus-sign'
+	]
+!
+
+renderTableOn: html
 
 	html table class: 'table table-striped table-condensed table-hover'; with: [
 		html thead with: [
@@ -411,7 +460,7 @@ renderOn: html
 					
 					stateMachine states do: [:state |
 						html td with: 
-							(TransitionCellEditor for: 
+							(TransitionCell for: 
 								(stateMachine transitionForState: state event: event)).
 					].
 				].
@@ -427,7 +476,7 @@ for: aStateMachine
 ! !
 
 Object subclass: #Transition
-	instanceVariableNames: 'stateMachine event actions targetState'
+	instanceVariableNames: 'stateMachine event actions targetState actionsSource'
 	package: 'SketchCode-ConceptEditors'!
 !Transition commentStamp!
 I am a Transition.
@@ -440,16 +489,24 @@ actions
 	^ actions
 !
 
-actions: anObject
-	actions := anObject
+actions: aString
+	actions := aString
+!
+
+actionsSource
+	^ actionsSource
+!
+
+actionsSource: aString
+	actionsSource := aString
 !
 
 event
 	^ event
 !
 
-event: aString
-	event := aString
+event: aSymbol
+	event := aSymbol
 !
 
 possibleTargetStates
@@ -485,6 +542,7 @@ initialize
 	super initialize.
 
 	actions := nil.
+	actionsSource := '"put code here.."'.
 	targetState := nil
 ! !
 
@@ -500,13 +558,13 @@ stateMachine: aStateMachine event: anEventNameString actions: aBlockClosure targ
 		yourself.
 ! !
 
-Widget subclass: #TransitionCellEditor
+Widget subclass: #TransitionCell
 	instanceVariableNames: 'transition stateMachine'
 	package: 'SketchCode-ConceptEditors'!
-!TransitionCellEditor commentStamp!
+!TransitionCell commentStamp!
 I am an editor for a `Transition` inside a cell in `TransitionTable`.!
 
-!TransitionCellEditor methodsFor: 'accessing'!
+!TransitionCell methodsFor: 'accessing'!
 
 stateMachine
 	^ stateMachine
@@ -524,11 +582,21 @@ transition: anObject
 	transition := anObject
 ! !
 
-!TransitionCellEditor methodsFor: 'rendering'!
+!TransitionCell methodsFor: 'event handling'!
+
+actionsSourceChanged
+	window alert: 'Code changed'
+! !
+
+!TransitionCell methodsFor: 'rendering'!
 
 renderOn: html
 	html div with: 
-		'transition actions compiledSource'.
+		(html textarea
+			with: transition actionsSource ;
+			onChange: [self actionsSourceChanged]
+			
+		).
 	html select with: [
 		transition possibleTargetStates do:[ :state |
 			html option
@@ -538,7 +606,7 @@ renderOn: html
 		]
 ! !
 
-!TransitionCellEditor class methodsFor: 'as yet unclassified'!
+!TransitionCell class methodsFor: 'as yet unclassified'!
 
 for: aTransition
 	"comment stating purpose of message"
