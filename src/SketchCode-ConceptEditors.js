@@ -711,7 +711,7 @@ globals.StateMachineDSLBuilder);
 
 
 smalltalk.addClass('StateMachineEditor', globals.Widget, ['stateMachine', 'stateTable'], 'SketchCode-ConceptEditors');
-globals.StateMachineEditor.comment="I am a widget to edit State Machines. I hold both a StateChart and a StateTable view.\x0a\x0aI observe a StateMachine model object, update its properties, and my views are updated whenever the model changes.\x0a\x0a# How to use\x0a\x0a\x0a    |door|\x0a\x0a    door := StateMachine fromDSL\x0a        when: #closed ;\x0a            on: #open do: [Transcript show: 'opening'; cr] andBe: #open ;\x0a            on: #close do: [Transcript show: 'already closed'; cr] andBe: #closed ;\x0a            on: #lock do: [Transcript show: 'now locked'; cr] andBe: #locked ;\x0a            on: #unlock do: [Transcript show: 'not locked, just closed'; cr ] andBe: #closed ;\x0a    \x0a        when: #open;\x0a            on: #open do: [Transcript show: 'Door is already open.'; cr.] andBe: #open ;\x0a            on: #close do: [Transcript show: 'closing.'; cr.] andBe: #closed ;\x0a            on: #lock do: [Transcript show:  'is open. close before locking'; cr] andBe: #open ;\x0a            on: #unlock do: [Transcript show:  'is open, not locked. '; cr] andBe: #open ;\x0a    \x0a        when: #locked;\x0a            on: #open do: [Transcript show: 'Door is locked.'; cr.] andBe: #locked ;\x0a            on: #close do: [Transcript show: 'Door is locked and closed'; cr.] andBe: #locked ;\x0a            on: #unlock do: [Transcript show: 'Door is now unlocked.'; cr.] andBe: #closed ;\x0a            on: #lock do: [Transcript show: 'already locked'; cr] andBe: #locked ;\x0a\x09\x09\x09\x0a        initialState: #closed.\x0a\x0a    \x0a\x0a    '#main' asJQuery empty.\x0a    (StateMachineEditor for: door) appendToJQuery: ('#main' asJQuery)";
+globals.StateMachineEditor.comment="I am a widget to edit State Machines. I hold both a StateChart and a StateTable view.\x0a\x0aI observe a StateMachine model object, update its properties, and my views are updated whenever the model changes.\x0a\x0a# How to use\x0a\x0a\x0a    |door|\x0a\x0a    door := StateMachine fromDSL\x0a        when: #closed ;\x0a            on: #open do: [Transcript show: 'opening'; cr] andBe: #open ;\x0a            on: #close do: [Transcript show: 'already closed'; cr] andBe: #closed ;\x0a            on: #lock do: [Transcript show: 'now locked'; cr] andBe: #locked ;\x0a            on: #unlock do: [Transcript show: 'not locked, just closed'; cr ] andBe: #closed ;\x0a    \x0a        when: #open;\x0a            on: #open do: [Transcript show: 'Door is already open.'; cr.] andBe: #open ;\x0a            on: #close do: [Transcript show: 'closing.'; cr.] andBe: #closed ;\x0a            on: #lock do: [Transcript show:  'is open. close before locking'; cr] andBe: #open ;\x0a            on: #unlock do: [Transcript show:  'is open, not locked. '; cr] andBe: #open ;\x0a    \x0a        when: #locked;\x0a            on: #open do: [Transcript show: 'Door is locked.'; cr.] andBe: #locked ;\x0a            on: #close do: [Transcript show: 'Door is locked and closed'; cr.] andBe: #locked ;\x0a            on: #unlock do: [Transcript show: 'Door is now unlocked.'; cr.] andBe: #closed ;\x0a            on: #lock do: [Transcript show: 'already locked'; cr] andBe: #locked ;\x0a\x09\x09\x09\x0a        initialState: #closed.\x0a\x0a    \x0a\x0a    '#main' asJQuery empty.\x0a    (StateMachineEditor for: door) appendToJQuery: ('#main' asJQuery)\x0a\x0a# Testing\x0aIn the workspace, simply:\x0a\x0a    StateMachineEditor renderDoorFSM\x0a";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
@@ -869,7 +869,7 @@ globals.StateMachineEditor);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "for:",
-protocol: 'as yet unclassified',
+protocol: 'instance creation',
 fn: function (aStateMachine) {
 var self=this;
 function $StateTable(){return globals.StateTable||(typeof StateTable=="undefined"?nil:StateTable)}
@@ -885,6 +885,143 @@ args: ["aStateMachine"],
 source: "for: aStateMachine\x0a\x09^ self new \x0a\x09\x09stateMachine: aStateMachine ;\x0a\x09\x09stateTable: (StateTable for: aStateMachine).",
 messageSends: ["stateMachine:", "new", "stateTable:", "for:"],
 referencedClasses: ["StateTable"]
+}),
+globals.StateMachineEditor.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderDoorFSM",
+protocol: 'testing',
+fn: function () {
+var self=this;
+var door;
+function $StateMachine(){return globals.StateMachine||(typeof StateMachine=="undefined"?nil:StateMachine)}
+function $Transcript(){return globals.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
+function $StateMachineEditor(){return globals.StateMachineEditor||(typeof StateMachineEditor=="undefined"?nil:StateMachineEditor)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15;
+$1=_st($StateMachine())._fromDSL();
+_st($1)._when_("closed");
+$ctx1.sendIdx["when:"]=1;
+_st($1)._on_do_andBe_("open",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("opening");
+$ctx2.sendIdx["show:"]=1;
+$2=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=1;
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}),"open");
+$ctx1.sendIdx["on:do:andBe:"]=1;
+_st($1)._on_do_andBe_("close",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("already closed");
+$ctx2.sendIdx["show:"]=2;
+$3=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=2;
+return $3;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}),"closed");
+$ctx1.sendIdx["on:do:andBe:"]=2;
+_st($1)._on_do_andBe_("lock",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("now locked");
+$ctx2.sendIdx["show:"]=3;
+$4=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=3;
+return $4;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,3)})}),"locked");
+$ctx1.sendIdx["on:do:andBe:"]=3;
+_st($1)._on_do_andBe_("unlock",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("not locked, just closed");
+$ctx2.sendIdx["show:"]=4;
+$5=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=4;
+return $5;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,4)})}),"closed");
+$ctx1.sendIdx["on:do:andBe:"]=4;
+_st($1)._when_("open");
+$ctx1.sendIdx["when:"]=2;
+_st($1)._on_do_andBe_("open",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("Door is already open.");
+$ctx2.sendIdx["show:"]=5;
+$6=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=5;
+return $6;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,5)})}),"open");
+$ctx1.sendIdx["on:do:andBe:"]=5;
+_st($1)._on_do_andBe_("close",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("closing.");
+$ctx2.sendIdx["show:"]=6;
+$7=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=6;
+return $7;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,6)})}),"closed");
+$ctx1.sendIdx["on:do:andBe:"]=6;
+_st($1)._on_do_andBe_("lock",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("is open. close before locking");
+$ctx2.sendIdx["show:"]=7;
+$8=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=7;
+return $8;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,7)})}),"open");
+$ctx1.sendIdx["on:do:andBe:"]=7;
+_st($1)._on_do_andBe_("unlock",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("is open, not locked. ");
+$ctx2.sendIdx["show:"]=8;
+$9=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=8;
+return $9;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,8)})}),"open");
+$ctx1.sendIdx["on:do:andBe:"]=8;
+_st($1)._when_("locked");
+_st($1)._on_do_andBe_("open",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("Door is locked.");
+$ctx2.sendIdx["show:"]=9;
+$10=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=9;
+return $10;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,9)})}),"locked");
+$ctx1.sendIdx["on:do:andBe:"]=9;
+_st($1)._on_do_andBe_("close",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("Door is locked and closed");
+$ctx2.sendIdx["show:"]=10;
+$11=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=10;
+return $11;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,10)})}),"locked");
+$ctx1.sendIdx["on:do:andBe:"]=10;
+_st($1)._on_do_andBe_("unlock",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("Door is now unlocked.");
+$ctx2.sendIdx["show:"]=11;
+$12=_st($Transcript())._cr();
+$ctx2.sendIdx["cr"]=11;
+return $12;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,11)})}),"closed");
+$ctx1.sendIdx["on:do:andBe:"]=11;
+_st($1)._on_do_andBe_("lock",(function(){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._show_("already locked");
+$13=_st($Transcript())._cr();
+return $13;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,12)})}),"locked");
+$14=_st($1)._initialState_("closed");
+door=$14;
+$15="#main"._asJQuery();
+$ctx1.sendIdx["asJQuery"]=1;
+_st($15)._empty();
+_st(_st($StateMachineEditor())._for_(door))._appendToJQuery_("#main"._asJQuery());
+return self}, function($ctx1) {$ctx1.fill(self,"renderDoorFSM",{door:door},globals.StateMachineEditor.klass)});},
+args: [],
+source: "renderDoorFSM\x0a\x09|door|\x0a\x0a    door := StateMachine fromDSL\x0a        when: #closed ;\x0a            on: #open do: [Transcript show: 'opening'; cr] andBe: #open ;\x0a            on: #close do: [Transcript show: 'already closed'; cr] andBe: #closed ;\x0a            on: #lock do: [Transcript show: 'now locked'; cr] andBe: #locked ;\x0a            on: #unlock do: [Transcript show: 'not locked, just closed'; cr ] andBe: #closed ;\x0a    \x0a        when: #open;\x0a            on: #open do: [Transcript show: 'Door is already open.'; cr.] andBe: #open ;\x0a            on: #close do: [Transcript show: 'closing.'; cr.] andBe: #closed ;\x0a            on: #lock do: [Transcript show:  'is open. close before locking'; cr] andBe: #open ;\x0a            on: #unlock do: [Transcript show:  'is open, not locked. '; cr] andBe: #open ;\x0a    \x0a        when: #locked;\x0a            on: #open do: [Transcript show: 'Door is locked.'; cr.] andBe: #locked ;\x0a            on: #close do: [Transcript show: 'Door is locked and closed'; cr.] andBe: #locked ;\x0a            on: #unlock do: [Transcript show: 'Door is now unlocked.'; cr.] andBe: #closed ;\x0a            on: #lock do: [Transcript show: 'already locked'; cr] andBe: #locked ;\x0a\x09\x09\x09\x0a        initialState: #closed.\x0a\x0a    \x0a\x0a    '#main' asJQuery empty.\x0a    (StateMachineEditor for: door) appendToJQuery: ('#main' asJQuery)",
+messageSends: ["when:", "fromDSL", "on:do:andBe:", "show:", "cr", "initialState:", "empty", "asJQuery", "appendToJQuery:", "for:"],
+referencedClasses: ["StateMachine", "Transcript", "StateMachineEditor"]
 }),
 globals.StateMachineEditor.klass);
 
@@ -913,15 +1050,23 @@ protocol: 'rendering',
 fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self._renderTableOn_(html);
-_st(html)._div_((function(){
+var $1,$2;
+$1=_st(html)._div();
+_st($1)._class_("state-table");
+$ctx1.sendIdx["class:"]=1;
+$2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
+_st(html)._style_("");
+self._renderTableOn_(html);
+return _st(html)._div_((function(){
+return smalltalk.withContext(function($ctx3) {
 return _st(_st(html)._span())._class_("glyphicon glyphicon-plus-sign");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.StateTable)});},
 args: ["html"],
-source: "renderOn: html\x0a\x09self renderTableOn: html.\x0a\x09html div: [\x0a\x09\x09html span class: 'glyphicon glyphicon-plus-sign'\x0a\x09]",
-messageSends: ["renderTableOn:", "div:", "class:", "span"],
+source: "renderOn: html\x0a\x09html div\x0a\x09\x09class: 'state-table' ;\x0a\x09\x09with: [\x0a\x09\x09\x09html style: ''.\x0a\x09\x09\x09self renderTableOn: html.\x0a\x09\x09\x09html div: [\x0a\x09\x09\x09\x09html span class: 'glyphicon glyphicon-plus-sign'\x0a\x09\x09\x09]\x0a\x09\x09]",
+messageSends: ["class:", "div", "with:", "style:", "renderTableOn:", "div:", "span"],
 referencedClasses: []
 }),
 globals.StateTable);
@@ -934,16 +1079,17 @@ fn: function (html) {
 var self=this;
 function $TransitionCell(){return globals.TransitionCell||(typeof TransitionCell=="undefined"?nil:TransitionCell)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$2;
+var $1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$2;
 $1=_st(html)._table();
 _st($1)._class_("table table-striped table-condensed table-hover");
+$ctx1.sendIdx["class:"]=1;
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._thead())._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 $3=_st(html)._th();
 $ctx3.sendIdx["th"]=1;
-_st($3)._with_("States\x5cEvents");
+_st($3)._with_("Events \x5c States");
 $ctx3.sendIdx["with:"]=3;
 $4=_st(self["@stateMachine"])._states();
 $ctx3.sendIdx["states"]=1;
@@ -959,7 +1105,9 @@ $ctx3.sendIdx["do:"]=1;
 $ctx2.sendIdx["with:"]=2;
 return _st(_st(html)._tbody())._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-return _st(_st(self["@stateMachine"])._events())._do_((function(event){
+$6=_st(self["@stateMachine"])._events();
+$ctx3.sendIdx["events"]=1;
+_st($6)._do_((function(event){
 return smalltalk.withContext(function($ctx4) {
 return _st(_st(html)._tr())._with_((function(){
 return smalltalk.withContext(function($ctx5) {
@@ -967,19 +1115,37 @@ _st(_st(html)._th())._with_(event);
 $ctx5.sendIdx["with:"]=7;
 return _st(_st(self["@stateMachine"])._states())._do_((function(state){
 return smalltalk.withContext(function($ctx6) {
-return _st(_st(html)._td())._with_(_st($TransitionCell())._for_(_st(self["@stateMachine"])._transitionForState_event_(state,event)));
+$7=_st(html)._td();
+$ctx6.sendIdx["td"]=1;
+return _st($7)._with_(_st($TransitionCell())._for_(_st(self["@stateMachine"])._transitionForState_event_(state,event)));
+$ctx6.sendIdx["with:"]=8;
 }, function($ctx6) {$ctx6.fillBlock({state:state},$ctx5,7)})}));
+$ctx5.sendIdx["do:"]=3;
 }, function($ctx5) {$ctx5.fillBlock({},$ctx4,6)})}));
 $ctx4.sendIdx["with:"]=6;
 }, function($ctx4) {$ctx4.fillBlock({event:event},$ctx3,5)})}));
 $ctx3.sendIdx["do:"]=2;
+$8=_st(html)._td();
+$ctx3.sendIdx["td"]=2;
+_st($8)._class_("aux");
+$ctx3.sendIdx["class:"]=2;
+$9=_st($8)._with_("*");
+$ctx3.sendIdx["with:"]=9;
+$9;
+return _st(_st(self["@stateMachine"])._events())._do_((function(){
+return smalltalk.withContext(function($ctx4) {
+$10=_st(html)._td();
+_st($10)._class_("aux");
+$11=_st($10)._with_(".");
+return $11;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx3,8)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
 $ctx2.sendIdx["with:"]=5;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 $ctx1.sendIdx["with:"]=1;
 return self}, function($ctx1) {$ctx1.fill(self,"renderTableOn:",{html:html},globals.StateTable)});},
 args: ["html"],
-source: "renderTableOn: html\x0a\x0a\x09html table class: 'table table-striped table-condensed table-hover'; with: [\x0a\x09\x09html thead with: [\x0a\x09\x09\x09html th with: 'States\x5cEvents'.\x0a\x09\x09\x09\x0a\x09\x09\x09stateMachine states do: [ :state |\x0a\x09\x09\x09\x09html th with: state name.\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09\x09html tbody with: [\x0a\x09\x09\x09stateMachine events do: [ :event |\x0a\x09\x09\x09\x0a\x09\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09\x09html th with: event.\x0a\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09stateMachine states do: [:state |\x0a\x09\x09\x09\x09\x09\x09html td with: \x0a\x09\x09\x09\x09\x09\x09\x09(TransitionCell for: \x0a\x09\x09\x09\x09\x09\x09\x09\x09(stateMachine transitionForState: state event: event)).\x0a\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09].",
+source: "renderTableOn: html\x0a\x0a\x09html table class: 'table table-striped table-condensed table-hover'; with: [\x0a\x09\x09html thead with: [\x0a\x09\x09\x09html th with: 'Events \x5c States'.\x0a\x09\x09\x09\x0a\x09\x09\x09stateMachine states do: [ :state |\x0a\x09\x09\x09\x09html th with: state name.\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09\x09html tbody with: [\x0a\x09\x09\x09stateMachine events do: [ :event |\x0a\x09\x09\x09\x0a\x09\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09\x09html th with: event.\x0a\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09stateMachine states do: [:state |\x0a\x09\x09\x09\x09\x09\x09html td with: \x0a\x09\x09\x09\x09\x09\x09\x09(TransitionCell for: \x0a\x09\x09\x09\x09\x09\x09\x09\x09(stateMachine transitionForState: state event: event)).\x0a\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09].\x0a\x09\x09\x09html td class: 'aux' ; with: '*'. \x0a\x09\x09\x09stateMachine events do: [ html td class: 'aux'; with: '.'].\x0a\x09\x09].\x0a\x09].",
 messageSends: ["class:", "table", "with:", "thead", "th", "do:", "states", "name", "tbody", "events", "tr", "td", "for:", "transitionForState:event:"],
 referencedClasses: ["TransitionCell"]
 }),
@@ -1158,11 +1324,11 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 globals.Transition.superclass.fn.prototype._initialize.apply(_st(self), []);
 self["@actions"]=nil;
-self["@actionsSource"]="\x22put code here..\x22";
+self["@actionsSource"]="| foo |\x0aself redrawCanvas.\x0aTranscript show: 'transiiton fired!'\x0a";
 self["@targetState"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.Transition)});},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x0a\x09actions := nil.\x0a\x09actionsSource := '\x22put code here..\x22'.\x0a\x09targetState := nil",
+source: "initialize\x0a\x09super initialize.\x0a\x0a\x09actions := nil.\x0a\x09actionsSource := '| foo |\x0aself redrawCanvas.\x0aTranscript show: ''transiiton fired!''\x0a'.\x0a\x09targetState := nil",
 messageSends: ["initialize"],
 referencedClasses: []
 }),

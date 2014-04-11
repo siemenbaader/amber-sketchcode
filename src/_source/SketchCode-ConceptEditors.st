@@ -346,7 +346,12 @@ I observe a StateMachine model object, update its properties, and my views are u
     
 
     '#main' asJQuery empty.
-    (StateMachineEditor for: door) appendToJQuery: ('#main' asJQuery)!
+    (StateMachineEditor for: door) appendToJQuery: ('#main' asJQuery)
+
+# Testing
+In the workspace, simply:
+
+    StateMachineEditor renderDoorFSM!
 
 !StateMachineEditor methodsFor: 'accessing'!
 
@@ -402,12 +407,44 @@ renderOn: html
 	]
 ! !
 
-!StateMachineEditor class methodsFor: 'as yet unclassified'!
+!StateMachineEditor class methodsFor: 'instance creation'!
 
 for: aStateMachine
 	^ self new 
 		stateMachine: aStateMachine ;
 		stateTable: (StateTable for: aStateMachine).
+! !
+
+!StateMachineEditor class methodsFor: 'testing'!
+
+renderDoorFSM
+	|door|
+
+    door := StateMachine fromDSL
+        when: #closed ;
+            on: #open do: [Transcript show: 'opening'; cr] andBe: #open ;
+            on: #close do: [Transcript show: 'already closed'; cr] andBe: #closed ;
+            on: #lock do: [Transcript show: 'now locked'; cr] andBe: #locked ;
+            on: #unlock do: [Transcript show: 'not locked, just closed'; cr ] andBe: #closed ;
+    
+        when: #open;
+            on: #open do: [Transcript show: 'Door is already open.'; cr.] andBe: #open ;
+            on: #close do: [Transcript show: 'closing.'; cr.] andBe: #closed ;
+            on: #lock do: [Transcript show:  'is open. close before locking'; cr] andBe: #open ;
+            on: #unlock do: [Transcript show:  'is open, not locked. '; cr] andBe: #open ;
+    
+        when: #locked;
+            on: #open do: [Transcript show: 'Door is locked.'; cr.] andBe: #locked ;
+            on: #close do: [Transcript show: 'Door is locked and closed'; cr.] andBe: #locked ;
+            on: #unlock do: [Transcript show: 'Door is now unlocked.'; cr.] andBe: #closed ;
+            on: #lock do: [Transcript show: 'already locked'; cr] andBe: #locked ;
+			
+        initialState: #closed.
+
+    
+
+    '#main' asJQuery empty.
+    (StateMachineEditor for: door) appendToJQuery: ('#main' asJQuery)
 ! !
 
 Widget subclass: #StateTable
@@ -436,17 +473,22 @@ initialize
 !StateTable methodsFor: 'rendering'!
 
 renderOn: html
-	self renderTableOn: html.
-	html div: [
-		html span class: 'glyphicon glyphicon-plus-sign'
-	]
+	html div
+		class: 'state-table' ;
+		with: [
+			html style: ''.
+			self renderTableOn: html.
+			html div: [
+				html span class: 'glyphicon glyphicon-plus-sign'
+			]
+		]
 !
 
 renderTableOn: html
 
 	html table class: 'table table-striped table-condensed table-hover'; with: [
 		html thead with: [
-			html th with: 'States\Events'.
+			html th with: 'Events \ States'.
 			
 			stateMachine states do: [ :state |
 				html th with: state name.
@@ -465,6 +507,8 @@ renderTableOn: html
 					].
 				].
 			].
+			html td class: 'aux' ; with: '*'. 
+			stateMachine events do: [ html td class: 'aux'; with: '.'].
 		].
 	].
 ! !
@@ -542,7 +586,10 @@ initialize
 	super initialize.
 
 	actions := nil.
-	actionsSource := '"put code here.."'.
+	actionsSource := '| foo |
+self redrawCanvas.
+Transcript show: ''transiiton fired!!''
+'.
 	targetState := nil
 ! !
 
