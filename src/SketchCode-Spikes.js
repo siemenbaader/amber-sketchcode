@@ -400,10 +400,10 @@ protocol: 'as yet unclassified',
 fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(html)._style_("\x0a\x09\x09\x09.anchor { position: relative ;}\x0a\x09\x09\x09.outset-widget { \x0a\x09\x09\x09\x09/* Text alignment bled into this child element, not good for widgets */\x0a\x09\x09\x09\x09text-align: left;\x0a\x09\x09\x09\x09border: 2px solid lightblue;\x0a\x09\x09\x09\x09border-radius: 5px;\x0a\x09\x09\x09\x09position: absolute;\x0a\x09\x09\x09\x09width: 286px;\x0a\x09\x09\x09\x09height: 60px;\x0a\x09\x09\x09\x09top: -60px; \x0a\x09\x09\x09\x09left:-6px;\x0a\x09\x09\x09\x09\x0a\x09\x09\x09\x09}\x0a\x09\x09\x09\x09\x0a\x09\x09\x09td.info { background-color: #c4e3f3 !important; }\x0a\x09\x09\x09td, th {text-align:center !important;}\x09\x0a\x09\x09\x09\x0a\x09\x09\x09.dropup .dropdown-menu { \x0a\x09\x09\x09\x09transition: opacity 0.3s;  \x0a\x09\x09\x09}\x0a\x09\x09\x09\x0a\x09\x09\x09.dropup.open.faded-out .dropdown-menu{\x0a\x09\x09\x09\x09opacity: 0;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.dropup.open .dropdown-menu{\x0a\x09\x09\x09\x09opacity: 1;\x0a\x09\x09\x09}\x0a\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x0a\x09\x09\x0a\x09\x09\x09");
+_st(html)._style_("\x0a\x09\x09\x09.anchor { position: relative ;}\x0a\x09\x09\x09.outset-widget { \x0a\x09\x09\x09\x09/* Text alignment bled into this child element, not good for widgets */\x0a\x09\x09\x09\x09text-align: left;\x0a\x09\x09\x09\x09border: 2px solid lightblue;\x0a\x09\x09\x09\x09border-radius: 5px;\x0a\x09\x09\x09\x09position: absolute;\x0a\x09\x09\x09\x09width: 286px;\x0a\x09\x09\x09\x09height: 60px;\x0a\x09\x09\x09\x09top: -60px; \x0a\x09\x09\x09\x09left:-6px;\x0a\x09\x09\x09\x09\x0a\x09\x09\x09\x09}\x0a\x09\x09\x09\x0a\x09\x09\x09\x0a\x09\x09\x09\x0a\x09\x09\x09td.info { background-color: #c4e3f3 !important; }\x0a\x09\x09\x09td, th {text-align:center !important;}\x09\x0a\x09\x09\x09\x0a\x09\x09\x09.dropup .dropdown-menu { \x0a\x09\x09\x09\x09transition: opacity 0.3s;  \x0a\x09\x09\x09}\x0a\x09\x09\x09\x0a\x09\x09\x09.dropup.open.faded-out .dropdown-menu{\x0a\x09\x09\x09\x09opacity: 0;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.dropup.open .dropdown-menu{\x0a\x09\x09\x09\x09opacity: 1;\x0a\x09\x09\x09}\x0a\x09\x09\x09\x0a\x09\x09\x09td {transition: background-color 0.3s; }\x0a\x0a\x09\x09\x09th.handled, td.handled {\x0a\x09\x09\x09\x09background-color: rgb(202, 229, 237) !important;\x0a\x09\x09\x09\x09border: 1px solid red;\x0a\x0a\x09\x09\x09}\x0a\x09\x09\x09\x09\x0a\x09\x09\x0a\x09\x09\x09");
 return self}, function($ctx1) {$ctx1.fill(self,"renderStylesOn:",{html:html},globals.OutsetWidget)});},
 args: ["html"],
-source: "renderStylesOn: html\x0a\x0a\x0a\x22anchor'; with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09html div class: 'outset-widget'; with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html button class:'btn btn-\x0a\x22\x0a\x0a\x09html style: '\x0a\x09\x09\x09.anchor { position: relative ;}\x0a\x09\x09\x09.outset-widget { \x0a\x09\x09\x09\x09/* Text alignment bled into this child element, not good for widgets */\x0a\x09\x09\x09\x09text-align: left;\x0a\x09\x09\x09\x09border: 2px solid lightblue;\x0a\x09\x09\x09\x09border-radius: 5px;\x0a\x09\x09\x09\x09position: absolute;\x0a\x09\x09\x09\x09width: 286px;\x0a\x09\x09\x09\x09height: 60px;\x0a\x09\x09\x09\x09top: -60px; \x0a\x09\x09\x09\x09left:-6px;\x0a\x09\x09\x09\x09\x0a\x09\x09\x09\x09}\x0a\x09\x09\x09\x09\x0a\x09\x09\x09td.info { background-color: #c4e3f3 !important; }\x0a\x09\x09\x09td, th {text-align:center !important;}\x09\x0a\x09\x09\x09\x0a\x09\x09\x09.dropup .dropdown-menu { \x0a\x09\x09\x09\x09transition: opacity 0.3s;  \x0a\x09\x09\x09}\x0a\x09\x09\x09\x0a\x09\x09\x09.dropup.open.faded-out .dropdown-menu{\x0a\x09\x09\x09\x09opacity: 0;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.dropup.open .dropdown-menu{\x0a\x09\x09\x09\x09opacity: 1;\x0a\x09\x09\x09}\x0a\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x0a\x09\x09\x0a\x09\x09\x09'.",
+source: "renderStylesOn: html\x0a\x0a\x0a\x22anchor'; with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09html div class: 'outset-widget'; with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html button class:'btn btn-\x0a\x22\x0a\x0a\x09html style: '\x0a\x09\x09\x09.anchor { position: relative ;}\x0a\x09\x09\x09.outset-widget { \x0a\x09\x09\x09\x09/* Text alignment bled into this child element, not good for widgets */\x0a\x09\x09\x09\x09text-align: left;\x0a\x09\x09\x09\x09border: 2px solid lightblue;\x0a\x09\x09\x09\x09border-radius: 5px;\x0a\x09\x09\x09\x09position: absolute;\x0a\x09\x09\x09\x09width: 286px;\x0a\x09\x09\x09\x09height: 60px;\x0a\x09\x09\x09\x09top: -60px; \x0a\x09\x09\x09\x09left:-6px;\x0a\x09\x09\x09\x09\x0a\x09\x09\x09\x09}\x0a\x09\x09\x09\x0a\x09\x09\x09\x0a\x09\x09\x09\x0a\x09\x09\x09td.info { background-color: #c4e3f3 !important; }\x0a\x09\x09\x09td, th {text-align:center !important;}\x09\x0a\x09\x09\x09\x0a\x09\x09\x09.dropup .dropdown-menu { \x0a\x09\x09\x09\x09transition: opacity 0.3s;  \x0a\x09\x09\x09}\x0a\x09\x09\x09\x0a\x09\x09\x09.dropup.open.faded-out .dropdown-menu{\x0a\x09\x09\x09\x09opacity: 0;\x0a\x09\x09\x09}\x0a\x0a\x09\x09\x09.dropup.open .dropdown-menu{\x0a\x09\x09\x09\x09opacity: 1;\x0a\x09\x09\x09}\x0a\x09\x09\x09\x0a\x09\x09\x09td {transition: background-color 0.3s; }\x0a\x0a\x09\x09\x09th.handled, td.handled {\x0a\x09\x09\x09\x09background-color: rgb(202, 229, 237) !important;\x0a\x09\x09\x09\x09border: 1px solid red;\x0a\x0a\x09\x09\x09}\x0a\x09\x09\x09\x09\x0a\x09\x09\x0a\x09\x09\x09'.",
 messageSends: ["style:"],
 referencedClasses: []
 }),
@@ -418,7 +418,7 @@ var self=this;
 var states,events,columnHandle;
 function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4,$5,$6,$7,$8,$9,$11,$12,$13,$14,$15,$17,$19,$21,$22,$23,$24,$20,$18,$16,$25,$26,$28,$30,$29,$27,$10;
+var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$24,$26,$28,$29,$30,$31,$27,$25,$23,$32,$33,$34,$36,$38,$37,$35,$12;
 states=["closed", "open", "locked"];
 events=["open", "close", "lock", "unlock"];
 $1=_st($Array())._new();
@@ -438,91 +438,126 @@ $7=_st($Array())._new();
 $ctx1.sendIdx["new"]=4;
 _st($6)._add_($7);
 $ctx1.sendIdx["add:"]=3;
-_st($1)._add_(_st($Array())._new());
+$8=$1;
+$9=_st($Array())._new();
+$ctx1.sendIdx["new"]=5;
+_st($8)._add_($9);
 $ctx1.sendIdx["add:"]=4;
-$8=_st($1)._yourself();
-self["@columns"]=$8;
-$9=_st(html)._table();
-_st($9)._class_("table table-striped table-condensed table-hover");
+_st($1)._add_(_st($Array())._new());
+$ctx1.sendIdx["add:"]=5;
+$10=_st($1)._yourself();
+self["@columns"]=$10;
+$11=_st(html)._table();
+_st($11)._class_("table table table-striped table-hover table-condensed");
 $ctx1.sendIdx["class:"]=1;
-$10=_st($9)._with_((function(){
+$12=_st($11)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._thead())._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-$11=_st(html)._th();
+$13=_st(html)._th();
 $ctx3.sendIdx["th"]=1;
-_st($11)._with_("Events \x5c States");
+_st($13)._with_("Events \x5c States");
 $ctx3.sendIdx["with:"]=3;
-return _st(states)._do_((function(stateName){
+return _st(states)._withIndexDo_((function(stateName,index){
 return smalltalk.withContext(function($ctx4) {
-$12=_st(html)._th();
+$14=_st(html)._th();
 $ctx4.sendIdx["th"]=2;
-_st($12)._class_("dropup");
+_st($14)._class_("dropup");
 $ctx4.sendIdx["class:"]=2;
-_st($12)._onMouseEnter_((function(){
-return smalltalk.withContext(function($ctx5) {
-$13=_st(columnHandle)._asJQuery();
-$ctx5.sendIdx["asJQuery"]=1;
-_st($13)._addClass_("open faded-out");
-$ctx5.sendIdx["addClass:"]=1;
-return _st((function(){
-return smalltalk.withContext(function($ctx6) {
-$14=_st(columnHandle)._asJQuery();
-$ctx6.sendIdx["asJQuery"]=2;
-return _st($14)._removeClass_("faded-out");
-$ctx6.sendIdx["removeClass:"]=1;
-}, function($ctx6) {$ctx6.fillBlock({},$ctx5,5)})}))._fork();
-}, function($ctx5) {$ctx5.fillBlock({},$ctx4,4)})}));
-_st($12)._onMouseLeave_((function(){
+_st($14)._onMouseEnter_((function(){
 return smalltalk.withContext(function($ctx5) {
 $15=_st(columnHandle)._asJQuery();
-$ctx5.sendIdx["asJQuery"]=3;
-_st($15)._addClass_("faded-out");
-return _st((function(){
+$ctx5.sendIdx["asJQuery"]=1;
+_st($15)._addClass_("open faded-out");
+$ctx5.sendIdx["addClass:"]=1;
+_st((function(){
 return smalltalk.withContext(function($ctx6) {
-return _st(_st(columnHandle)._asJQuery())._removeClass_("open");
-}, function($ctx6) {$ctx6.fillBlock({},$ctx5,7)})}))._valueWithTimeout_((300));
-}, function($ctx5) {$ctx5.fillBlock({},$ctx4,6)})}));
-$16=_st($12)._with_((function(){
+$16=_st(columnHandle)._asJQuery();
+$ctx6.sendIdx["asJQuery"]=2;
+return _st($16)._removeClass_("faded-out");
+$ctx6.sendIdx["removeClass:"]=1;
+}, function($ctx6) {$ctx6.fillBlock({},$ctx5,5)})}))._fork();
+$17=self._rightColCells();
+$ctx5.sendIdx["rightColCells"]=1;
+_st($17)._do_((function(td){
+return smalltalk.withContext(function($ctx6) {
+$18=_st(td)._asJQuery();
+$ctx6.sendIdx["asJQuery"]=3;
+return _st($18)._addClass_("handled");
+$ctx6.sendIdx["addClass:"]=2;
+}, function($ctx6) {$ctx6.fillBlock({td:td},$ctx5,6)})}));
+$ctx5.sendIdx["do:"]=1;
+$19=_st(self["@table"])._asJQuery();
+$ctx5.sendIdx["asJQuery"]=4;
+return _st($19)._removeClass_("table-striped table-hover");
+$ctx5.sendIdx["removeClass:"]=2;
+}, function($ctx5) {$ctx5.fillBlock({},$ctx4,4)})}));
+_st($14)._onMouseLeave_((function(){
+return smalltalk.withContext(function($ctx5) {
+$20=_st(columnHandle)._asJQuery();
+$ctx5.sendIdx["asJQuery"]=5;
+_st($20)._addClass_("faded-out");
+$ctx5.sendIdx["addClass:"]=3;
+_st((function(){
+return smalltalk.withContext(function($ctx6) {
+$21=_st(columnHandle)._asJQuery();
+$ctx6.sendIdx["asJQuery"]=6;
+return _st($21)._removeClass_("open");
+$ctx6.sendIdx["removeClass:"]=3;
+}, function($ctx6) {$ctx6.fillBlock({},$ctx5,8)})}))._valueWithTimeout_((300));
+$22=_st(self["@table"])._asJQuery();
+$ctx5.sendIdx["asJQuery"]=7;
+_st($22)._addClass_("table-striped table-hover");
+return _st(self._rightColCells())._do_((function(td){
+return smalltalk.withContext(function($ctx6) {
+return _st(_st(td)._asJQuery())._removeClass_("handled");
+}, function($ctx6) {$ctx6.fillBlock({td:td},$ctx5,9)})}));
+$ctx5.sendIdx["do:"]=2;
+}, function($ctx5) {$ctx5.fillBlock({},$ctx4,7)})}));
+$23=_st($14)._with_((function(){
 return smalltalk.withContext(function($ctx5) {
 _st(html)._with_(stateName);
 $ctx5.sendIdx["with:"]=5;
-$17=_st(html)._ul();
-_st($17)._class_("dropdown-menu");
+$24=_st(html)._ul();
+_st($24)._class_("dropdown-menu");
 $ctx5.sendIdx["class:"]=3;
-_st($17)._style_("width: 100%");
+_st($24)._style_("width: 100%");
 $ctx5.sendIdx["style:"]=1;
-$18=_st($17)._with_((function(){
+$25=_st($24)._with_((function(){
 return smalltalk.withContext(function($ctx6) {
-$19=_st(html)._li();
-_st($19)._style_("padding-left: 10px; padding-right: 10px");
-$20=_st($19)._with_((function(){
+$26=_st(html)._li();
+_st($26)._style_("padding-left: 10px; padding-right: 10px");
+$27=_st($26)._with_((function(){
 return smalltalk.withContext(function($ctx7) {
-$21=_st(html)._button();
+$28=_st(html)._button();
 $ctx7.sendIdx["button"]=1;
-_st($21)._class_("btn btn-default pull-left");
+_st($28)._class_("btn btn-default pull-left");
 $ctx7.sendIdx["class:"]=4;
-$22=_st($21)._with_("<=>");
+$29=_st($28)._with_("<=>");
 $ctx7.sendIdx["with:"]=8;
-$22;
-$23=_st(html)._button();
-_st($23)._class_("btn btn-danger pull-right");
+$29;
+$30=_st(html)._button();
+_st($30)._class_("btn btn-danger pull-right");
 $ctx7.sendIdx["class:"]=5;
-$24=_st($23)._with_("(X)");
+$31=_st($30)._with_("(X)");
 $ctx7.sendIdx["with:"]=9;
-return $24;
-}, function($ctx7) {$ctx7.fillBlock({},$ctx6,10)})}));
+return $31;
+}, function($ctx7) {$ctx7.fillBlock({},$ctx6,12)})}));
 $ctx6.sendIdx["with:"]=7;
-return $20;
-}, function($ctx6) {$ctx6.fillBlock({},$ctx5,9)})}));
+return $27;
+}, function($ctx6) {$ctx6.fillBlock({},$ctx5,11)})}));
 $ctx5.sendIdx["with:"]=6;
-return $18;
-}, function($ctx5) {$ctx5.fillBlock({},$ctx4,8)})}));
+return $25;
+}, function($ctx5) {$ctx5.fillBlock({},$ctx4,10)})}));
 $ctx4.sendIdx["with:"]=4;
-columnHandle=$16;
-return columnHandle;
-}, function($ctx4) {$ctx4.fillBlock({stateName:stateName},$ctx3,3)})}));
-$ctx3.sendIdx["do:"]=1;
+columnHandle=$23;
+columnHandle;
+$32=_st(self["@columns"])._at_(index);
+$ctx4.sendIdx["at:"]=1;
+return _st($32)._add_(columnHandle);
+$ctx4.sendIdx["add:"]=6;
+}, function($ctx4) {$ctx4.fillBlock({stateName:stateName,index:index},$ctx3,3)})}));
+$ctx3.sendIdx["withIndexDo:"]=1;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
 $ctx2.sendIdx["with:"]=2;
 return _st(_st(html)._tbody())._with_((function(){
@@ -536,47 +571,100 @@ $ctx5.sendIdx["with:"]=12;
 return _st(states)._withIndexDo_((function(state,index){
 var tdInfoClass;
 return smalltalk.withContext(function($ctx6) {
-$25=_st(state).__eq("open");
-if(smalltalk.assert($25)){
+$33=_st(state).__eq("open - disabled this if clause ");
+if(smalltalk.assert($33)){
 tdInfoClass="info";
 tdInfoClass;
 } else {
 tdInfoClass="";
 tdInfoClass;
 };
-$26=_st(self["@columns"])._at_(index);
-$28=_st(html)._td();
-_st($28)._class_(tdInfoClass);
-$29=_st($28)._with_((function(){
+$34=_st(self["@columns"])._at_(index);
+$36=_st(html)._td();
+_st($36)._class_(tdInfoClass);
+$37=_st($36)._with_((function(){
 return smalltalk.withContext(function($ctx7) {
 _st(_st(html)._textarea())._with_("|foo| \x0aTranscript show: 1");
 $ctx7.sendIdx["with:"]=14;
 return _st(_st(html)._select())._with_((function(){
 return smalltalk.withContext(function($ctx8) {
-$30=_st(html)._option();
+$38=_st(html)._option();
 $ctx8.sendIdx["option"]=1;
-_st($30)._with_("open");
+_st($38)._with_("open");
 $ctx8.sendIdx["with:"]=16;
 return _st(_st(html)._option())._with_("closed");
-}, function($ctx8) {$ctx8.fillBlock({},$ctx7,18)})}));
+}, function($ctx8) {$ctx8.fillBlock({},$ctx7,20)})}));
 $ctx7.sendIdx["with:"]=15;
-}, function($ctx7) {$ctx7.fillBlock({},$ctx6,17)})}));
+}, function($ctx7) {$ctx7.fillBlock({},$ctx6,19)})}));
 $ctx6.sendIdx["with:"]=13;
-$27=$29;
-return _st($26)._add_($27);
-}, function($ctx6) {$ctx6.fillBlock({state:state,index:index,tdInfoClass:tdInfoClass},$ctx5,14)})}));
-}, function($ctx5) {$ctx5.fillBlock({},$ctx4,13)})}));
+$35=$37;
+return _st($34)._add_($35);
+}, function($ctx6) {$ctx6.fillBlock({state:state,index:index,tdInfoClass:tdInfoClass},$ctx5,16)})}));
+}, function($ctx5) {$ctx5.fillBlock({},$ctx4,15)})}));
 $ctx4.sendIdx["with:"]=11;
-}, function($ctx4) {$ctx4.fillBlock({event:event},$ctx3,12)})}));
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,11)})}));
+}, function($ctx4) {$ctx4.fillBlock({event:event},$ctx3,14)})}));
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,13)})}));
 $ctx2.sendIdx["with:"]=10;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 $ctx1.sendIdx["with:"]=1;
-self["@table"]=$10;
+self["@table"]=$12;
 return self}, function($ctx1) {$ctx1.fill(self,"renderTableOn:",{html:html,states:states,events:events,columnHandle:columnHandle},globals.OutsetWidget)});},
 args: ["html"],
-source: "renderTableOn: html\x0a\x0a\x09| states events columnHandle|\x0a\x09\x0a\x09states := #(closed open locked).\x0a\x09events := #(open close lock unlock).\x0a\x09\x0a\x09columns := Array new \x0a\x09\x09add: Array new ;\x0a\x09\x09add: Array new ;\x0a\x09\x09add: Array new ;\x0a\x09\x09add: Array new ;\x0a\x09\x09yourself.\x0a\x09\x0a\x09table := html table class: 'table table-striped table-condensed table-hover'; with: [\x0a\x09\x09\x09\x09html thead with: [\x0a\x09\x09\x09\x09\x09html th with: 'Events \x5c States'.\x0a\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09states do: [ :stateName |\x0a\x09\x09\x09\x09\x09\x09columnHandle := html th \x0a\x09\x09\x09\x09\x09\x09\x09class: 'dropup' ;\x0a\x09\x09\x09\x09\x09\x09\x09onMouseEnter: [ \x0a\x09\x09\x09\x09\x09\x09\x09\x09columnHandle asJQuery addClass: 'open faded-out'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09[ columnHandle asJQuery removeClass:'faded-out' ] fork.\x0a\x09\x09\x09\x09\x09\x09\x09] ;\x0a\x09\x09\x09\x09\x09\x09\x09onMouseLeave: [ \x0a\x09\x09\x09\x09\x09\x09\x09\x09columnHandle asJQuery addClass: 'faded-out'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09[ columnHandle asJQuery removeClass:'open' ] valueWithTimeout: 300.\x0a\x09\x09\x09\x09\x09\x09\x09] ;\x0a\x09\x09\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09\x09html with: stateName.\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09html ul class: 'dropdown-menu' ; style: 'width: 100%'; with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09html li style: 'padding-left: 10px; padding-right: 10px'; with:[\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html button class:'btn btn-default pull-left'; with: '<=>'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html button class:'btn btn-danger pull-right'; with: '(X)'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09].\x09\x0a\x09\x09\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x22 Home grown anchor thingy\x22\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x22html div class: 'anchor'; with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09html div class: 'outset-widget'; with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html button class:'btn btn-default'; with: '<=>'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html button class:'btn btn-danger pull-right'; with: '(X)'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09].\x22\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x22 thus should not push the widget!\x22 \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x22html with: stateName.\x22\x0a\x09\x09\x09\x09\x09\x09\x09\x22].\x22\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html tbody with: [\x0a\x09\x09\x09\x09\x09events do: [ :event |\x0a\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09\x09\x09\x09html th with: event.\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09states withIndexDo: [:state :index| \x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09|tdInfoClass |\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09state = 'open'  \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09ifTrue: [ tdInfoClass := 'info' ]\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09ifFalse: [tdInfoClass := '' ].\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09(columns at: index) add: (\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html td class: tdInfoClass ; with: [ \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09html textarea with: '|foo| \x0aTranscript show: 1'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09html select with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'open'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'closed'].\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09]\x0a\x09\x09\x09\x09\x09\x09\x09\x09)\x0a\x09\x09\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09].",
-messageSends: ["add:", "new", "yourself", "class:", "table", "with:", "thead", "th", "do:", "onMouseEnter:", "addClass:", "asJQuery", "fork", "removeClass:", "onMouseLeave:", "valueWithTimeout:", "ul", "style:", "li", "button", "tbody", "tr", "withIndexDo:", "ifTrue:ifFalse:", "=", "at:", "td", "textarea", "select", "option"],
+source: "renderTableOn: html\x0a\x0a\x09| states events columnHandle |\x0a\x09\x0a\x09states := #(closed open locked).\x0a\x09events := #(open close lock unlock).\x0a\x09\x0a\x09columns := Array new \x0a\x09\x09add: Array new ;\x0a\x09\x09add: Array new ;\x0a\x09\x09add: Array new ;\x0a\x09\x09add: Array new ;\x0a\x09\x09add: Array new ;\x0a\x09\x09yourself.\x0a\x09\x0a\x09\x0a\x09table := html table class: 'table table table-striped table-hover table-condensed'; with: [\x0a\x09\x09\x09\x09html thead with: [\x0a\x09\x09\x09\x09\x09html th with: 'Events \x5c States'.\x0a\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09states withIndexDo: [ :stateName :index |\x0a\x09\x09\x09\x09\x09\x09columnHandle := html th \x0a\x09\x09\x09\x09\x09\x09\x09class: 'dropup' ;\x0a\x09\x09\x09\x09\x09\x09\x09onMouseEnter: [ \x0a\x09\x09\x09\x09\x09\x09\x09\x09columnHandle asJQuery addClass: 'open faded-out'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09[ columnHandle asJQuery removeClass:'faded-out' ] fork.\x0a\x09\x09\x09\x09\x09\x09\x09\x09self rightColCells do: [:td | td asJQuery addClass: 'handled'].\x0a\x09\x09\x09\x09\x09\x09\x09\x09table asJQuery removeClass:'table-striped table-hover'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09] ;\x0a\x09\x09\x09\x09\x09\x09\x09onMouseLeave: [ \x0a\x09\x09\x09\x09\x09\x09\x09\x09columnHandle asJQuery addClass: 'faded-out'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09[ columnHandle asJQuery removeClass:'open' ] valueWithTimeout: 300.\x0a\x09\x09\x09\x09\x09\x09\x09\x09table asJQuery addClass:'table-striped table-hover'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09self rightColCells do: [:td | td asJQuery removeClass: 'handled'].\x0a\x09\x09\x09\x09\x09\x09\x09] ;\x0a\x09\x09\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09\x09html with: stateName.\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09html ul class: 'dropdown-menu' ; style: 'width: 100%'; with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09html li style: 'padding-left: 10px; padding-right: 10px'; with:[\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html button class:'btn btn-default pull-left'; with: '<=>'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html button class:'btn btn-danger pull-right'; with: '(X)'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09].\x09\x0a\x09\x09\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x22 Home grown anchor thingy\x22\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x22html div class: 'anchor'; with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09html div class: 'outset-widget'; with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html button class:'btn btn-default'; with: '<=>'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html button class:'btn btn-danger pull-right'; with: '(X)'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09].\x22\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x22 thus should not push the widget!\x22 \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x22html with: stateName.\x22\x0a\x09\x09\x09\x09\x09\x09\x09\x22].\x22\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09\x09\x09(columns at: index) add: columnHandle.\x0a\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html tbody with: [\x0a\x09\x09\x09\x09\x09events do: [ :event |\x0a\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09\x09\x09\x09html th with: event.\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09states withIndexDo: [:state :index| \x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09|tdInfoClass |\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09state = 'open - disabled this if clause '  \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09ifTrue: [ tdInfoClass := 'info' ]\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09ifFalse: [tdInfoClass := '' ].\x0a\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09(columns at: index) add: (\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html td class: tdInfoClass ; with: [ \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09html textarea with: '|foo| \x0aTranscript show: 1'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09html select with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'open'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'closed'].\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09]\x0a\x09\x09\x09\x09\x09\x09\x09\x09)\x0a\x09\x09\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09\x09].\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09].\x0a\x09\x09\x09\x0a\x09\x09\x09\x09",
+messageSends: ["add:", "new", "yourself", "class:", "table", "with:", "thead", "th", "withIndexDo:", "onMouseEnter:", "addClass:", "asJQuery", "fork", "removeClass:", "do:", "rightColCells", "onMouseLeave:", "valueWithTimeout:", "ul", "style:", "li", "button", "at:", "tbody", "tr", "ifTrue:ifFalse:", "=", "td", "textarea", "select", "option"],
+referencedClasses: ["Array"]
+}),
+globals.OutsetWidget);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "rightColCells",
+protocol: 'as yet unclassified',
+fn: function () {
+var self=this;
+function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$5,$4,$6,$8,$7,$9,$11,$10,$12,$14,$13,$15,$16,$17,$1;
+$2=_st($Array())._new();
+$3=$2;
+$5=_st(self["@columns"])._at_((3));
+$ctx1.sendIdx["at:"]=2;
+$4=_st($5)._at_((1));
+$ctx1.sendIdx["at:"]=1;
+_st($3)._add_($4);
+$ctx1.sendIdx["add:"]=1;
+$6=$2;
+$8=_st(self["@columns"])._at_((3));
+$ctx1.sendIdx["at:"]=4;
+$7=_st($8)._at_((2));
+$ctx1.sendIdx["at:"]=3;
+_st($6)._add_($7);
+$ctx1.sendIdx["add:"]=2;
+$9=$2;
+$11=_st(self["@columns"])._at_((3));
+$ctx1.sendIdx["at:"]=6;
+$10=_st($11)._at_((3));
+$ctx1.sendIdx["at:"]=5;
+_st($9)._add_($10);
+$ctx1.sendIdx["add:"]=3;
+$12=$2;
+$14=_st(self["@columns"])._at_((3));
+$ctx1.sendIdx["at:"]=8;
+$13=_st($14)._at_((4));
+$ctx1.sendIdx["at:"]=7;
+_st($12)._add_($13);
+$ctx1.sendIdx["add:"]=4;
+$15=$2;
+$16=_st(_st(self["@columns"])._at_((3)))._at_((5));
+$ctx1.sendIdx["at:"]=9;
+_st($15)._add_($16);
+$17=_st($2)._yourself();
+$1=$17;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"rightColCells",{},globals.OutsetWidget)});},
+args: [],
+source: "rightColCells\x0a\x0a\x09\x22just the cells in the right most column\x22\x0a\x09^ Array new \x0a\x09\x09add: ((columns at:3) at: 1) ;\x0a\x09\x09add: ((columns at:3) at: 2) ;\x0a\x09\x09add: ((columns at:3) at: 3) ;\x0a\x09\x09add: ((columns at:3) at: 4) ;\x0a\x09\x09add: ((columns at:3) at: 5) ;\x0a\x09\x09yourself",
+messageSends: ["add:", "new", "at:", "yourself"],
 referencedClasses: ["Array"]
 }),
 globals.OutsetWidget);

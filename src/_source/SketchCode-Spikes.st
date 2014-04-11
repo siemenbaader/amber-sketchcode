@@ -277,7 +277,9 @@ renderStylesOn: html
 				left:-6px;
 				
 				}
-				
+			
+			
+			
 			td.info { background-color: #c4e3f3 !!important; }
 			td, th {text-align:center !!important;}	
 			
@@ -292,7 +294,14 @@ renderStylesOn: html
 			.dropup.open .dropdown-menu{
 				opacity: 1;
 			}
-				
+			
+			td {transition: background-color 0.3s; }
+
+			th.handled, td.handled {
+				background-color: rgb(202, 229, 237) !!important;
+				border: 1px solid red;
+
+			}
 				
 		
 			'.
@@ -300,7 +309,7 @@ renderStylesOn: html
 
 renderTableOn: html
 
-	| states events columnHandle|
+	| states events columnHandle |
 	
 	states := #(closed open locked).
 	events := #(open close lock unlock).
@@ -310,22 +319,29 @@ renderTableOn: html
 		add: Array new ;
 		add: Array new ;
 		add: Array new ;
+		add: Array new ;
 		yourself.
 	
-	table := html table class: 'table table-striped table-condensed table-hover'; with: [
+	
+	table := html table class: 'table table table-striped table-hover table-condensed'; with: [
 				html thead with: [
 					html th with: 'Events \ States'.
 					
-					states do: [ :stateName |
+					states withIndexDo: [ :stateName :index |
 						columnHandle := html th 
 							class: 'dropup' ;
 							onMouseEnter: [ 
 								columnHandle asJQuery addClass: 'open faded-out'.
 								[ columnHandle asJQuery removeClass:'faded-out' ] fork.
+								self rightColCells do: [:td | td asJQuery addClass: 'handled'].
+								table asJQuery removeClass:'table-striped table-hover'.
+									
 							] ;
 							onMouseLeave: [ 
 								columnHandle asJQuery addClass: 'faded-out'.
 								[ columnHandle asJQuery removeClass:'open' ] valueWithTimeout: 300.
+								table asJQuery addClass:'table-striped table-hover'.
+								self rightColCells do: [:td | td asJQuery removeClass: 'handled'].
 							] ;
 							with: [
 							html with: stateName.
@@ -355,6 +371,7 @@ renderTableOn: html
 							
 							
 						].
+						(columns at: index) add: columnHandle.
 					].
 				].
 				html tbody with: [
@@ -367,7 +384,8 @@ renderTableOn: html
 							
 								|tdInfoClass |
 							
-								state = 'open'  
+						
+								state = 'open - disabled this if clause '  
 									ifTrue: [ tdInfoClass := 'info' ]
 									ifFalse: [tdInfoClass := '' ].
 							
@@ -387,5 +405,17 @@ Transcript show: 1'.
 					].
 				].
 			].
+!
+
+rightColCells
+
+	"just the cells in the right most column"
+	^ Array new 
+		add: ((columns at:3) at: 1) ;
+		add: ((columns at:3) at: 2) ;
+		add: ((columns at:3) at: 3) ;
+		add: ((columns at:3) at: 4) ;
+		add: ((columns at:3) at: 5) ;
+		yourself
 ! !
 
