@@ -219,6 +219,13 @@ TableColumnTransition subclass: #OutsetWidget
 
 !OutsetWidget methodsFor: 'as yet unclassified'!
 
+removeColumn
+	
+
+	self rightColCells do: [:td | td asJQuery addClass: 'fading-out'].
+	[self rightColCells do: [:td | td asJQuery addClass: 'shrinking']] valueWithTimeout: 300.
+!
+
 renderProblemDescriptionOn: html
 
 	html 
@@ -295,14 +302,20 @@ renderStylesOn: html
 				opacity: 1;
 			}
 			
-			td {transition: background-color 0.3s; }
+			td, th {transition: background-color 0.3s, opacity 0.3s, width 0.3s;  }
 
 			th.handled, td.handled {
-				background-color: rgb(202, 229, 237) !!important;
-				border: 1px solid red;
-
+				background-color: rgb(232, 239, 247) !!important;
 			}
-				
+						
+			.fading-out {
+				opacity: 0.2;
+				width: 200px;
+			}
+			
+			.shrinking {
+				width: 0;
+			}
 		
 			'.
 !
@@ -349,7 +362,10 @@ renderTableOn: html
 							html ul class: 'dropdown-menu' ; style: 'width: 100%'; with: [
 								html li style: 'padding-left: 10px; padding-right: 10px'; with:[
 									html button class:'btn btn-default pull-left'; with: '<=>'.
-									html button class:'btn btn-danger pull-right'; with: '(X)'.
+									html button 
+										class:'btn btn-danger pull-right' ; 
+										with: '(X)' ;
+										onClick: [ self removeColumn ].
 								].	
 							].
 							
