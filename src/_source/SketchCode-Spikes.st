@@ -1,11 +1,273 @@
 Smalltalk createPackage: 'SketchCode-Spikes'!
-Widget subclass: #HTMLGUISpikes
+Widget subclass: #ColumnHeaderHandle
+	instanceVariableNames: 'theColumn'
+	package: 'SketchCode-Spikes'!
+
+!ColumnHeaderHandle methodsFor: 'accessing'!
+
+theColumn
+	^ theColumn
+!
+
+theColumn: anObject
+	theColumn := anObject
+! !
+
+!ColumnHeaderHandle methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+! !
+
+!ColumnHeaderHandle methodsFor: 'rendering'!
+
+renderOn: html
+
+	html ul class: 'dropdown-menu' ; style: 'width: 100%'; with: [
+		html li style: 'padding-left: 10px; padding-right: 10px'; with:[
+			html button class:'btn btn-default pull-left'; with: '<=>'.
+			html button 
+			class:'btn btn-danger pull-right' ; 
+			with: '(X)' ;
+			onClick: [ self removeColumn ].
+		].	
+	].
+! !
+
+!ColumnHeaderHandle class methodsFor: 'instance creation'!
+
+for: aColumnName
+
+ self new theColumn: aColumnName; yourself.
+! !
+
+Widget subclass: #Spike
 	instanceVariableNames: ''
 	package: 'SketchCode-Spikes'!
-!HTMLGUISpikes commentStamp!
+!Spike commentStamp!
+I am an abstract spike. I define an interface that spike classes use to explore aspects systematically.
+
+A spike exposes:
+
+* renderHeadingOn: - The test's heading
+* renderProblemOn: - HTML problem definition
+* renderTestbedOn: - DOM where the tests are conducted
+* renderFindingsOn: - HTML section with reflections & conclusions
+
+
+, and that the HTMLGUISpikes singleton uses to render them.!
+
+!Spike methodsFor: 'rendering'!
+
+renderFindingsOn:html
+	self subclassResponsibility
+!
+
+renderHeadingOn:html
+	self subclassResponsibility
+!
+
+renderOn:html
+
+	html section 
+		class: 'spike' ;
+		with: [
+			self renderHeadingOn: html.
+			self renderProblemOn: html.
+			self renderTestbedOn: html.
+			self renderFindingsOn: html.
+
+		]
+!
+
+renderProblemOn:html
+	self subclassResponsibility
+!
+
+renderTestbedOn:html
+	self subclassResponsibility
+! !
+
+Spike subclass: #GridTable
+	instanceVariableNames: 'rows columns table cells'
+	package: 'SketchCode-Spikes'!
+
+!GridTable methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+
+	rows := #( #open #close #lock ).
+	columns := #( #open #closed #locked ).
+	cells := #().
+!
+
+removeColumn: aColumn
+
+	
+	(self cellsForColumn: aColumn) do: [ :cell |
+		cell asJQuery addClass: 'faded-out'.
+		[ cell asJQuery addClass: 'zero-width' ] valueWithTimeout: 200.
+		[ cell asJQuery remove ] valueWithTimeout: 1000.
+	]
+! !
+
+!GridTable methodsFor: 'rendering'!
+
+cellsForColumn: aColumn
+
+	^ cells select: [:cell |  (cell asJQuery attr: 'data-state') = aColumn ]
+!
+
+highlightColumn: aColumn
+
+	
+	(self cellsForColumn: aColumn) do: [ :cell |
+		cell asJQuery addClass: 'highlighted'
+	]
+!
+
+renderCellForState: aState event: anEvent On: html
+
+	cells add: (html div 
+		class: 'span3' ;
+		at: 'data-state' put: aState ;
+		at: 'data-event' put: anEvent ;
+		with: [
+			html textarea with: '| tmp | 
+Transcript show: ''foo'''.
+			html select with: [html option with: 'closed']
+		]
+	)
+!
+
+renderColumnHandleFor: aColumnName on: html
+
+	html ul class: 'dropdown-menu' ; style: 'width: 100%'; with: [
+		html li style: 'padding-left: 10px; padding-right: 10px'; with:[
+			html button class:'btn btn-default pull-left'; with: '<=>'.
+			html button 
+			class:'btn btn-danger pull-right' ; 
+			with: '(X)' ;
+			onClick: [ self removeColumn: aColumnName ].
+		].	
+	].
+!
+
+renderstylesOn: html
+
+html style with: '
+
+		div {transition: opacity 0.2s, width 0.3s, margin 0.3s, background-color 0.3s; }
+		.faded-out {
+			opacity: 0;
+		}
+		
+		div.highlighted { background-color: #c4e3f3; }
+		
+		.zero-width { 
+			width: 0px;
+			margin: 0;
+		}
+	
+		
+	'
+!
+
+unhighlightColumn: aColumn
+
+	
+	(self cellsForColumn: aColumn) do: [ :cell |
+		cell asJQuery removeClass: 'highlighted'
+	]
+! !
+
+!GridTable methodsFor: 'spike interface'!
+
+renderFindingsOn: html
+
+	html p: 'Conclusions:'
+!
+
+renderHeadingOn: html
+	html h2: 'Rendering a Table from Bootstrap Grid Elements'
+!
+
+renderProblemOn: html
+	html 
+		p: '
+			HTML tables are difficult to work with because they adapt to 
+			their content automatically, and try to distribute it evenly across
+			the width of the display. Here I will explore how bootstrap grid
+			elements behave for CSS animation on adding content, reordering
+			and removing table elements.
+		'
+!
+
+renderTestbedOn: html
+
+	html div 
+		style: 'border: 1px solid gray;
+				border-radius: 5px;
+				box-shadow: 10px 10px 5px #888888;				
+			   ' ;
+		class: 'concept-editor state-machine grid-table-spike'; 
+		with: [
+			self renderstylesOn: html .
+			
+			html div class: 'row'; with: [
+				html div class: 'span2'; with: [html h5: 'Events \ States' ].
+			
+			
+					
+				columns do: [ :state |	
+					| cellHeader| 
+					
+					cellHeader :=
+						(html div 
+							class: 'span3 dropup' ;
+							at: 'data-state' put: state ;
+							with: [
+								self renderColumnHandleFor: state on: html.
+								html h5: state capitalized 
+							] ;
+							onMouseEnter: [ 
+								cellHeader asJQuery addClass: 'open'.
+								self highlightColumn: state 
+								
+							] ;
+							onMouseLeave: [ 
+								cellHeader asJQuery removeClass: 'open'.
+								self unhighlightColumn: state 
+							]
+						).
+					cells add: cellHeader.
+				].
+				
+			].
+			
+			
+			rows do: [ :event |
+				html div class: 'row'; with: [
+
+					html div class: 'span2'; with: [html h5: event].
+				
+					columns do: [ :state |
+						self renderCellForState: state event: event On: html
+					]
+				]
+			]
+	
+		]
+! !
+
+Widget subclass: #SpikesCollection
+	instanceVariableNames: ''
+	package: 'SketchCode-Spikes'!
+!SpikesCollection commentStamp!
 I am the container of all HTML spikes. I do nothing but aggregating my little spikes into the DOM.!
 
-!HTMLGUISpikes methodsFor: 'rendering'!
+!SpikesCollection methodsFor: 'rendering'!
 
 renderOn: html
 
@@ -18,10 +280,14 @@ renderOn: html
 			TableColumnTransition new renderOn: html.
 			
 			OutsetWidget new renderOn: html.
+			
+			Spike allSubclassesDo: [:spike |
+				spike new renderOn: html
+			]
 		].
 ! !
 
-!HTMLGUISpikes class methodsFor: 'as yet unclassified'!
+!SpikesCollection class methodsFor: 'as yet unclassified'!
 
 render
 	'#main' asJQuery empty.
@@ -210,7 +476,7 @@ Transcript show: 1'.
 
 reset
 
-	HTMLGUISpikes render
+	SpikesCollection render
 ! !
 
 TableColumnTransition subclass: #OutsetWidget
@@ -223,7 +489,7 @@ removeColumn
 	
 
 	self rightColCells do: [:td | td asJQuery addClass: 'fading-out'].
-	[self rightColCells do: [:td | td asJQuery addClass: 'shrinking']] valueWithTimeout: 300.
+	[self rightColCells do: [:td | td asJQuery remove]] valueWithTimeout: 400.
 !
 
 renderProblemDescriptionOn: html
@@ -253,7 +519,21 @@ renderProblemDescriptionOn: html
 				li: 'Also, some elements (like the table column) are not first-class DOM elements, so querying 
 					geometry requires ST/JS code anyway'. 
 					
-		] .
+		] ;
+		p: 'Looking through Apple pages and jQuery UI, draggables do not seem to leave the original element
+				visible, and pop the other elements into place as the sorting progresses. This will be hard to do
+				with tables because tables adjust to the width of all content, and stretch to full page width. 
+				
+				Shrinking columns also is difficult because td elements do not react to width styling 
+				(although content can be styled nicely).' ;
+		p: '
+				
+				notes
+				- meaningful transitions should show the user where the UIchanged.
+				- A grid view may be better for sortable tables.
+				- Bootstrap dropdown/dropup seems to work very fine for our needs for contex specific UI / 
+				  instruments.
+		'.
 			
 		
 			
@@ -304,19 +584,17 @@ renderStylesOn: html
 			
 			td, th {transition: background-color 0.3s, opacity 0.3s, width 0.3s;  }
 
+			td * {transition: background-color 0.3s, opacity 0.3s, width 0.3s;  }
+			th * {transition: background-color 0.3s, opacity 0.3s, width 0.3s;  }
+
 			th.handled, td.handled {
 				background-color: rgb(232, 239, 247) !!important;
 			}
 						
 			.fading-out {
-				opacity: 0.2;
-				width: 200px;
+				opacity: 0;
 			}
-			
-			.shrinking {
-				width: 0;
-			}
-		
+					
 			'.
 !
 
