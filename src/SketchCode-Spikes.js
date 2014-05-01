@@ -395,11 +395,15 @@ protocol: 'spike interface',
 fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(html)._p_("Conclusions:");
+var $2,$1;
+_st(html)._h5_("Conclusions:");
+$2=_st("Using Bootstrap works well; the styles can be CSS animated well. We first set the class to faded-out, ".__comma("which CSS animates it to disappear, and then use JS timeouts trigger transformations of width and finally ")).__comma("to remove the DOMelement.");
+$ctx1.sendIdx[","]=1;
+$1=_st(html)._p_($2);
 return self}, function($ctx1) {$ctx1.fill(self,"renderFindingsOn:",{html:html},globals.GridTable)});},
 args: ["html"],
-source: "renderFindingsOn: html\x0a\x0a\x09html p: 'Conclusions:'",
-messageSends: ["p:"],
+source: "renderFindingsOn: html\x0a\x0a\x09html \x0a\x09\x09h5: 'Conclusions:' ;\x0a\x09\x09\x0a\x09\x09p: 'Using Bootstrap works well; the styles can be CSS animated well. We first set the class to faded-out, ' ,\x0a\x09\x09   'which CSS animates it to disappear, and then use JS timeouts trigger transformations of width and finally ' ,\x0a\x09\x09   'to remove the DOMelement.'.\x0a\x09\x09",
+messageSends: ["h5:", "p:", ","],
 referencedClasses: []
 }),
 globals.GridTable);

@@ -186,7 +186,12 @@ unhighlightColumn: aColumn
 
 renderFindingsOn: html
 
-	html p: 'Conclusions:'
+	html 
+		h5: 'Conclusions:' ;
+		
+		p: 'Using Bootstrap works well; the styles can be CSS animated well. We first set the class to faded-out, ' ,
+		   'which CSS animates it to disappear, and then use JS timeouts trigger transformations of width and finally ' ,
+		   'to remove the DOMelement.'.
 !
 
 renderHeadingOn: html
