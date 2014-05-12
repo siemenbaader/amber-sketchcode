@@ -1,0 +1,33 @@
+SketchCode Manifesto
+
+SketchCode re-interprets the human activity of creating software from the perspectives of design cognition, generative programming, and the technical design space of the browser. Together, these perspectives suggest a number of practical changes to programming tools. The SketchCode editor itself explores different ways of implementing them.
+
+They are:
+
+
+Visual, structured & semantic editing support
+Many concepts programmers deal with are abstract - eg. design patterns or computations models. SketchCode allows them to be represented in rich ways, such as visual, diagrammatic, mathematical, or textual ways. The editor provides relevant editing methods for concepts. Unlike source-code only representations, this allows programmers to deal (more) directly with the concepts. 
+
+
+Options built-in
+SketchCode includes API documentation of libraries and built in functions as fist class properties. It allows programmers to interact with components directly. This enables programmers to learn about components in-situ, without having to interrupt the programming task to search for information online.
+
+Options are documented at:
+- Component level: What can this component do?
+- Constellation level: How will this component typically be used with others? What alternatives exist?
+
+
+Automated logic operations
+Computers have very precise memory and are effective at reasoning out logical consequences. Humans are better at creative thinking and making judgements. SketchCode seeks to shift logical thinking to the computer, and to put the programmer in the best situation to make decisions.
+
+
+Direct backtalk
+The consequences of actions in complex systems are difficult to think through. SketchCode allows the programmer to interact with any component of a program, in any state, to maximize empirical learning. 
+
+
+Allow unstructured exploration, then refining
+Creative processes are guided by a vision, but not by exact knowledge of what to do next. SketchCode tries to not force the programmer to know what he is doing before he can try it out and learn. It allows the programmer to write hackish code, learn form it, and later re-interpret and refine it into a clean pattern. I also keeps a branching undo history to compare different attempts, and allows commit messages to be added later, when it is clear what a commit really does.
+
+
+Browser instead of Teletype
+Current programming languages are based on text-only, line-based source because this is what teletypes could display. SketchCode takes the browser as its design space, and makes use of its display and programming capabilities. Text based editing paradigms have been well optimized, and the same has to be done for SketchCode's mixed text, visual and structured representations. This provides the user with powerful editing support for browser representations, equivalent to powerful keyboard editing in a text-only environment.

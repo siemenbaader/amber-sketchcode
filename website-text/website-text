@@ -1,0 +1,100 @@
+SketchCode Online
+- dev blog
+- credits
+- design vision
+- research history
+- research agenda
+  - techinque: visual-macro based language workbench
+  - study the effects of alternative computer interfaces to programminng tools in creative work
+- cases
+  - IxD / interaction technique design
+- publications
+- SketchCode Manifesto
+- instrumental interaction
+- installation
+- definition of terms
+- live demo (try it)
+- live spikes & commented design artefacts
+
+
+
+
+# About
+
+Welcome to SketchCode!
+
+SketchCode is an interactive general purpose programming environment that sees coding as a creative process. It tries to rethink programming tools from the perspective of Design Thinking[1].
+
+It is developed by Siemen Baader in the CMA[2] research group at Aarhus University, and part of the 'Creativity in Blended Interaction Spaces'[3] project, that aims at facilitating creative collaboration between high school students.
+
+This website is a running SketchCode environment. To learn more, or to try SketchCode live in your browser, use the menu to the left.
+
+Happy Hacking!
+
+-- Siemen
+
+1: 
+2:
+3:
+
+
+
+
+# Design Vision
+
+The guiding vision behind SketchCode is that
+
+- manifesto
+- visual editors
+- extensible
+- multi- environment
+- mulit-user collaborative
+
+- design process, use by self, a tool to do CMA research on
+
+
+# Research Agenda
+- to learn & generalize knowledge about computer mediated human (creative) activities
+
+
+# Research Roots
+
+SketchCode builds on several traditions of research within separate fields. These are:
+
+## Design Thinking Research
+
+The design professions deal with the deliberate creation of the beneficial new. The way designers explore their options and make decisions varies from other strong traditions such as engineering or science.
+
+
+- focus on the complexity of end-use scenario; ask the right questions
+- make concrete repræsentations ; also fo
+- generate alternatives
+- evaluate alternatives
+- rely heavily on visual & physical representations of the problem
+- re-present and re-frame problem
+
+
+Design researchers study how the cognitive and decisiion making processes 
+
+
+
+
+## MDD & Language Workbenches
+
+Language Workbenches[] are programming systems that do not work on plain text source code.
+
+In Model Driven Development, 
+
+
+  - technique called 'visual-macro based language workbenches'
+
+## Live programming systems
+
+Live programming systems like Smalltalk[] and Self[] allow programmers to change their programs while they run. There is no compile time, but there is also no need to restart the program and to put it into the same state as before, before the changed code can be tested.
+
+This minimizes the gap between making a change and undersanding its full consequences. For creative processes, this is very important.
+
+True live programming systems are not widely used, but also interpreted languages and interactive REPLs are ways of closing the gap between change and feedback. Recently, Bret Victor's Inventing on Principle[] has made live programming more widely appreciated.
+
+
+
