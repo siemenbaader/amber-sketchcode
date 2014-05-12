@@ -23,8 +23,9 @@
       require(['amber/devel',
                'amber-sketchcode/SketchCode',
                'amber-sketchcode/SketchCode-ConceptEditors',
-               'amber-sketchcode/SketchCode-Spikes'], function (amber) {
-
+               'amber-sketchcode/SketchCode-Spikes'
+               ], function (amber) {
+                window.amber = amber;
         // Initialize Amber
         amber.initialize({
           // Configure the default AMD namespace for new packages
