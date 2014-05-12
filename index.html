@@ -23,7 +23,8 @@
       require(['amber/devel',
                'amber-sketchcode/SketchCode',
                'amber-sketchcode/SketchCode-ConceptEditors',
-               'amber-sketchcode/SketchCode-Spikes'
+               'amber-sketchcode/SketchCode-Spikes',
+               'amber-sketchcode/SketchCode-Website'
                ], function (amber) {
                 window.amber = amber;
         // Initialize Amber
@@ -31,6 +32,9 @@
           // Configure the default AMD namespace for new packages
           "transport.defaultAmdNamespace": "amber-sketchcode"
         });
+
+	
+        amber.Website._render();
 
         // Start the IDE
         amber.popupHelios();
