@@ -18,7 +18,7 @@ renderOn: html
 
 Navigation class instanceVariableNames: 'singletonInstance'!
 
-!Navigation class methodsFor: 'as yet unclassified'!
+!Navigation class methodsFor: 'instance creation'!
 
 current
 
@@ -27,8 +27,35 @@ current
 	^ singletonInstance
 ! !
 
+Object subclass: #NavigationAnnouncement
+	instanceVariableNames: 'toPage'
+	package: 'SketchCode-Website'!
+
+!NavigationAnnouncement methodsFor: 'accessing'!
+
+toPage
+	^ toPage
+!
+
+toPage: anObject
+	toPage := anObject
+! !
+
+!NavigationAnnouncement class methodsFor: 'instance creation'!
+
+for: aPage
+
+	^ self new
+		toPage: aPage ;
+		yourself
+! !
+
+SystemAnnouncer subclass: #NavigationAnnouncer
+	instanceVariableNames: ''
+	package: 'SketchCode-Website'!
+
 Widget subclass: #NavigationPill
-	instanceVariableNames: 'page'
+	instanceVariableNames: 'page listItemDomElement'
 	package: 'SketchCode-Website'!
 
 !NavigationPill methodsFor: 'accessing'!
@@ -41,15 +68,61 @@ page: anObject
 	page := anObject
 ! !
 
+!NavigationPill methodsFor: 'initialization'!
+
+initialize
+	super initialize.
+
+	listItemDomElement := nil.
+	page := nil.
+	
+	self setupNavigationSubscriptions
+! !
+
+!NavigationPill methodsFor: 'navigation'!
+
+handleNavigationAnnouncement: aNavigationAnnouncement
+
+	aNavigationAnnouncement toPage = page
+		ifTrue:  [ self setActive ]
+		ifFalse: [ self setInactive ]
+!
+
+navigateToPage
+
+	NavigationAnnouncer current 
+		announce: (NavigationAnnouncement for: page)
+!
+
+setupNavigationSubscriptions
+	
+	NavigationAnnouncer current unsubscribe: self.
+	
+	NavigationAnnouncer current
+		on: NavigationAnnouncement
+		send: #handleNavigationAnnouncement:
+		to: self
+! !
+
 !NavigationPill methodsFor: 'rendering'!
 
 renderOn: html
 
-	html li: (html a 
+	listItemDomElement := html li: (html a 
 		href: '#'; 
 		with: page title;
-		onClick: [ Website current show: page ]
+		onClick: [ self navigateToPage ]
 	).
+!
+
+setActive
+
+	listItemDomElement asJQuery addClass: 'active'
+!
+
+setInactive
+
+	listItemDomElement asJQuery removeClass: 'active'
 ! !
 
 !NavigationPill class methodsFor: 'instance creation'!
@@ -199,17 +272,35 @@ pages: anObject
 !Website methodsFor: 'initialization'!
 
 initialize
+	
+	super initialize.
+
 	pages := Array new
 		add: About new ;
 		add: ResearchAgenda new ;
 		add: TryIt new ;
 		add: InstrumentalInteraction new ;
 		yourself.
-		
-	super initialize.
+	
+	self setupNavigationSubscriptions.
+!
+
+setupNavigationSubscriptions
+	
+	NavigationAnnouncer current unsubscribe: self.
+	
+	NavigationAnnouncer current
+		on: NavigationAnnouncement
+		send: #handleNavigationAnnouncement:
+		to: self
 ! !
 
 !Website methodsFor: 'navigation'!
+
+handleNavigationAnnouncement: aNavigationAnnouncement
+
+	self show: aNavigationAnnouncement toPage
+!
 
 hideAllPages
 	pages do: [:page | page hide]
@@ -221,9 +312,10 @@ show: aPage
 	aPage show
 !
 
-showFirstPage
+showFirstPage	
 
-	self show: (pages at: 1).
+	NavigationAnnouncer current announce:
+		(NavigationAnnouncement for: (pages at: 1))
 ! !
 
 !Website methodsFor: 'rendering'!

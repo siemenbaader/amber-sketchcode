@@ -1,4 +1,4 @@
-define("amber-sketchcode/SketchCode-Website", ["amber_vm/smalltalk", "amber_vm/nil", "amber_vm/_st", "amber_vm/globals", "amber_core/Canvas"], function(smalltalk,nil,_st, globals){
+define("amber-sketchcode/SketchCode-Website", ["amber_vm/smalltalk", "amber_vm/nil", "amber_vm/_st", "amber_vm/globals", "amber_core/Canvas", "amber_core/Kernel-Objects", "amber_core/Kernel-Announcements"], function(smalltalk,nil,_st, globals){
 smalltalk.addPackage('SketchCode-Website');
 smalltalk.packages["SketchCode-Website"].transport = {"type":"amd","amdNamespace":"amber-sketchcode"};
 
@@ -40,7 +40,7 @@ globals.Navigation.klass.iVarNames = ['singletonInstance'];
 smalltalk.addMethod(
 smalltalk.method({
 selector: "current",
-protocol: 'as yet unclassified',
+protocol: 'instance creation',
 fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -63,7 +63,125 @@ referencedClasses: []
 globals.Navigation.klass);
 
 
-smalltalk.addClass('NavigationPill', globals.Widget, ['page'], 'SketchCode-Website');
+smalltalk.addClass('NavigationAnnouncement', globals.Object, ['toPage'], 'SketchCode-Website');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "toPage",
+protocol: 'accessing',
+fn: function () {
+var self=this;
+var $1;
+$1=self["@toPage"];
+return $1;
+},
+args: [],
+source: "toPage\x0a\x09^ toPage",
+messageSends: [],
+referencedClasses: []
+}),
+globals.NavigationAnnouncement);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "toPage:",
+protocol: 'accessing',
+fn: function (anObject) {
+var self=this;
+self["@toPage"]=anObject;
+return self;},
+args: ["anObject"],
+source: "toPage: anObject\x0a\x09toPage := anObject",
+messageSends: [],
+referencedClasses: []
+}),
+globals.NavigationAnnouncement);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "for:",
+protocol: 'instance creation',
+fn: function (aPage) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=self._new();
+_st($2)._toPage_(aPage);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"for:",{aPage:aPage},globals.NavigationAnnouncement.klass)});},
+args: ["aPage"],
+source: "for: aPage\x0a\x0a\x09^ self new\x0a\x09\x09toPage: aPage ;\x0a\x09\x09yourself",
+messageSends: ["toPage:", "new", "yourself"],
+referencedClasses: []
+}),
+globals.NavigationAnnouncement.klass);
+
+
+smalltalk.addClass('NavigationAnnouncer', globals.SystemAnnouncer, [], 'SketchCode-Website');
+
+
+smalltalk.addClass('NavigationPill', globals.Widget, ['page', 'listItemDomElement'], 'SketchCode-Website');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "handleNavigationAnnouncement:",
+protocol: 'navigation',
+fn: function (aNavigationAnnouncement) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(aNavigationAnnouncement)._toPage()).__eq(self["@page"]);
+if(smalltalk.assert($1)){
+self._setActive();
+} else {
+self._setInactive();
+};
+return self}, function($ctx1) {$ctx1.fill(self,"handleNavigationAnnouncement:",{aNavigationAnnouncement:aNavigationAnnouncement},globals.NavigationPill)});},
+args: ["aNavigationAnnouncement"],
+source: "handleNavigationAnnouncement: aNavigationAnnouncement\x0a\x0a\x09aNavigationAnnouncement toPage = page\x0a\x09\x09ifTrue:  [ self setActive ]\x0a\x09\x09ifFalse: [ self setInactive ]\x09",
+messageSends: ["ifTrue:ifFalse:", "=", "toPage", "setActive", "setInactive"],
+referencedClasses: []
+}),
+globals.NavigationPill);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+globals.NavigationPill.superclass.fn.prototype._initialize.apply(_st(self), []);
+self["@listItemDomElement"]=nil;
+self["@page"]=nil;
+self._setupNavigationSubscriptions();
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.NavigationPill)});},
+args: [],
+source: "initialize\x0a\x09super initialize.\x0a\x0a\x09listItemDomElement := nil.\x0a\x09page := nil.\x0a\x09\x0a\x09self setupNavigationSubscriptions",
+messageSends: ["initialize", "setupNavigationSubscriptions"],
+referencedClasses: []
+}),
+globals.NavigationPill);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "navigateToPage",
+protocol: 'navigation',
+fn: function () {
+var self=this;
+function $NavigationAnnouncer(){return globals.NavigationAnnouncer||(typeof NavigationAnnouncer=="undefined"?nil:NavigationAnnouncer)}
+function $NavigationAnnouncement(){return globals.NavigationAnnouncement||(typeof NavigationAnnouncement=="undefined"?nil:NavigationAnnouncement)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st($NavigationAnnouncer())._current())._announce_(_st($NavigationAnnouncement())._for_(self["@page"]));
+return self}, function($ctx1) {$ctx1.fill(self,"navigateToPage",{},globals.NavigationPill)});},
+args: [],
+source: "navigateToPage\x0a\x0a\x09NavigationAnnouncer current \x0a\x09\x09announce: (NavigationAnnouncement for: page)",
+messageSends: ["announce:", "current", "for:"],
+referencedClasses: ["NavigationAnnouncer", "NavigationAnnouncement"]
+}),
+globals.NavigationPill);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "page",
@@ -102,7 +220,6 @@ selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html) {
 var self=this;
-function $Website(){return globals.Website||(typeof Website=="undefined"?nil:Website)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=_st(html)._a();
@@ -110,14 +227,68 @@ _st($1)._href_("#");
 _st($1)._with_(_st(self["@page"])._title());
 $2=_st($1)._onClick_((function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st($Website())._current())._show_(self["@page"]);
+return self._navigateToPage();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-_st(html)._li_($2);
+self["@listItemDomElement"]=_st(html)._li_($2);
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.NavigationPill)});},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09html li: (html a \x0a\x09\x09href: '#'; \x0a\x09\x09with: page title;\x0a\x09\x09onClick: [ Website current show: page ]\x0a\x09).",
-messageSends: ["li:", "href:", "a", "with:", "title", "onClick:", "show:", "current"],
-referencedClasses: ["Website"]
+source: "renderOn: html\x0a\x0a\x09listItemDomElement := html li: (html a \x0a\x09\x09href: '#'; \x0a\x09\x09with: page title;\x0a\x09\x09onClick: [ self navigateToPage ]\x0a\x09).",
+messageSends: ["li:", "href:", "a", "with:", "title", "onClick:", "navigateToPage"],
+referencedClasses: []
+}),
+globals.NavigationPill);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "setActive",
+protocol: 'rendering',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self["@listItemDomElement"])._asJQuery())._addClass_("active");
+return self}, function($ctx1) {$ctx1.fill(self,"setActive",{},globals.NavigationPill)});},
+args: [],
+source: "setActive\x0a\x0a\x09listItemDomElement asJQuery addClass: 'active'",
+messageSends: ["addClass:", "asJQuery"],
+referencedClasses: []
+}),
+globals.NavigationPill);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "setInactive",
+protocol: 'rendering',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self["@listItemDomElement"])._asJQuery())._removeClass_("active");
+return self}, function($ctx1) {$ctx1.fill(self,"setInactive",{},globals.NavigationPill)});},
+args: [],
+source: "setInactive\x0a\x0a\x09listItemDomElement asJQuery removeClass: 'active'",
+messageSends: ["removeClass:", "asJQuery"],
+referencedClasses: []
+}),
+globals.NavigationPill);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "setupNavigationSubscriptions",
+protocol: 'navigation',
+fn: function () {
+var self=this;
+function $NavigationAnnouncer(){return globals.NavigationAnnouncer||(typeof NavigationAnnouncer=="undefined"?nil:NavigationAnnouncer)}
+function $NavigationAnnouncement(){return globals.NavigationAnnouncement||(typeof NavigationAnnouncement=="undefined"?nil:NavigationAnnouncement)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($NavigationAnnouncer())._current();
+$ctx1.sendIdx["current"]=1;
+_st($1)._unsubscribe_(self);
+_st(_st($NavigationAnnouncer())._current())._on_send_to_($NavigationAnnouncement(),"handleNavigationAnnouncement:",self);
+return self}, function($ctx1) {$ctx1.fill(self,"setupNavigationSubscriptions",{},globals.NavigationPill)});},
+args: [],
+source: "setupNavigationSubscriptions\x0a\x09\x0a\x09NavigationAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09NavigationAnnouncer current\x0a\x09\x09on: NavigationAnnouncement\x0a\x09\x09send: #handleNavigationAnnouncement:\x0a\x09\x09to: self\x0a\x09\x09",
+messageSends: ["unsubscribe:", "current", "on:send:to:"],
+referencedClasses: ["NavigationAnnouncer", "NavigationAnnouncement"]
 }),
 globals.NavigationPill);
 
@@ -384,6 +555,22 @@ globals.Website);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "handleNavigationAnnouncement:",
+protocol: 'navigation',
+fn: function (aNavigationAnnouncement) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._show_(_st(aNavigationAnnouncement)._toPage());
+return self}, function($ctx1) {$ctx1.fill(self,"handleNavigationAnnouncement:",{aNavigationAnnouncement:aNavigationAnnouncement},globals.Website)});},
+args: ["aNavigationAnnouncement"],
+source: "handleNavigationAnnouncement: aNavigationAnnouncement\x0a\x0a\x09self show: aNavigationAnnouncement toPage",
+messageSends: ["show:", "toPage"],
+referencedClasses: []
+}),
+globals.Website);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "hideAllPages",
 protocol: 'navigation',
 fn: function () {
@@ -414,6 +601,7 @@ function $TryIt(){return globals.TryIt||(typeof TryIt=="undefined"?nil:TryIt)}
 function $InstrumentalInteraction(){return globals.InstrumentalInteraction||(typeof InstrumentalInteraction=="undefined"?nil:InstrumentalInteraction)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3,$4,$5,$6,$7,$8;
+globals.Website.superclass.fn.prototype._initialize.apply(_st(self), []);
 $1=_st($Array())._new();
 $ctx1.sendIdx["new"]=1;
 $2=$1;
@@ -434,11 +622,11 @@ $ctx1.sendIdx["add:"]=3;
 _st($1)._add_(_st($InstrumentalInteraction())._new());
 $8=_st($1)._yourself();
 self["@pages"]=$8;
-globals.Website.superclass.fn.prototype._initialize.apply(_st(self), []);
+self._setupNavigationSubscriptions();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.Website)});},
 args: [],
-source: "initialize\x0a\x09pages := Array new\x0a\x09\x09add: About new ;\x0a\x09\x09add: ResearchAgenda new ;\x0a\x09\x09add: TryIt new ;\x0a\x09\x09add: InstrumentalInteraction new ;\x0a\x09\x09yourself.\x0a\x09\x09\x0a\x09super initialize.\x0a\x0a\x09",
-messageSends: ["add:", "new", "yourself", "initialize"],
+source: "initialize\x0a\x09\x0a\x09super initialize.\x0a\x0a\x09pages := Array new\x0a\x09\x09add: About new ;\x0a\x09\x09add: ResearchAgenda new ;\x0a\x09\x09add: TryIt new ;\x0a\x09\x09add: InstrumentalInteraction new ;\x0a\x09\x09yourself.\x0a\x09\x0a\x09self setupNavigationSubscriptions.\x0a\x09\x0a\x09",
+messageSends: ["initialize", "add:", "new", "yourself", "setupNavigationSubscriptions"],
 referencedClasses: ["Array", "About", "ResearchAgenda", "TryIt", "InstrumentalInteraction"]
 }),
 globals.Website);
@@ -534,6 +722,28 @@ globals.Website);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "setupNavigationSubscriptions",
+protocol: 'initialization',
+fn: function () {
+var self=this;
+function $NavigationAnnouncer(){return globals.NavigationAnnouncer||(typeof NavigationAnnouncer=="undefined"?nil:NavigationAnnouncer)}
+function $NavigationAnnouncement(){return globals.NavigationAnnouncement||(typeof NavigationAnnouncement=="undefined"?nil:NavigationAnnouncement)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($NavigationAnnouncer())._current();
+$ctx1.sendIdx["current"]=1;
+_st($1)._unsubscribe_(self);
+_st(_st($NavigationAnnouncer())._current())._on_send_to_($NavigationAnnouncement(),"handleNavigationAnnouncement:",self);
+return self}, function($ctx1) {$ctx1.fill(self,"setupNavigationSubscriptions",{},globals.Website)});},
+args: [],
+source: "setupNavigationSubscriptions\x0a\x09\x0a\x09NavigationAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09NavigationAnnouncer current\x0a\x09\x09on: NavigationAnnouncement\x0a\x09\x09send: #handleNavigationAnnouncement:\x0a\x09\x09to: self\x0a\x09\x09",
+messageSends: ["unsubscribe:", "current", "on:send:to:"],
+referencedClasses: ["NavigationAnnouncer", "NavigationAnnouncement"]
+}),
+globals.Website);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "show:",
 protocol: 'navigation',
 fn: function (aPage) {
@@ -555,13 +765,15 @@ selector: "showFirstPage",
 protocol: 'navigation',
 fn: function () {
 var self=this;
+function $NavigationAnnouncer(){return globals.NavigationAnnouncer||(typeof NavigationAnnouncer=="undefined"?nil:NavigationAnnouncer)}
+function $NavigationAnnouncement(){return globals.NavigationAnnouncement||(typeof NavigationAnnouncement=="undefined"?nil:NavigationAnnouncement)}
 return smalltalk.withContext(function($ctx1) { 
-self._show_(_st(self["@pages"])._at_((1)));
+_st(_st($NavigationAnnouncer())._current())._announce_(_st($NavigationAnnouncement())._for_(_st(self["@pages"])._at_((1))));
 return self}, function($ctx1) {$ctx1.fill(self,"showFirstPage",{},globals.Website)});},
 args: [],
-source: "showFirstPage\x0a\x0a\x09self show: (pages at: 1).",
-messageSends: ["show:", "at:"],
-referencedClasses: []
+source: "showFirstPage\x09\x0a\x0a\x09NavigationAnnouncer current announce:\x0a\x09\x09(NavigationAnnouncement for: (pages at: 1))",
+messageSends: ["announce:", "current", "for:", "at:"],
+referencedClasses: ["NavigationAnnouncer", "NavigationAnnouncement"]
 }),
 globals.Website);
 
