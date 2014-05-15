@@ -563,7 +563,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2;
 $1=self["@singletonInstance"];
 if(($receiver = $1) == nil || $receiver == null){
-self["@singletonInstance"]=_st(self._super())._new();
+self["@singletonInstance"]=globals.Website.klass.superclass.fn.prototype._new.apply(_st(self), []);
 self["@singletonInstance"];
 } else {
 $1;
@@ -572,8 +572,8 @@ $2=self["@singletonInstance"];
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"current",{},globals.Website.klass)});},
 args: [],
-source: "current\x0a\x09singletonInstance ifNil: [singletonInstance := self super new ].\x0a\x09\x0a\x09^ singletonInstance",
-messageSends: ["ifNil:", "new", "super"],
+source: "current\x0a\x09singletonInstance ifNil: [singletonInstance := super new ].\x0a\x09\x0a\x09^ singletonInstance",
+messageSends: ["ifNil:", "new"],
 referencedClasses: []
 }),
 globals.Website.klass);

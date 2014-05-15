@@ -249,7 +249,7 @@ Website class instanceVariableNames: 'singletonInstance'!
 !Website class methodsFor: 'instance creation'!
 
 current
-	singletonInstance ifNil: [singletonInstance := self super new ].
+	singletonInstance ifNil: [singletonInstance := super new ].
 	
 	^ singletonInstance
 ! !
