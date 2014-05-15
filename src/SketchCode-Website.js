@@ -39,7 +39,7 @@ return $2;
 $ctx1.sendIdx["with:"]=1;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.Navigation)});},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09html nav with: [\x0a\x09\x09html ul class: 'nav nav-pills nav-stacked span4'; with: [\x0a\x09\x09\x09Website current pages do: [:page |\x0a\x09\x09\x09\x0a\x09\x09\x09\x09html li: (html a href: '#'; with: page class name; onClick: [ Website current show: page]).\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09].",
+source: "renderOn: html\x0a\x0a\x09html nav with: [\x0a\x09\x09html ul class: 'nav nav-pills nav-stacked span4'; with: [\x0a\x09\x09\x09Website current pages do: [:page |\x0a\x09\x09\x09\x09html li: (html a href: '#'; with: page class name; onClick: [ Website current show: page ]).\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09].",
 messageSends: ["with:", "nav", "class:", "ul", "do:", "pages", "current", "li:", "href:", "a", "name", "class", "onClick:", "show:"],
 referencedClasses: ["Website"]
 }),
@@ -74,6 +74,23 @@ globals.Navigation.klass);
 
 
 smalltalk.addClass('Page', globals.Widget, ['pageDomElement'], 'SketchCode-Website');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "element",
+protocol: 'navigation',
+fn: function () {
+var self=this;
+var $1;
+$1=self["@element"];
+return $1;
+},
+args: [],
+source: "element\x0a\x09^ element",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Page);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "hide",
@@ -154,11 +171,11 @@ protocol: 'rendering',
 fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self._sublcassResponsibility();
+self._subclassResponsibility();
 return self}, function($ctx1) {$ctx1.fill(self,"renderContentOn:",{html:html},globals.Page)});},
 args: ["html"],
-source: "renderContentOn: html\x0a\x09self sublcassResponsibility.",
-messageSends: ["sublcassResponsibility"],
+source: "renderContentOn: html\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
 globals.Page);
@@ -478,7 +495,7 @@ return $6;
 $ctx1.sendIdx["with:"]=1;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.Website)});},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09html div class: 'row'; with: [\x0a\x09\x09\x0a\x09\x09html div class: 'col-xs-2'; with: [\x0a\x09\x09\x09Navigation new renderOn: html.\x0a\x09\x09].\x0a\x09\x09html div class: 'col-xs-10'; with: [\x0a\x09\x09\x09\x0a\x09\x09\x09pages do: [:page | page renderOn: html ]\x0a\x09\x09].\x0a\x09]",
+source: "renderOn: html\x0a\x0a\x09html div class: 'row'; with: [\x0a\x09\x09\x0a\x09\x09html div class: 'col-xs-2'; with: [\x0a\x09\x09\x09Navigation new renderOn: html.\x0a\x09\x09].\x0a\x09\x09html div class: 'col-xs-10'; with: [\x0a\x09\x09\x09\x0a\x09\x09\x09pages do: [:page |\x0a\x09\x09\x09\x09page renderOn: html \x0a\x09\x09\x09]\x0a\x09\x09].\x0a\x09]",
 messageSends: ["class:", "div", "with:", "renderOn:", "new", "do:"],
 referencedClasses: ["Navigation"]
 }),
@@ -530,6 +547,22 @@ globals.Website.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "new",
+protocol: 'private',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+globals.Website.klass.superclass.fn.prototype._new.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"new",{},globals.Website.klass)});},
+args: [],
+source: "new\x0a\x09super new",
+messageSends: ["new"],
+referencedClasses: []
+}),
+globals.Website.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "render",
 protocol: 'rendering',
 fn: function () {
@@ -539,11 +572,11 @@ var $1;
 $1="#main"._asJQuery();
 $ctx1.sendIdx["asJQuery"]=1;
 _st($1)._empty();
-_st(self._new())._appendToJQuery_("#main"._asJQuery());
+_st(self._current())._appendToJQuery_("#main"._asJQuery());
 return self}, function($ctx1) {$ctx1.fill(self,"render",{},globals.Website.klass)});},
 args: [],
-source: "render\x0a\x09'#main' asJQuery empty.\x0a\x09self new appendToJQuery: '#main' asJQuery.",
-messageSends: ["empty", "asJQuery", "appendToJQuery:", "new"],
+source: "render\x0a\x09'#main' asJQuery empty.\x0a\x09self current appendToJQuery: '#main' asJQuery.",
+messageSends: ["empty", "asJQuery", "appendToJQuery:", "current"],
 referencedClasses: []
 }),
 globals.Website.klass);

@@ -10,8 +10,7 @@ renderOn: html
 	html nav with: [
 		html ul class: 'nav nav-pills nav-stacked span4'; with: [
 			Website current pages do: [:page |
-			
-				html li: (html a href: '#'; with: page class name; onClick: [ Website current show: page]).
+				html li: (html a href: '#'; with: page class name; onClick: [ Website current show: page ]).
 			].
 		].
 	].
@@ -33,6 +32,10 @@ Widget subclass: #Page
 	package: 'SketchCode-Website'!
 
 !Page methodsFor: 'navigation'!
+
+element
+	^ element
+!
 
 hide
 	pageDomElement asJQuery hide.
@@ -64,7 +67,7 @@ htmlFrom: aMarkdownString
 !
 
 renderContentOn: html
-	self sublcassResponsibility.
+	self subclassResponsibility
 !
 
 renderOn: html
@@ -200,7 +203,9 @@ renderOn: html
 		].
 		html div class: 'col-xs-10'; with: [
 			
-			pages do: [:page | page renderOn: html ]
+			pages do: [:page |
+				page renderOn: html 
+			]
 		].
 	]
 !
@@ -213,6 +218,12 @@ show: aPage
 
 Website class instanceVariableNames: 'singletonInstance'!
 
+!Website class methodsFor: 'private'!
+
+new
+	super new
+! !
+
 !Website class methodsFor: 'rendering'!
 
 current
@@ -223,6 +234,6 @@ current
 
 render
 	'#main' asJQuery empty.
-	self new appendToJQuery: '#main' asJQuery.
+	self current appendToJQuery: '#main' asJQuery.
 ! !
 
