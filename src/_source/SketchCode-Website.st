@@ -3,14 +3,14 @@ Widget subclass: #Navigation
 	instanceVariableNames: ''
 	package: 'SketchCode-Website'!
 
-!Navigation methodsFor: 'as yet unclassified'!
+!Navigation methodsFor: 'rendering'!
 
 renderOn: html
 
 	html nav with: [
 		html ul class: 'nav nav-pills nav-stacked span4'; with: [
 			Website current pages do: [:page |
-				html li: (html a href: '#'; with: page class name; onClick: [ Website current show: page ]).
+				(NavigationPill for: page) renderOn: html
 			].
 		].
 	].
@@ -27,27 +27,57 @@ current
 	^ singletonInstance
 ! !
 
+Widget subclass: #NavigationPill
+	instanceVariableNames: 'page'
+	package: 'SketchCode-Website'!
+
+!NavigationPill methodsFor: 'accessing'!
+
+page
+	^ page
+!
+
+page: anObject
+	page := anObject
+! !
+
+!NavigationPill methodsFor: 'rendering'!
+
+renderOn: html
+
+	html li: (html a 
+		href: '#'; 
+		with: page class name;
+		onClick: [ Website current show: page ]
+	).
+! !
+
+!NavigationPill class methodsFor: 'instance creation'!
+
+for: aPage
+	^ self new 
+		page: aPage;
+		yourself
+! !
+
 Widget subclass: #Page
 	instanceVariableNames: 'pageDomElement'
 	package: 'SketchCode-Website'!
 
 !Page methodsFor: 'navigation'!
 
-element
-	^ element
-!
-
 hide
 	pageDomElement asJQuery hide.
 !
 
-hideAll
-
-	self class subclasses do: [:page | page hide].
-!
-
 show
 	pageDomElement asJQuery show.
+! !
+
+!Page methodsFor: 'pageContent'!
+
+renderContentOn: html
+	self subclassResponsibility
 ! !
 
 !Page methodsFor: 'properties'!
@@ -66,10 +96,6 @@ htmlFrom: aMarkdownString
 	^ converter makeHtml: aMarkdownString
 !
 
-renderContentOn: html
-	self subclassResponsibility
-!
-
 renderOn: html
 	pageDomElement := html div 
 		class: 'page' ;
@@ -78,18 +104,11 @@ renderOn: html
 	].
 ! !
 
-!Page class methodsFor: 'as yet unclassified'!
-
-all
-
-	^ self subclasses
-! !
-
 Page subclass: #About
 	instanceVariableNames: ''
 	package: 'SketchCode-Website'!
 
-!About methodsFor: 'as yet unclassified'!
+!About methodsFor: 'pageContent'!
 
 renderContentOn: html
 
@@ -115,7 +134,7 @@ Page subclass: #InstrumentalInteraction
 	instanceVariableNames: ''
 	package: 'SketchCode-Website'!
 
-!InstrumentalInteraction methodsFor: 'as yet unclassified'!
+!InstrumentalInteraction methodsFor: 'pageContent'!
 
 renderContentOn: html
 
@@ -128,7 +147,7 @@ Page subclass: #ResearchAgenda
 	instanceVariableNames: ''
 	package: 'SketchCode-Website'!
 
-!ResearchAgenda methodsFor: 'as yet unclassified'!
+!ResearchAgenda methodsFor: 'pageContent'!
 
 content
 
@@ -149,7 +168,7 @@ Page subclass: #TryIt
 	instanceVariableNames: ''
 	package: 'SketchCode-Website'!
 
-!TryIt methodsFor: 'as yet unclassified'!
+!TryIt methodsFor: 'pageContent'!
 
 renderContentOn: html
 
@@ -159,6 +178,18 @@ renderContentOn: html
 Widget subclass: #Website
 	instanceVariableNames: 'pages'
 	package: 'SketchCode-Website'!
+
+!Website methodsFor: 'accessing'!
+
+pages
+
+	^ pages
+!
+
+pages: anObject
+
+	pages := anObject
+! !
 
 !Website methodsFor: 'initialization'!
 
@@ -173,25 +204,28 @@ initialize
 	super initialize.
 ! !
 
-!Website methodsFor: 'rendering'!
-
-container
-
-	^ 'body' asJQuery find: '.container'
-!
+!Website methodsFor: 'navigation'!
 
 hideAllPages
 	pages do: [:page | page hide]
 !
 
-pages
+show: aPage
 
-	^ pages
+	self hideAllPages.
+	aPage show
 !
 
-pages: anObject
+showFirstPage
 
-	pages := anObject
+	self show: (pages at: 1).
+! !
+
+!Website methodsFor: 'rendering'!
+
+container
+
+	^ 'body' asJQuery find: '#main'
 !
 
 renderOn: html
@@ -208,32 +242,29 @@ renderOn: html
 			]
 		].
 	]
-!
-
-show: aPage
-
-	self hideAllPages.
-	aPage show
 ! !
 
 Website class instanceVariableNames: 'singletonInstance'!
 
+!Website class methodsFor: 'instance creation'!
+
+current
+	singletonInstance ifNil: [singletonInstance := self super new ].
+	
+	^ singletonInstance
+! !
+
 !Website class methodsFor: 'private'!
 
 new
-	super new
+	self shouldNotImplement
 ! !
 
 !Website class methodsFor: 'rendering'!
 
-current
-	singletonInstance ifNil: [singletonInstance := self new ].
-	
-	^ singletonInstance
-!
-
 render
 	'#main' asJQuery empty.
 	self current appendToJQuery: '#main' asJQuery.
+	self current showFirstPage.
 ! !
 

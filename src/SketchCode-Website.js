@@ -6,42 +6,32 @@ smalltalk.addClass('Navigation', globals.Widget, [], 'SketchCode-Website');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderOn:",
-protocol: 'as yet unclassified',
+protocol: 'rendering',
 fn: function (html) {
 var self=this;
 function $Website(){return globals.Website||(typeof Website=="undefined"?nil:Website)}
+function $NavigationPill(){return globals.NavigationPill||(typeof NavigationPill=="undefined"?nil:NavigationPill)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$4,$3,$5,$6,$2;
+var $1,$2;
 _st(_st(html)._nav())._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(html)._ul();
 _st($1)._class_("nav nav-pills nav-stacked span4");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-$4=_st($Website())._current();
-$ctx3.sendIdx["current"]=1;
-$3=_st($4)._pages();
-return _st($3)._do_((function(page){
+return _st(_st(_st($Website())._current())._pages())._do_((function(page){
 return smalltalk.withContext(function($ctx4) {
-$5=_st(html)._a();
-_st($5)._href_("#");
-_st($5)._with_(_st(_st(page)._class())._name());
-$6=_st($5)._onClick_((function(){
-return smalltalk.withContext(function($ctx5) {
-return _st(_st($Website())._current())._show_(page);
-}, function($ctx5) {$ctx5.fillBlock({},$ctx4,4)})}));
-return _st(html)._li_($6);
+return _st(_st($NavigationPill())._for_(page))._renderOn_(html);
 }, function($ctx4) {$ctx4.fillBlock({page:page},$ctx3,3)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
-$ctx2.sendIdx["with:"]=2;
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 $ctx1.sendIdx["with:"]=1;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.Navigation)});},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09html nav with: [\x0a\x09\x09html ul class: 'nav nav-pills nav-stacked span4'; with: [\x0a\x09\x09\x09Website current pages do: [:page |\x0a\x09\x09\x09\x09html li: (html a href: '#'; with: page class name; onClick: [ Website current show: page ]).\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09].",
-messageSends: ["with:", "nav", "class:", "ul", "do:", "pages", "current", "li:", "href:", "a", "name", "class", "onClick:", "show:"],
-referencedClasses: ["Website"]
+source: "renderOn: html\x0a\x0a\x09html nav with: [\x0a\x09\x09html ul class: 'nav nav-pills nav-stacked span4'; with: [\x0a\x09\x09\x09Website current pages do: [:page |\x0a\x09\x09\x09\x09(NavigationPill for: page) renderOn: html\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09].",
+messageSends: ["with:", "nav", "class:", "ul", "do:", "pages", "current", "renderOn:", "for:"],
+referencedClasses: ["Website", "NavigationPill"]
 }),
 globals.Navigation);
 
@@ -73,24 +63,88 @@ referencedClasses: []
 globals.Navigation.klass);
 
 
-smalltalk.addClass('Page', globals.Widget, ['pageDomElement'], 'SketchCode-Website');
+smalltalk.addClass('NavigationPill', globals.Widget, ['page'], 'SketchCode-Website');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "element",
-protocol: 'navigation',
+selector: "page",
+protocol: 'accessing',
 fn: function () {
 var self=this;
 var $1;
-$1=self["@element"];
+$1=self["@page"];
 return $1;
 },
 args: [],
-source: "element\x0a\x09^ element",
+source: "page\x0a\x09^ page",
 messageSends: [],
 referencedClasses: []
 }),
-globals.Page);
+globals.NavigationPill);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "page:",
+protocol: 'accessing',
+fn: function (anObject) {
+var self=this;
+self["@page"]=anObject;
+return self;},
+args: ["anObject"],
+source: "page: anObject\x0a\x09page := anObject",
+messageSends: [],
+referencedClasses: []
+}),
+globals.NavigationPill);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+protocol: 'rendering',
+fn: function (html) {
+var self=this;
+function $Website(){return globals.Website||(typeof Website=="undefined"?nil:Website)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(html)._a();
+_st($1)._href_("#");
+_st($1)._with_(_st(_st(self["@page"])._class())._name());
+$2=_st($1)._onClick_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st($Website())._current())._show_(self["@page"]);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+_st(html)._li_($2);
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.NavigationPill)});},
+args: ["html"],
+source: "renderOn: html\x0a\x0a\x09html li: (html a \x0a\x09\x09href: '#'; \x0a\x09\x09with: page class name;\x0a\x09\x09onClick: [ Website current show: page ]\x0a\x09).",
+messageSends: ["li:", "href:", "a", "with:", "name", "class", "onClick:", "show:", "current"],
+referencedClasses: ["Website"]
+}),
+globals.NavigationPill);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "for:",
+protocol: 'instance creation',
+fn: function (aPage) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=self._new();
+_st($2)._page_(aPage);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"for:",{aPage:aPage},globals.NavigationPill.klass)});},
+args: ["aPage"],
+source: "for: aPage\x0a\x09^ self new \x0a\x09\x09page: aPage;\x0a\x09\x09yourself",
+messageSends: ["page:", "new", "yourself"],
+referencedClasses: []
+}),
+globals.NavigationPill.klass);
+
+
+smalltalk.addClass('Page', globals.Widget, ['pageDomElement'], 'SketchCode-Website');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "hide",
@@ -103,25 +157,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"hide",{},globals.Page)});},
 args: [],
 source: "hide\x0a\x09pageDomElement asJQuery hide.",
 messageSends: ["hide", "asJQuery"],
-referencedClasses: []
-}),
-globals.Page);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "hideAll",
-protocol: 'navigation',
-fn: function () {
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self._class())._subclasses())._do_((function(page){
-return smalltalk.withContext(function($ctx2) {
-return _st(page)._hide();
-}, function($ctx2) {$ctx2.fillBlock({page:page},$ctx1,1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"hideAll",{},globals.Page)});},
-args: [],
-source: "hideAll\x0a\x0a\x09self class subclasses do: [:page | page hide].",
-messageSends: ["do:", "subclasses", "class", "hide"],
 referencedClasses: []
 }),
 globals.Page);
@@ -167,7 +202,7 @@ globals.Page);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderContentOn:",
-protocol: 'rendering',
+protocol: 'pageContent',
 fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -220,30 +255,12 @@ referencedClasses: []
 globals.Page);
 
 
-smalltalk.addMethod(
-smalltalk.method({
-selector: "all",
-protocol: 'as yet unclassified',
-fn: function () {
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self._subclasses();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"all",{},globals.Page.klass)});},
-args: [],
-source: "all\x0a\x0a\x09^ self subclasses",
-messageSends: ["subclasses"],
-referencedClasses: []
-}),
-globals.Page.klass);
-
 
 smalltalk.addClass('About', globals.Page, [], 'SketchCode-Website');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderContentOn:",
-protocol: 'as yet unclassified',
+protocol: 'pageContent',
 fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -272,7 +289,7 @@ smalltalk.addClass('InstrumentalInteraction', globals.Page, [], 'SketchCode-Webs
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderContentOn:",
-protocol: 'as yet unclassified',
+protocol: 'pageContent',
 fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -291,7 +308,7 @@ smalltalk.addClass('ResearchAgenda', globals.Page, [], 'SketchCode-Website');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "content",
-protocol: 'as yet unclassified',
+protocol: 'pageContent',
 fn: function () {
 var self=this;
 return "#Hello form markdown";
@@ -306,7 +323,7 @@ globals.ResearchAgenda);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderContentOn:",
-protocol: 'as yet unclassified',
+protocol: 'pageContent',
 fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -328,7 +345,7 @@ smalltalk.addClass('TryIt', globals.Page, [], 'SketchCode-Website');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderContentOn:",
-protocol: 'as yet unclassified',
+protocol: 'pageContent',
 fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -352,11 +369,11 @@ fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st("body"._asJQuery())._find_(".container");
+$1=_st("body"._asJQuery())._find_("#main");
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"container",{},globals.Website)});},
 args: [],
-source: "container\x0a\x0a\x09^ 'body' asJQuery find: '.container'",
+source: "container\x0a\x0a\x09^ 'body' asJQuery find: '#main'",
 messageSends: ["find:", "asJQuery"],
 referencedClasses: []
 }),
@@ -365,7 +382,7 @@ globals.Website);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "hideAllPages",
-protocol: 'rendering',
+protocol: 'navigation',
 fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -426,7 +443,7 @@ globals.Website);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "pages",
-protocol: 'rendering',
+protocol: 'accessing',
 fn: function () {
 var self=this;
 var $1;
@@ -443,7 +460,7 @@ globals.Website);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "pages:",
-protocol: 'rendering',
+protocol: 'accessing',
 fn: function (anObject) {
 var self=this;
 self["@pages"]=anObject;
@@ -504,7 +521,7 @@ globals.Website);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "show:",
-protocol: 'rendering',
+protocol: 'navigation',
 fn: function (aPage) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -518,19 +535,35 @@ referencedClasses: []
 }),
 globals.Website);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showFirstPage",
+protocol: 'navigation',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._show_(_st(self["@pages"])._at_((1)));
+return self}, function($ctx1) {$ctx1.fill(self,"showFirstPage",{},globals.Website)});},
+args: [],
+source: "showFirstPage\x0a\x0a\x09self show: (pages at: 1).",
+messageSends: ["show:", "at:"],
+referencedClasses: []
+}),
+globals.Website);
+
 
 globals.Website.klass.iVarNames = ['singletonInstance'];
 smalltalk.addMethod(
 smalltalk.method({
 selector: "current",
-protocol: 'rendering',
+protocol: 'instance creation',
 fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=self["@singletonInstance"];
 if(($receiver = $1) == nil || $receiver == null){
-self["@singletonInstance"]=self._new();
+self["@singletonInstance"]=_st(self._super())._new();
 self["@singletonInstance"];
 } else {
 $1;
@@ -539,8 +572,8 @@ $2=self["@singletonInstance"];
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"current",{},globals.Website.klass)});},
 args: [],
-source: "current\x0a\x09singletonInstance ifNil: [singletonInstance := self new ].\x0a\x09\x0a\x09^ singletonInstance",
-messageSends: ["ifNil:", "new"],
+source: "current\x0a\x09singletonInstance ifNil: [singletonInstance := self super new ].\x0a\x09\x0a\x09^ singletonInstance",
+messageSends: ["ifNil:", "new", "super"],
 referencedClasses: []
 }),
 globals.Website.klass);
@@ -552,11 +585,11 @@ protocol: 'private',
 fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-globals.Website.klass.superclass.fn.prototype._new.apply(_st(self), []);
+self._shouldNotImplement();
 return self}, function($ctx1) {$ctx1.fill(self,"new",{},globals.Website.klass)});},
 args: [],
-source: "new\x0a\x09super new",
-messageSends: ["new"],
+source: "new\x0a\x09self shouldNotImplement",
+messageSends: ["shouldNotImplement"],
 referencedClasses: []
 }),
 globals.Website.klass);
@@ -568,15 +601,18 @@ protocol: 'rendering',
 fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+var $1,$2;
 $1="#main"._asJQuery();
 $ctx1.sendIdx["asJQuery"]=1;
 _st($1)._empty();
-_st(self._current())._appendToJQuery_("#main"._asJQuery());
+$2=self._current();
+$ctx1.sendIdx["current"]=1;
+_st($2)._appendToJQuery_("#main"._asJQuery());
+_st(self._current())._showFirstPage();
 return self}, function($ctx1) {$ctx1.fill(self,"render",{},globals.Website.klass)});},
 args: [],
-source: "render\x0a\x09'#main' asJQuery empty.\x0a\x09self current appendToJQuery: '#main' asJQuery.",
-messageSends: ["empty", "asJQuery", "appendToJQuery:", "current"],
+source: "render\x0a\x09'#main' asJQuery empty.\x0a\x09self current appendToJQuery: '#main' asJQuery.\x0a\x09self current showFirstPage.",
+messageSends: ["empty", "asJQuery", "appendToJQuery:", "current", "showFirstPage"],
 referencedClasses: []
 }),
 globals.Website.klass);
