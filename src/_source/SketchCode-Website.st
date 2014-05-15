@@ -47,7 +47,7 @@ renderOn: html
 
 	html li: (html a 
 		href: '#'; 
-		with: page class name;
+		with: page title;
 		onClick: [ Website current show: page ]
 	).
 ! !
@@ -82,8 +82,13 @@ renderContentOn: html
 
 !Page methodsFor: 'properties'!
 
-name
-	^ self subclassResponsibility
+title 
+	<
+	return self
+		._class()
+		._name()
+		.replace( /([a-z])([A-Z])/g, "$1 $2" );
+	>
 ! !
 
 !Page methodsFor: 'rendering'!
@@ -113,7 +118,7 @@ Page subclass: #About
 renderContentOn: html
 
 	html 
-		h1: 'Welcome to SketchCode!!' ;
+		h1: 'Welcome!!' ;
 
 		p:  'SketchCode is an interactive general purpose programming environment that sees coding as a creative process. 
 		    It tries to rethink programming tools from the perspective of Design Thinking.' ;
@@ -230,12 +235,21 @@ container
 
 renderOn: html
 
+
+	html div
+		class: 'page-header' ;
+		with: [
+			html h1: 'SketchCode'.
+			html small with: 'Research on supporting Design Thinking in programming tools'.		
+			].
+
+
 	html div class: 'row'; with: [
 		
-		html div class: 'col-xs-2'; with: [
+		html div class: 'col-xs-3'; with: [
 			Navigation new renderOn: html.
 		].
-		html div class: 'col-xs-10'; with: [
+		html div class: 'col-xs-9'; with: [
 			
 			pages do: [:page |
 				page renderOn: html 

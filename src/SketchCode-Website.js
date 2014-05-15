@@ -107,7 +107,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2;
 $1=_st(html)._a();
 _st($1)._href_("#");
-_st($1)._with_(_st(_st(self["@page"])._class())._name());
+_st($1)._with_(_st(self["@page"])._title());
 $2=_st($1)._onClick_((function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(_st($Website())._current())._show_(self["@page"]);
@@ -115,8 +115,8 @@ return _st(_st($Website())._current())._show_(self["@page"]);
 _st(html)._li_($2);
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.NavigationPill)});},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09html li: (html a \x0a\x09\x09href: '#'; \x0a\x09\x09with: page class name;\x0a\x09\x09onClick: [ Website current show: page ]\x0a\x09).",
-messageSends: ["li:", "href:", "a", "with:", "name", "class", "onClick:", "show:", "current"],
+source: "renderOn: html\x0a\x0a\x09html li: (html a \x0a\x09\x09href: '#'; \x0a\x09\x09with: page title;\x0a\x09\x09onClick: [ Website current show: page ]\x0a\x09).",
+messageSends: ["li:", "href:", "a", "with:", "title", "onClick:", "show:", "current"],
 referencedClasses: ["Website"]
 }),
 globals.NavigationPill);
@@ -183,24 +183,6 @@ globals.Page);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "name",
-protocol: 'properties',
-fn: function () {
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self._subclassResponsibility();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"name",{},globals.Page)});},
-args: [],
-source: "name\x0a\x09^ self subclassResponsibility",
-messageSends: ["subclassResponsibility"],
-referencedClasses: []
-}),
-globals.Page);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "renderContentOn:",
 protocol: 'pageContent',
 fn: function (html) {
@@ -254,6 +236,27 @@ referencedClasses: []
 }),
 globals.Page);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "title",
+protocol: 'properties',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+
+	return self
+		._class()
+		._name()
+		.replace( /([a-z])([A-Z])/g, "$1 $2" );
+	;
+return self}, function($ctx1) {$ctx1.fill(self,"title",{},globals.Page)});},
+args: [],
+source: "title \x0a\x09<\x0a\x09return self\x0a\x09\x09._class()\x0a\x09\x09._name()\x0a\x09\x09.replace( /([a-z])([A-Z])/g, \x22$1 $2\x22 );\x0a\x09>",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Page);
+
 
 
 smalltalk.addClass('About', globals.Page, [], 'SketchCode-Website');
@@ -265,7 +268,7 @@ fn: function (html) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-_st(html)._h1_("Welcome to SketchCode!");
+_st(html)._h1_("Welcome!");
 _st(html)._p_("SketchCode is an interactive general purpose programming environment that sees coding as a creative process. \x0a\x09\x09    It tries to rethink programming tools from the perspective of Design Thinking.");
 $ctx1.sendIdx["p:"]=1;
 _st(html)._p_("It is developed by Siemen Baader in the CMA[2] research group at Aarhus University, and part of the \x0a\x09\x09   'Creativity in Blended Interaction Spaces'[3] project, that aims at facilitating creative\x0a\x09\x09     collaboration between high school students.");
@@ -277,7 +280,7 @@ $ctx1.sendIdx["p:"]=4;
 $1=_st(html)._p_("-- Siemen");
 return self}, function($ctx1) {$ctx1.fill(self,"renderContentOn:",{html:html},globals.About)});},
 args: ["html"],
-source: "renderContentOn: html\x0a\x0a\x09html \x0a\x09\x09h1: 'Welcome to SketchCode!' ;\x0a\x0a\x09\x09p:  'SketchCode is an interactive general purpose programming environment that sees coding as a creative process. \x0a\x09\x09    It tries to rethink programming tools from the perspective of Design Thinking.' ;\x0a\x0a\x09\x09p: 'It is developed by Siemen Baader in the CMA[2] research group at Aarhus University, and part of the \x0a\x09\x09   ''Creativity in Blended Interaction Spaces''[3] project, that aims at facilitating creative\x0a\x09\x09     collaboration between high school students.' ;\x0a\x0a\x09\x09p: 'This website is a running SketchCode environment. To learn more, or to try SketchCode live in your browser, \x0a\x09\x09    use the menu to the left.' ;\x0a\x09\x09\x09\x0a\x09\x09p: 'Happy Hacking!' ;\x0a\x09\x09\x0a\x09\x09p: '-- Siemen'.",
+source: "renderContentOn: html\x0a\x0a\x09html \x0a\x09\x09h1: 'Welcome!' ;\x0a\x0a\x09\x09p:  'SketchCode is an interactive general purpose programming environment that sees coding as a creative process. \x0a\x09\x09    It tries to rethink programming tools from the perspective of Design Thinking.' ;\x0a\x0a\x09\x09p: 'It is developed by Siemen Baader in the CMA[2] research group at Aarhus University, and part of the \x0a\x09\x09   ''Creativity in Blended Interaction Spaces''[3] project, that aims at facilitating creative\x0a\x09\x09     collaboration between high school students.' ;\x0a\x0a\x09\x09p: 'This website is a running SketchCode environment. To learn more, or to try SketchCode live in your browser, \x0a\x09\x09    use the menu to the left.' ;\x0a\x09\x09\x09\x0a\x09\x09p: 'Happy Hacking!' ;\x0a\x09\x09\x0a\x09\x09p: '-- Siemen'.",
 messageSends: ["h1:", "p:"],
 referencedClasses: []
 }),
@@ -480,40 +483,51 @@ fn: function (html) {
 var self=this;
 function $Navigation(){return globals.Navigation||(typeof Navigation=="undefined"?nil:Navigation)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$2;
+var $1,$2,$3,$5,$6,$7,$8,$4;
 $1=_st(html)._div();
 $ctx1.sendIdx["div"]=1;
-_st($1)._class_("row");
+_st($1)._class_("page-header");
 $ctx1.sendIdx["class:"]=1;
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
+_st(html)._h1_("SketchCode");
+return _st(_st(html)._small())._with_("Research on supporting Design Thinking in programming tools");
+$ctx2.sendIdx["with:"]=2;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+$ctx1.sendIdx["with:"]=1;
 $3=_st(html)._div();
-$ctx2.sendIdx["div"]=2;
-_st($3)._class_("col-xs-2");
-$ctx2.sendIdx["class:"]=2;
+$ctx1.sendIdx["div"]=2;
+_st($3)._class_("row");
+$ctx1.sendIdx["class:"]=2;
 $4=_st($3)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+$5=_st(html)._div();
+$ctx2.sendIdx["div"]=3;
+_st($5)._class_("col-xs-3");
+$ctx2.sendIdx["class:"]=3;
+$6=_st($5)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(_st($Navigation())._new())._renderOn_(html);
 $ctx3.sendIdx["renderOn:"]=1;
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
-$ctx2.sendIdx["with:"]=2;
-$4;
-$5=_st(html)._div();
-_st($5)._class_("col-xs-10");
-$6=_st($5)._with_((function(){
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,3)})}));
+$ctx2.sendIdx["with:"]=4;
+$6;
+$7=_st(html)._div();
+_st($7)._class_("col-xs-9");
+$8=_st($7)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self["@pages"])._do_((function(page){
 return smalltalk.withContext(function($ctx4) {
 return _st(page)._renderOn_(html);
-}, function($ctx4) {$ctx4.fillBlock({page:page},$ctx3,4)})}));
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,3)})}));
-return $6;
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-$ctx1.sendIdx["with:"]=1;
+}, function($ctx4) {$ctx4.fillBlock({page:page},$ctx3,5)})}));
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+return $8;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}));
+$ctx1.sendIdx["with:"]=3;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.Website)});},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09html div class: 'row'; with: [\x0a\x09\x09\x0a\x09\x09html div class: 'col-xs-2'; with: [\x0a\x09\x09\x09Navigation new renderOn: html.\x0a\x09\x09].\x0a\x09\x09html div class: 'col-xs-10'; with: [\x0a\x09\x09\x09\x0a\x09\x09\x09pages do: [:page |\x0a\x09\x09\x09\x09page renderOn: html \x0a\x09\x09\x09]\x0a\x09\x09].\x0a\x09]",
-messageSends: ["class:", "div", "with:", "renderOn:", "new", "do:"],
+source: "renderOn: html\x0a\x0a\x0a\x09html div\x0a\x09\x09class: 'page-header' ;\x0a\x09\x09with: [\x0a\x09\x09\x09html h1: 'SketchCode'.\x0a\x09\x09\x09html small with: 'Research on supporting Design Thinking in programming tools'.\x09\x09\x0a\x09\x09\x09].\x0a\x0a\x0a\x09html div class: 'row'; with: [\x0a\x09\x09\x0a\x09\x09html div class: 'col-xs-3'; with: [\x0a\x09\x09\x09Navigation new renderOn: html.\x0a\x09\x09].\x0a\x09\x09html div class: 'col-xs-9'; with: [\x0a\x09\x09\x09\x0a\x09\x09\x09pages do: [:page |\x0a\x09\x09\x09\x09page renderOn: html \x0a\x09\x09\x09]\x0a\x09\x09].\x0a\x09]",
+messageSends: ["class:", "div", "with:", "h1:", "small", "renderOn:", "new", "do:"],
 referencedClasses: ["Navigation"]
 }),
 globals.Website);
