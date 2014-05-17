@@ -236,45 +236,28 @@ globals.NavigationPill);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "setupNavigationSubscriptions",
-protocol: 'navigation',
-fn: function () {
-var self=this;
-function $WebsiteAnnouncer(){return globals.WebsiteAnnouncer||(typeof WebsiteAnnouncer=="undefined"?nil:WebsiteAnnouncer)}
-function $PageChange(){return globals.PageChange||(typeof PageChange=="undefined"?nil:PageChange)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st($WebsiteAnnouncer())._current();
-$ctx1.sendIdx["current"]=1;
-_st($1)._unsubscribe_(self);
-_st(_st($WebsiteAnnouncer())._current())._on_send_to_($PageChange(),"handlePageChange:",self);
-return self}, function($ctx1) {$ctx1.fill(self,"setupNavigationSubscriptions",{},globals.NavigationPill)});},
-args: [],
-source: "setupNavigationSubscriptions\x0a\x09\x0a\x09WebsiteAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: PageChange\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self\x0a\x09\x09",
-messageSends: ["unsubscribe:", "current", "on:send:to:"],
-referencedClasses: ["WebsiteAnnouncer", "PageChange"]
-}),
-globals.NavigationPill);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "subscribeToPageChanges",
 protocol: 'navigation',
 fn: function () {
 var self=this;
 function $WebsiteAnnouncer(){return globals.WebsiteAnnouncer||(typeof WebsiteAnnouncer=="undefined"?nil:WebsiteAnnouncer)}
 function $PageChange(){return globals.PageChange||(typeof PageChange=="undefined"?nil:PageChange)}
+function $LinkedPageRouted(){return globals.LinkedPageRouted||(typeof LinkedPageRouted=="undefined"?nil:LinkedPageRouted)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+var $1,$2;
 $1=_st($WebsiteAnnouncer())._current();
 $ctx1.sendIdx["current"]=1;
 _st($1)._unsubscribe_(self);
-_st(_st($WebsiteAnnouncer())._current())._on_send_to_($PageChange(),"handlePageChange:",self);
+$2=_st($WebsiteAnnouncer())._current();
+$ctx1.sendIdx["current"]=2;
+_st($2)._on_send_to_($PageChange(),"handlePageChange:",self);
+$ctx1.sendIdx["on:send:to:"]=1;
+_st(_st($WebsiteAnnouncer())._current())._on_send_to_($LinkedPageRouted(),"handlePageChange:",self);
 return self}, function($ctx1) {$ctx1.fill(self,"subscribeToPageChanges",{},globals.NavigationPill)});},
 args: [],
-source: "subscribeToPageChanges\x0a\x09\x0a\x09WebsiteAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: PageChange\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self\x0a\x09\x09",
+source: "subscribeToPageChanges\x0a\x09\x0a\x09WebsiteAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: PageChange\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: LinkedPageRouted\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self",
 messageSends: ["unsubscribe:", "current", "on:send:to:"],
-referencedClasses: ["WebsiteAnnouncer", "PageChange"]
+referencedClasses: ["WebsiteAnnouncer", "PageChange", "LinkedPageRouted"]
 }),
 globals.NavigationPill);
 
@@ -546,10 +529,26 @@ protocol: 'navigation',
 fn: function (aPageChange) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self._path_(_st(_st(aPageChange)._toPage())._path());
+self._pathAndAddToHistory_(_st(_st(aPageChange)._toPage())._path());
 return self}, function($ctx1) {$ctx1.fill(self,"handlePageChange:",{aPageChange:aPageChange},globals.URLBar)});},
 args: ["aPageChange"],
-source: "handlePageChange: aPageChange\x0a\x09self path: (aPageChange toPage path).",
+source: "handlePageChange: aPageChange\x0a\x09self pathAndAddToHistory: (aPageChange toPage path).",
+messageSends: ["pathAndAddToHistory:", "path", "toPage"],
+referencedClasses: []
+}),
+globals.URLBar);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "handlePageRouted:",
+protocol: 'navigation',
+fn: function (aPageChange) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._path_(_st(_st(aPageChange)._toPage())._path());
+return self}, function($ctx1) {$ctx1.fill(self,"handlePageRouted:",{aPageChange:aPageChange},globals.URLBar)});},
+args: ["aPageChange"],
+source: "handlePageRouted: aPageChange\x0a\x09self path: (aPageChange toPage path).",
 messageSends: ["path:", "path", "toPage"],
 referencedClasses: []
 }),
@@ -580,10 +579,26 @@ protocol: 'navigation',
 fn: function (aString) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(window)._history())._pushState_title_url_(nil,"",aString);
+_st(_st(window)._history())._replaceState_title_url_(nil,"",aString);
 return self}, function($ctx1) {$ctx1.fill(self,"path:",{aString:aString},globals.URLBar)});},
 args: ["aString"],
-source: "path: aString\x0a\x0a\x09window history\x0a\x09\x09pushState: nil\x0a\x09\x09title: ''\x0a\x09\x09url: aString .\x0a\x09\x09",
+source: "path: aString\x0a\x0a\x09window history\x0a\x09\x09replaceState: nil\x0a\x09\x09title: ''\x0a\x09\x09url: aString .\x0a\x09\x09",
+messageSends: ["replaceState:title:url:", "history"],
+referencedClasses: []
+}),
+globals.URLBar);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "pathAndAddToHistory:",
+protocol: 'navigation',
+fn: function (aString) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(window)._history())._pushState_title_url_(nil,"",aString);
+return self}, function($ctx1) {$ctx1.fill(self,"pathAndAddToHistory:",{aString:aString},globals.URLBar)});},
+args: ["aString"],
+source: "pathAndAddToHistory: aString\x0a\x0a\x09window history\x0a\x09\x09pushState: nil\x0a\x09\x09title: ''\x0a\x09\x09url: aString .\x0a\x09\x09",
 messageSends: ["pushState:title:url:", "history"],
 referencedClasses: []
 }),
@@ -597,33 +612,22 @@ fn: function () {
 var self=this;
 function $WebsiteAnnouncer(){return globals.WebsiteAnnouncer||(typeof WebsiteAnnouncer=="undefined"?nil:WebsiteAnnouncer)}
 function $PageChange(){return globals.PageChange||(typeof PageChange=="undefined"?nil:PageChange)}
+function $LinkedPageRouted(){return globals.LinkedPageRouted||(typeof LinkedPageRouted=="undefined"?nil:LinkedPageRouted)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+var $1,$2;
 $1=_st($WebsiteAnnouncer())._current();
 $ctx1.sendIdx["current"]=1;
 _st($1)._unsubscribe_(self);
-_st(_st($WebsiteAnnouncer())._current())._on_send_to_($PageChange(),"handlePageChange:",self);
+$2=_st($WebsiteAnnouncer())._current();
+$ctx1.sendIdx["current"]=2;
+_st($2)._on_send_to_($PageChange(),"handlePageChange:",self);
+$ctx1.sendIdx["on:send:to:"]=1;
+_st(_st($WebsiteAnnouncer())._current())._on_send_to_($LinkedPageRouted(),"handlePageRouted:",self);
 return self}, function($ctx1) {$ctx1.fill(self,"subscribeToPageChanges",{},globals.URLBar)});},
 args: [],
-source: "subscribeToPageChanges\x0a\x09\x0a\x09WebsiteAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: PageChange\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self\x0a\x09\x09",
+source: "subscribeToPageChanges\x0a\x09\x0a\x09WebsiteAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: PageChange\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self.\x0a\x09\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: LinkedPageRouted\x0a\x09\x09send: #handlePageRouted:\x0a\x09\x09to: self",
 messageSends: ["unsubscribe:", "current", "on:send:to:"],
-referencedClasses: ["WebsiteAnnouncer", "PageChange"]
-}),
-globals.URLBar);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "updatePath:",
-protocol: 'navigation',
-fn: function (aString) {
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(window)._history())._pushState_title_url_(nil,"",aString);
-return self}, function($ctx1) {$ctx1.fill(self,"updatePath:",{aString:aString},globals.URLBar)});},
-args: ["aString"],
-source: "updatePath: aString\x0a\x0a\x09window history\x0a\x09\x09pushState: nil\x0a\x09\x09title: ''\x0a\x09\x09url: aString .\x0a\x09\x09",
-messageSends: ["pushState:title:url:", "history"],
-referencedClasses: []
+referencedClasses: ["WebsiteAnnouncer", "PageChange", "LinkedPageRouted"]
 }),
 globals.URLBar);
 
@@ -921,7 +925,7 @@ var path,page;
 function $URLBar(){return globals.URLBar||(typeof URLBar=="undefined"?nil:URLBar)}
 function $Website(){return globals.Website||(typeof Website=="undefined"?nil:Website)}
 function $WebsiteAnnouncer(){return globals.WebsiteAnnouncer||(typeof WebsiteAnnouncer=="undefined"?nil:WebsiteAnnouncer)}
-function $PageChange(){return globals.PageChange||(typeof PageChange=="undefined"?nil:PageChange)}
+function $LinkedPageRouted(){return globals.LinkedPageRouted||(typeof LinkedPageRouted=="undefined"?nil:LinkedPageRouted)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$2;
 $1=_st($URLBar())._current();
@@ -938,12 +942,12 @@ return _st(_st(p)._path()).__eq(path);
 return smalltalk.withContext(function($ctx2) {
 return _st(self["@pages"])._at_((1));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}));
-_st(_st($WebsiteAnnouncer())._current())._announce_(_st($PageChange())._for_(page));
+_st(_st($WebsiteAnnouncer())._current())._announce_(_st($LinkedPageRouted())._for_(page));
 return self}, function($ctx1) {$ctx1.fill(self,"showPageFromURLPath",{path:path,page:page},globals.Website)});},
 args: [],
-source: "showPageFromURLPath\x0a\x0a\x09| path page |\x0a\x09\x0a\x09path := URLBar current path.\x0a\x0a\x09page := Website current pages\x0a\x09\x09detect: [:p | p path = path ]\x0a\x09\x09ifNone: [ pages at: 1 ].\x0a\x09\x0a\x09WebsiteAnnouncer current announce:\x0a\x09\x09(PageChange for: page)",
+source: "showPageFromURLPath\x0a\x0a\x09| path page |\x0a\x09\x0a\x09path := URLBar current path.\x0a\x0a\x09page := Website current pages\x0a\x09\x09detect: [:p | p path = path ]\x0a\x09\x09ifNone: [ pages at: 1 ].\x0a\x09\x0a\x09WebsiteAnnouncer current announce:\x0a\x09\x09(LinkedPageRouted for: page)",
 messageSends: ["path", "current", "detect:ifNone:", "pages", "=", "at:", "announce:", "for:"],
-referencedClasses: ["URLBar", "Website", "WebsiteAnnouncer", "PageChange"]
+referencedClasses: ["URLBar", "Website", "WebsiteAnnouncer", "LinkedPageRouted"]
 }),
 globals.Website);
 
@@ -955,17 +959,22 @@ fn: function () {
 var self=this;
 function $WebsiteAnnouncer(){return globals.WebsiteAnnouncer||(typeof WebsiteAnnouncer=="undefined"?nil:WebsiteAnnouncer)}
 function $PageChange(){return globals.PageChange||(typeof PageChange=="undefined"?nil:PageChange)}
+function $LinkedPageRouted(){return globals.LinkedPageRouted||(typeof LinkedPageRouted=="undefined"?nil:LinkedPageRouted)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+var $1,$2;
 $1=_st($WebsiteAnnouncer())._current();
 $ctx1.sendIdx["current"]=1;
 _st($1)._unsubscribe_(self);
-_st(_st($WebsiteAnnouncer())._current())._on_send_to_($PageChange(),"handlePageChange:",self);
+$2=_st($WebsiteAnnouncer())._current();
+$ctx1.sendIdx["current"]=2;
+_st($2)._on_send_to_($PageChange(),"handlePageChange:",self);
+$ctx1.sendIdx["on:send:to:"]=1;
+_st(_st($WebsiteAnnouncer())._current())._on_send_to_($LinkedPageRouted(),"handlePageChange:",self);
 return self}, function($ctx1) {$ctx1.fill(self,"subscribeToPageChanges",{},globals.Website)});},
 args: [],
-source: "subscribeToPageChanges\x0a\x09\x0a\x09WebsiteAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: PageChange\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self\x0a\x09\x09",
+source: "subscribeToPageChanges\x0a\x09\x0a\x09WebsiteAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: PageChange\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: LinkedPageRouted\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self\x0a\x09\x09",
 messageSends: ["unsubscribe:", "current", "on:send:to:"],
-referencedClasses: ["WebsiteAnnouncer", "PageChange"]
+referencedClasses: ["WebsiteAnnouncer", "PageChange", "LinkedPageRouted"]
 }),
 globals.Website);
 
@@ -1037,6 +1046,62 @@ globals.Website.klass);
 
 
 smalltalk.addClass('WebsiteAnnouncement', globals.Object, [], 'SketchCode-Website');
+
+
+smalltalk.addClass('LinkedPageRouted', globals.WebsiteAnnouncement, ['toPage'], 'SketchCode-Website');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "toPage",
+protocol: 'accessing',
+fn: function () {
+var self=this;
+var $1;
+$1=self["@toPage"];
+return $1;
+},
+args: [],
+source: "toPage\x0a\x09^ toPage",
+messageSends: [],
+referencedClasses: []
+}),
+globals.LinkedPageRouted);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "toPage:",
+protocol: 'accessing',
+fn: function (anObject) {
+var self=this;
+self["@toPage"]=anObject;
+return self;},
+args: ["anObject"],
+source: "toPage: anObject\x0a\x09toPage := anObject",
+messageSends: [],
+referencedClasses: []
+}),
+globals.LinkedPageRouted);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "for:",
+protocol: 'instance creation',
+fn: function (aPage) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=globals.LinkedPageRouted.klass.superclass.fn.prototype._new.apply(_st(self), []);
+_st($2)._toPage_(aPage);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"for:",{aPage:aPage},globals.LinkedPageRouted.klass)});},
+args: ["aPage"],
+source: "for: aPage\x0a\x09^ super new \x0a\x09\x09toPage: aPage ;\x0a\x09\x09yourself.",
+messageSends: ["toPage:", "new", "yourself"],
+referencedClasses: []
+}),
+globals.LinkedPageRouted.klass);
 
 
 smalltalk.addClass('PageChange', globals.WebsiteAnnouncement, ['toPage'], 'SketchCode-Website');

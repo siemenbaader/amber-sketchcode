@@ -74,22 +74,17 @@ navigateToPage
 		announce: (PageChange for: page)
 !
 
-setupNavigationSubscriptions
-	
-	WebsiteAnnouncer current unsubscribe: self.
-	
-	WebsiteAnnouncer current
-		on: PageChange
-		send: #handlePageChange:
-		to: self
-!
-
 subscribeToPageChanges
 	
 	WebsiteAnnouncer current unsubscribe: self.
 	
 	WebsiteAnnouncer current
 		on: PageChange
+		send: #handlePageChange:
+		to: self.
+	
+	WebsiteAnnouncer current
+		on: LinkedPageRouted
 		send: #handlePageChange:
 		to: self
 ! !
@@ -254,6 +249,10 @@ Object subclass: #URLBar
 !URLBar methodsFor: 'navigation'!
 
 handlePageChange: aPageChange
+	self pathAndAddToHistory: (aPageChange toPage path).
+!
+
+handlePageRouted: aPageChange
 	self path: (aPageChange toPage path).
 !
 
@@ -263,6 +262,14 @@ path
 !
 
 path: aString
+
+	window history
+		replaceState: nil
+		title: ''
+		url: aString .
+!
+
+pathAndAddToHistory: aString
 
 	window history
 		pushState: nil
@@ -277,15 +284,12 @@ subscribeToPageChanges
 	WebsiteAnnouncer current
 		on: PageChange
 		send: #handlePageChange:
+		to: self.
+		
+	WebsiteAnnouncer current
+		on: LinkedPageRouted
+		send: #handlePageRouted:
 		to: self
-!
-
-updatePath: aString
-
-	window history
-		pushState: nil
-		title: ''
-		url: aString .
 ! !
 
 URLBar class instanceVariableNames: 'singletonInstance'!
@@ -375,7 +379,7 @@ showPageFromURLPath
 		ifNone: [ pages at: 1 ].
 	
 	WebsiteAnnouncer current announce:
-		(PageChange for: page)
+		(LinkedPageRouted for: page)
 !
 
 subscribeToPageChanges
@@ -384,6 +388,11 @@ subscribeToPageChanges
 	
 	WebsiteAnnouncer current
 		on: PageChange
+		send: #handlePageChange:
+		to: self.
+	
+	WebsiteAnnouncer current
+		on: LinkedPageRouted
 		send: #handlePageChange:
 		to: self
 ! !
@@ -447,6 +456,28 @@ render
 Object subclass: #WebsiteAnnouncement
 	instanceVariableNames: ''
 	package: 'SketchCode-Website'!
+
+WebsiteAnnouncement subclass: #LinkedPageRouted
+	instanceVariableNames: 'toPage'
+	package: 'SketchCode-Website'!
+
+!LinkedPageRouted methodsFor: 'accessing'!
+
+toPage
+	^ toPage
+!
+
+toPage: anObject
+	toPage := anObject
+! !
+
+!LinkedPageRouted class methodsFor: 'instance creation'!
+
+for: aPage
+	^ super new 
+		toPage: aPage ;
+		yourself.
+! !
 
 WebsiteAnnouncement subclass: #PageChange
 	instanceVariableNames: 'toPage'
