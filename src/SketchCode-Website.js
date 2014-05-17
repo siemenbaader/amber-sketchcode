@@ -1,4 +1,4 @@
-define("amber-sketchcode/SketchCode-Website", ["amber_vm/smalltalk", "amber_vm/nil", "amber_vm/_st", "amber_vm/globals", "amber_core/Canvas", "amber_core/Kernel-Announcements", "amber_core/Kernel-Objects"], function(smalltalk,nil,_st, globals){
+define("amber-sketchcode/SketchCode-Website", ["amber_vm/smalltalk", "amber_vm/nil", "amber_vm/_st", "amber_vm/globals", "amber_core/Canvas", "amber_core/Kernel-Objects", "amber_core/Kernel-Announcements"], function(smalltalk,nil,_st, globals){
 smalltalk.addPackage('SketchCode-Website');
 smalltalk.packages["SketchCode-Website"].transport = {"type":"amd","amdNamespace":"amber-sketchcode"};
 
@@ -186,17 +186,18 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=_st(html)._a();
-_st($1)._href_("#");
+_st($1)._href_(_st(self["@page"])._path());
 _st($1)._with_(_st(self["@page"])._title());
-$2=_st($1)._onClick_((function(){
+$2=_st($1)._onClick_((function(e){
 return smalltalk.withContext(function($ctx2) {
-return self._navigateToPage();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+self._navigateToPage();
+return false;
+}, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1,1)})}));
 self["@listItemDomElement"]=_st(html)._li_($2);
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.NavigationPill)});},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09listItemDomElement := html li: (html a \x0a\x09\x09href: '#'; \x0a\x09\x09with: page title;\x0a\x09\x09onClick: [ self navigateToPage ]\x0a\x09).",
-messageSends: ["li:", "href:", "a", "with:", "title", "onClick:", "navigateToPage"],
+source: "renderOn: html\x0a\x0a\x09listItemDomElement := html li: (html a \x0a\x09\x09href: page path ; \x0a\x09\x09with: page title ;\x0a\x09\x09onClick: [ :e |  self navigateToPage. false ]\x0a\x09).",
+messageSends: ["li:", "href:", "a", "path", "with:", "title", "onClick:", "navigateToPage"],
 referencedClasses: []
 }),
 globals.NavigationPill);
@@ -333,6 +334,24 @@ return $1;
 args: ["aMarkdownString"],
 source: "htmlFrom: aMarkdownString\x0a\x0a\x09|converter|\x0a\x0a\x09converter := ((require value: 'showdown') at: 'converter') new.\x0a\x09^ converter makeHtml: aMarkdownString",
 messageSends: ["new", "at:", "value:", "makeHtml:"],
+referencedClasses: []
+}),
+globals.Page);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "path",
+protocol: 'properties',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1="/#".__comma(_st(self._class())._name());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"path",{},globals.Page)});},
+args: [],
+source: "path\x0a\x09^ '/#' , self class name ",
+messageSends: [",", "name", "class"],
 referencedClasses: []
 }),
 globals.Page);
@@ -519,6 +538,105 @@ globals.TryIt);
 
 
 
+smalltalk.addClass('URLBar', globals.Object, ['pages'], 'SketchCode-Website');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "handlePageChange:",
+protocol: 'navigation',
+fn: function (aPageChange) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._updatePath_(_st(_st(aPageChange)._toPage())._path());
+return self}, function($ctx1) {$ctx1.fill(self,"handlePageChange:",{aPageChange:aPageChange},globals.URLBar)});},
+args: ["aPageChange"],
+source: "handlePageChange: aPageChange\x0a\x09self updatePath: (aPageChange toPage path).",
+messageSends: ["updatePath:", "path", "toPage"],
+referencedClasses: []
+}),
+globals.URLBar);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "subscribeToPageChanges",
+protocol: 'navigation',
+fn: function () {
+var self=this;
+function $WebsiteAnnouncer(){return globals.WebsiteAnnouncer||(typeof WebsiteAnnouncer=="undefined"?nil:WebsiteAnnouncer)}
+function $PageChange(){return globals.PageChange||(typeof PageChange=="undefined"?nil:PageChange)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($WebsiteAnnouncer())._current();
+$ctx1.sendIdx["current"]=1;
+_st($1)._unsubscribe_(self);
+_st(_st($WebsiteAnnouncer())._current())._on_send_to_($PageChange(),"handlePageChange:",self);
+return self}, function($ctx1) {$ctx1.fill(self,"subscribeToPageChanges",{},globals.URLBar)});},
+args: [],
+source: "subscribeToPageChanges\x0a\x09\x0a\x09WebsiteAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: PageChange\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self\x0a\x09\x09",
+messageSends: ["unsubscribe:", "current", "on:send:to:"],
+referencedClasses: ["WebsiteAnnouncer", "PageChange"]
+}),
+globals.URLBar);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updatePath:",
+protocol: 'navigation',
+fn: function (aString) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(window)._history())._pushState_title_url_(nil,"",aString);
+return self}, function($ctx1) {$ctx1.fill(self,"updatePath:",{aString:aString},globals.URLBar)});},
+args: ["aString"],
+source: "updatePath: aString\x0a\x0a\x09window history\x0a\x09\x09pushState: nil\x0a\x09\x09title: ''\x0a\x09\x09url: aString .\x0a\x09\x09",
+messageSends: ["pushState:title:url:", "history"],
+referencedClasses: []
+}),
+globals.URLBar);
+
+
+globals.URLBar.klass.iVarNames = ['singletonInstance'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "current",
+protocol: 'instance creation',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=self["@singletonInstance"];
+if(($receiver = $1) == nil || $receiver == null){
+self["@singletonInstance"]=globals.URLBar.klass.superclass.fn.prototype._new.apply(_st(self), []);
+self["@singletonInstance"];
+} else {
+$1;
+};
+$2=self["@singletonInstance"];
+return $2;
+}, function($ctx1) {$ctx1.fill(self,"current",{},globals.URLBar.klass)});},
+args: [],
+source: "current\x0a\x09singletonInstance ifNil: [singletonInstance := super new ].\x0a\x09\x0a\x09^ singletonInstance",
+messageSends: ["ifNil:", "new"],
+referencedClasses: []
+}),
+globals.URLBar.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "new",
+protocol: 'instance creation',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._shouldNotImplement();
+return self}, function($ctx1) {$ctx1.fill(self,"new",{},globals.URLBar.klass)});},
+args: [],
+source: "new\x0a\x09self shouldNotImplement",
+messageSends: ["shouldNotImplement"],
+referencedClasses: []
+}),
+globals.URLBar.klass);
+
+
 smalltalk.addClass('Website', globals.Widget, ['pages'], 'SketchCode-Website');
 smalltalk.addMethod(
 smalltalk.method({
@@ -600,6 +718,7 @@ function $About(){return globals.About||(typeof About=="undefined"?nil:About)}
 function $ResearchAgenda(){return globals.ResearchAgenda||(typeof ResearchAgenda=="undefined"?nil:ResearchAgenda)}
 function $TryIt(){return globals.TryIt||(typeof TryIt=="undefined"?nil:TryIt)}
 function $InstrumentalInteraction(){return globals.InstrumentalInteraction||(typeof InstrumentalInteraction=="undefined"?nil:InstrumentalInteraction)}
+function $URLBar(){return globals.URLBar||(typeof URLBar=="undefined"?nil:URLBar)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3,$4,$5,$6,$7,$8;
 globals.Website.superclass.fn.prototype._initialize.apply(_st(self), []);
@@ -624,11 +743,13 @@ _st($1)._add_(_st($InstrumentalInteraction())._new());
 $8=_st($1)._yourself();
 self["@pages"]=$8;
 self._subscribeToPageChanges();
+$ctx1.sendIdx["subscribeToPageChanges"]=1;
+_st(_st($URLBar())._current())._subscribeToPageChanges();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.Website)});},
 args: [],
-source: "initialize\x0a\x09\x0a\x09super initialize.\x0a\x0a\x09pages := Array new\x0a\x09\x09add: About new ;\x0a\x09\x09add: ResearchAgenda new ;\x0a\x09\x09add: TryIt new ;\x0a\x09\x09add: InstrumentalInteraction new ;\x0a\x09\x09yourself.\x0a\x09\x0a\x09self subscribeToPageChanges.\x0a\x09\x0a\x09",
-messageSends: ["initialize", "add:", "new", "yourself", "subscribeToPageChanges"],
-referencedClasses: ["Array", "About", "ResearchAgenda", "TryIt", "InstrumentalInteraction"]
+source: "initialize\x0a\x09\x0a\x09super initialize.\x0a\x0a\x09pages := Array new\x0a\x09\x09add: About new ;\x0a\x09\x09add: ResearchAgenda new ;\x0a\x09\x09add: TryIt new ;\x0a\x09\x09add: InstrumentalInteraction new ;\x0a\x09\x09yourself.\x0a\x09\x0a\x09self subscribeToPageChanges.\x0a\x09\x0a\x09URLBar current subscribeToPageChanges.\x0a\x09\x0a\x09",
+messageSends: ["initialize", "add:", "new", "yourself", "subscribeToPageChanges", "current"],
+referencedClasses: ["Array", "About", "ResearchAgenda", "TryIt", "InstrumentalInteraction", "URLBar"]
 }),
 globals.Website);
 
@@ -723,28 +844,6 @@ globals.Website);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "setupNavigationSubscriptions",
-protocol: 'initialization',
-fn: function () {
-var self=this;
-function $WebsiteAnnouncer(){return globals.WebsiteAnnouncer||(typeof WebsiteAnnouncer=="undefined"?nil:WebsiteAnnouncer)}
-function $PageChange(){return globals.PageChange||(typeof PageChange=="undefined"?nil:PageChange)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st($WebsiteAnnouncer())._current();
-$ctx1.sendIdx["current"]=1;
-_st($1)._unsubscribe_(self);
-_st(_st($WebsiteAnnouncer())._current())._on_send_to_($PageChange(),"handlePageChange:",self);
-return self}, function($ctx1) {$ctx1.fill(self,"setupNavigationSubscriptions",{},globals.Website)});},
-args: [],
-source: "setupNavigationSubscriptions\x0a\x09\x0a\x09WebsiteAnnouncer current unsubscribe: self.\x0a\x09\x0a\x09WebsiteAnnouncer current\x0a\x09\x09on: PageChange\x0a\x09\x09send: #handlePageChange:\x0a\x09\x09to: self\x0a\x09\x09",
-messageSends: ["unsubscribe:", "current", "on:send:to:"],
-referencedClasses: ["WebsiteAnnouncer", "PageChange"]
-}),
-globals.Website);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "show:",
 protocol: 'navigation',
 fn: function (aPage) {
@@ -781,7 +880,7 @@ globals.Website);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "subscribeToPageChanges",
-protocol: 'initialization',
+protocol: 'navigation',
 fn: function () {
 var self=this;
 function $WebsiteAnnouncer(){return globals.WebsiteAnnouncer||(typeof WebsiteAnnouncer=="undefined"?nil:WebsiteAnnouncer)}

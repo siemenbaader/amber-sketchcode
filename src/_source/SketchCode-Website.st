@@ -99,9 +99,9 @@ subscribeToPageChanges
 renderOn: html
 
 	listItemDomElement := html li: (html a 
-		href: '#'; 
-		with: page title;
-		onClick: [ self navigateToPage ]
+		href: page path ; 
+		with: page title ;
+		onClick: [ :e |  self navigateToPage. false ]
 	).
 !
 
@@ -144,6 +144,10 @@ renderContentOn: html
 ! !
 
 !Page methodsFor: 'properties'!
+
+path
+	^ '/#' , self class name
+!
 
 title 
 	<
@@ -243,6 +247,48 @@ renderContentOn: html
 	html with: 'try it..'
 ! !
 
+Object subclass: #URLBar
+	instanceVariableNames: 'pages'
+	package: 'SketchCode-Website'!
+
+!URLBar methodsFor: 'navigation'!
+
+handlePageChange: aPageChange
+	self updatePath: (aPageChange toPage path).
+!
+
+subscribeToPageChanges
+	
+	WebsiteAnnouncer current unsubscribe: self.
+	
+	WebsiteAnnouncer current
+		on: PageChange
+		send: #handlePageChange:
+		to: self
+!
+
+updatePath: aString
+
+	window history
+		pushState: nil
+		title: ''
+		url: aString .
+! !
+
+URLBar class instanceVariableNames: 'singletonInstance'!
+
+!URLBar class methodsFor: 'instance creation'!
+
+current
+	singletonInstance ifNil: [singletonInstance := super new ].
+	
+	^ singletonInstance
+!
+
+new
+	self shouldNotImplement
+! !
+
 Widget subclass: #Website
 	instanceVariableNames: 'pages'
 	package: 'SketchCode-Website'!
@@ -273,26 +319,8 @@ initialize
 		yourself.
 	
 	self subscribeToPageChanges.
-!
-
-setupNavigationSubscriptions
 	
-	WebsiteAnnouncer current unsubscribe: self.
-	
-	WebsiteAnnouncer current
-		on: PageChange
-		send: #handlePageChange:
-		to: self
-!
-
-subscribeToPageChanges
-	
-	WebsiteAnnouncer current unsubscribe: self.
-	
-	WebsiteAnnouncer current
-		on: PageChange
-		send: #handlePageChange:
-		to: self
+	URLBar current subscribeToPageChanges.
 ! !
 
 !Website methodsFor: 'navigation'!
@@ -321,6 +349,16 @@ showFirstPage
 
 	WebsiteAnnouncer current announce:
 		(PageChange for: (pages at: 1))
+!
+
+subscribeToPageChanges
+	
+	WebsiteAnnouncer current unsubscribe: self.
+	
+	WebsiteAnnouncer current
+		on: PageChange
+		send: #handlePageChange:
+		to: self
 ! !
 
 !Website methodsFor: 'rendering'!
