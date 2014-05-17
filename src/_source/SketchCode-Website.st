@@ -146,7 +146,7 @@ renderContentOn: html
 !Page methodsFor: 'properties'!
 
 path
-	^ '/#' , self class name
+	^ '#' , self class name
 !
 
 title 
@@ -254,7 +254,20 @@ Object subclass: #URLBar
 !URLBar methodsFor: 'navigation'!
 
 handlePageChange: aPageChange
-	self updatePath: (aPageChange toPage path).
+	self path: (aPageChange toPage path).
+!
+
+path
+
+	^ window location hash
+!
+
+path: aString
+
+	window history
+		pushState: nil
+		title: ''
+		url: aString .
 !
 
 subscribeToPageChanges
@@ -351,6 +364,20 @@ showFirstPage
 		(PageChange for: (pages at: 1))
 !
 
+showPageFromURLPath
+
+	| path page |
+	
+	path := URLBar current path.
+
+	page := Website current pages
+		detect: [:p | p path = path ]
+		ifNone: [ pages at: 1 ].
+	
+	WebsiteAnnouncer current announce:
+		(PageChange for: page)
+!
+
 subscribeToPageChanges
 	
 	WebsiteAnnouncer current unsubscribe: self.
@@ -414,7 +441,7 @@ new
 render
 	'#main' asJQuery empty.
 	self current appendToJQuery: '#main' asJQuery.
-	self current showFirstPage.
+	self current showPageFromURLPath
 ! !
 
 Object subclass: #WebsiteAnnouncement

@@ -346,11 +346,11 @@ fn: function () {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1="/#".__comma(_st(self._class())._name());
+$1="#".__comma(_st(self._class())._name());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"path",{},globals.Page)});},
 args: [],
-source: "path\x0a\x09^ '/#' , self class name ",
+source: "path\x0a\x09^ '#' , self class name ",
 messageSends: [",", "name", "class"],
 referencedClasses: []
 }),
@@ -546,11 +546,45 @@ protocol: 'navigation',
 fn: function (aPageChange) {
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self._updatePath_(_st(_st(aPageChange)._toPage())._path());
+self._path_(_st(_st(aPageChange)._toPage())._path());
 return self}, function($ctx1) {$ctx1.fill(self,"handlePageChange:",{aPageChange:aPageChange},globals.URLBar)});},
 args: ["aPageChange"],
-source: "handlePageChange: aPageChange\x0a\x09self updatePath: (aPageChange toPage path).",
-messageSends: ["updatePath:", "path", "toPage"],
+source: "handlePageChange: aPageChange\x0a\x09self path: (aPageChange toPage path).",
+messageSends: ["path:", "path", "toPage"],
+referencedClasses: []
+}),
+globals.URLBar);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "path",
+protocol: 'navigation',
+fn: function () {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(window)._location())._hash();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"path",{},globals.URLBar)});},
+args: [],
+source: "path\x0a\x0a\x09^ window location hash\x0a\x09\x09",
+messageSends: ["hash", "location"],
+referencedClasses: []
+}),
+globals.URLBar);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "path:",
+protocol: 'navigation',
+fn: function (aString) {
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(window)._history())._pushState_title_url_(nil,"",aString);
+return self}, function($ctx1) {$ctx1.fill(self,"path:",{aString:aString},globals.URLBar)});},
+args: ["aString"],
+source: "path: aString\x0a\x0a\x09window history\x0a\x09\x09pushState: nil\x0a\x09\x09title: ''\x0a\x09\x09url: aString .\x0a\x09\x09",
+messageSends: ["pushState:title:url:", "history"],
 referencedClasses: []
 }),
 globals.URLBar);
@@ -879,6 +913,42 @@ globals.Website);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "showPageFromURLPath",
+protocol: 'navigation',
+fn: function () {
+var self=this;
+var path,page;
+function $URLBar(){return globals.URLBar||(typeof URLBar=="undefined"?nil:URLBar)}
+function $Website(){return globals.Website||(typeof Website=="undefined"?nil:Website)}
+function $WebsiteAnnouncer(){return globals.WebsiteAnnouncer||(typeof WebsiteAnnouncer=="undefined"?nil:WebsiteAnnouncer)}
+function $PageChange(){return globals.PageChange||(typeof PageChange=="undefined"?nil:PageChange)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$2;
+$1=_st($URLBar())._current();
+$ctx1.sendIdx["current"]=1;
+path=_st($1)._path();
+$ctx1.sendIdx["path"]=1;
+$3=_st($Website())._current();
+$ctx1.sendIdx["current"]=2;
+$2=_st($3)._pages();
+page=_st($2)._detect_ifNone_((function(p){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(p)._path()).__eq(path);
+}, function($ctx2) {$ctx2.fillBlock({p:p},$ctx1,1)})}),(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self["@pages"])._at_((1));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}));
+_st(_st($WebsiteAnnouncer())._current())._announce_(_st($PageChange())._for_(page));
+return self}, function($ctx1) {$ctx1.fill(self,"showPageFromURLPath",{path:path,page:page},globals.Website)});},
+args: [],
+source: "showPageFromURLPath\x0a\x0a\x09| path page |\x0a\x09\x0a\x09path := URLBar current path.\x0a\x0a\x09page := Website current pages\x0a\x09\x09detect: [:p | p path = path ]\x0a\x09\x09ifNone: [ pages at: 1 ].\x0a\x09\x0a\x09WebsiteAnnouncer current announce:\x0a\x09\x09(PageChange for: page)",
+messageSends: ["path", "current", "detect:ifNone:", "pages", "=", "at:", "announce:", "for:"],
+referencedClasses: ["URLBar", "Website", "WebsiteAnnouncer", "PageChange"]
+}),
+globals.Website);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "subscribeToPageChanges",
 protocol: 'navigation',
 fn: function () {
@@ -956,11 +1026,11 @@ _st($1)._empty();
 $2=self._current();
 $ctx1.sendIdx["current"]=1;
 _st($2)._appendToJQuery_("#main"._asJQuery());
-_st(self._current())._showFirstPage();
+_st(self._current())._showPageFromURLPath();
 return self}, function($ctx1) {$ctx1.fill(self,"render",{},globals.Website.klass)});},
 args: [],
-source: "render\x0a\x09'#main' asJQuery empty.\x0a\x09self current appendToJQuery: '#main' asJQuery.\x0a\x09self current showFirstPage.",
-messageSends: ["empty", "asJQuery", "appendToJQuery:", "current", "showFirstPage"],
+source: "render\x0a\x09'#main' asJQuery empty.\x0a\x09self current appendToJQuery: '#main' asJQuery.\x0a\x09self current showPageFromURLPath",
+messageSends: ["empty", "asJQuery", "appendToJQuery:", "current", "showPageFromURLPath"],
 referencedClasses: []
 }),
 globals.Website.klass);
