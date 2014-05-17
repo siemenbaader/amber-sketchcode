@@ -1,7 +1,8 @@
 {
   "name": "SketchCode",
   "dependencies": {
-    "amber": "0.12.3"
+    "amber": "0.12.3",
+    "leviroutes": "git@github.com:PaulKinlan/leviroutes.git"
   },
   "version": "0.1.0",
   "authors": [
