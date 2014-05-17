@@ -27,33 +27,6 @@ current
 	^ singletonInstance
 ! !
 
-Object subclass: #NavigationAnnouncement
-	instanceVariableNames: 'toPage'
-	package: 'SketchCode-Website'!
-
-!NavigationAnnouncement methodsFor: 'accessing'!
-
-toPage
-	^ toPage
-!
-
-toPage: anObject
-	toPage := anObject
-! !
-
-!NavigationAnnouncement class methodsFor: 'instance creation'!
-
-for: aPage
-
-	^ self new
-		toPage: aPage ;
-		yourself
-! !
-
-SystemAnnouncer subclass: #NavigationAnnouncer
-	instanceVariableNames: ''
-	package: 'SketchCode-Website'!
-
 Widget subclass: #NavigationPill
 	instanceVariableNames: 'page listItemDomElement'
 	package: 'SketchCode-Website'!
@@ -76,31 +49,48 @@ initialize
 	listItemDomElement := nil.
 	page := nil.
 	
-	self setupNavigationSubscriptions
+	self subscribeToPageChanges
 ! !
 
 !NavigationPill methodsFor: 'navigation'!
 
-handleNavigationAnnouncement: aNavigationAnnouncement
+handleNavigationAnnouncement: aPageChange
 
-	aNavigationAnnouncement toPage = page
+	aPageChange toPage = page
+		ifTrue:  [ self setActive ]
+		ifFalse: [ self setInactive ]
+!
+
+handlePageChange: aPageChange
+
+	aPageChange toPage = page
 		ifTrue:  [ self setActive ]
 		ifFalse: [ self setInactive ]
 !
 
 navigateToPage
 
-	NavigationAnnouncer current 
-		announce: (NavigationAnnouncement for: page)
+	WebsiteAnnouncer current 
+		announce: (PageChange for: page)
 !
 
 setupNavigationSubscriptions
 	
-	NavigationAnnouncer current unsubscribe: self.
+	WebsiteAnnouncer current unsubscribe: self.
 	
-	NavigationAnnouncer current
-		on: NavigationAnnouncement
-		send: #handleNavigationAnnouncement:
+	WebsiteAnnouncer current
+		on: PageChange
+		send: #handlePageChange:
+		to: self
+!
+
+subscribeToPageChanges
+	
+	WebsiteAnnouncer current unsubscribe: self.
+	
+	WebsiteAnnouncer current
+		on: PageChange
+		send: #handlePageChange:
 		to: self
 ! !
 
@@ -282,24 +272,39 @@ initialize
 		add: InstrumentalInteraction new ;
 		yourself.
 	
-	self setupNavigationSubscriptions.
+	self subscribeToPageChanges.
 !
 
 setupNavigationSubscriptions
 	
-	NavigationAnnouncer current unsubscribe: self.
+	WebsiteAnnouncer current unsubscribe: self.
 	
-	NavigationAnnouncer current
-		on: NavigationAnnouncement
-		send: #handleNavigationAnnouncement:
+	WebsiteAnnouncer current
+		on: PageChange
+		send: #handlePageChange:
+		to: self
+!
+
+subscribeToPageChanges
+	
+	WebsiteAnnouncer current unsubscribe: self.
+	
+	WebsiteAnnouncer current
+		on: PageChange
+		send: #handlePageChange:
 		to: self
 ! !
 
 !Website methodsFor: 'navigation'!
 
-handleNavigationAnnouncement: aNavigationAnnouncement
+handleNavigationAnnouncement: aPageChange
 
-	self show: aNavigationAnnouncement toPage
+	self show: aPageChange toPage
+!
+
+handlePageChange: aPageChange
+
+	self show: aPageChange toPage
 !
 
 hideAllPages
@@ -314,8 +319,8 @@ show: aPage
 
 showFirstPage	
 
-	NavigationAnnouncer current announce:
-		(NavigationAnnouncement for: (pages at: 1))
+	WebsiteAnnouncer current announce:
+		(PageChange for: (pages at: 1))
 ! !
 
 !Website methodsFor: 'rendering'!
@@ -373,4 +378,35 @@ render
 	self current appendToJQuery: '#main' asJQuery.
 	self current showFirstPage.
 ! !
+
+Object subclass: #WebsiteAnnouncement
+	instanceVariableNames: ''
+	package: 'SketchCode-Website'!
+
+WebsiteAnnouncement subclass: #PageChange
+	instanceVariableNames: 'toPage'
+	package: 'SketchCode-Website'!
+
+!PageChange methodsFor: 'accessing'!
+
+toPage
+	^ toPage
+!
+
+toPage: anObject
+	toPage := anObject
+! !
+
+!PageChange class methodsFor: 'instance creation'!
+
+for: aPage
+
+	^ self new
+		toPage: aPage ;
+		yourself
+! !
+
+SystemAnnouncer subclass: #WebsiteAnnouncer
+	instanceVariableNames: ''
+	package: 'SketchCode-Website'!
 
