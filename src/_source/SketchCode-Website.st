@@ -54,13 +54,6 @@ initialize
 
 !NavigationPill methodsFor: 'navigation'!
 
-handleNavigationAnnouncement: aPageChange
-
-	aPageChange toPage = page
-		ifTrue:  [ self setActive ]
-		ifFalse: [ self setInactive ]
-!
-
 handlePageChange: aPageChange
 
 	aPageChange toPage = page
@@ -71,7 +64,9 @@ handlePageChange: aPageChange
 navigateToPage
 
 	WebsiteAnnouncer current 
-		announce: (PageChange for: page)
+		announce: (PageChange for: page).
+		
+	URLBar current pathAndAddToHistory: page path.
 !
 
 subscribeToPageChanges
@@ -82,11 +77,6 @@ subscribeToPageChanges
 		on: PageChange
 		send: #handlePageChange:
 		to: self.
-	
-	WebsiteAnnouncer current
-		on: LinkedPageRouted
-		send: #handlePageChange:
-		to: self
 ! !
 
 !NavigationPill methodsFor: 'rendering'!
@@ -248,14 +238,6 @@ Object subclass: #URLBar
 
 !URLBar methodsFor: 'navigation'!
 
-handlePageChange: aPageChange
-	self pathAndAddToHistory: (aPageChange toPage path).
-!
-
-handlePageRouted: aPageChange
-	self path: (aPageChange toPage path).
-!
-
 path
 
 	^ window location hash
@@ -275,21 +257,6 @@ pathAndAddToHistory: aString
 		pushState: nil
 		title: ''
 		url: aString .
-!
-
-subscribeToPageChanges
-	
-	WebsiteAnnouncer current unsubscribe: self.
-	
-	WebsiteAnnouncer current
-		on: PageChange
-		send: #handlePageChange:
-		to: self.
-		
-	WebsiteAnnouncer current
-		on: LinkedPageRouted
-		send: #handlePageRouted:
-		to: self
 ! !
 
 URLBar class instanceVariableNames: 'singletonInstance'!
@@ -336,16 +303,9 @@ initialize
 		yourself.
 	
 	self subscribeToPageChanges.
-	
-	URLBar current subscribeToPageChanges.
 ! !
 
 !Website methodsFor: 'navigation'!
-
-handleNavigationAnnouncement: aPageChange
-
-	self show: aPageChange toPage
-!
 
 handlePageChange: aPageChange
 
@@ -354,6 +314,18 @@ handlePageChange: aPageChange
 
 hideAllPages
 	pages do: [:page | page hide]
+!
+
+pageForPath: aString
+
+	^ Website current pages
+		detect: [:p | p path = aString ]
+		ifNone: [ pages at: 1 ].
+!
+
+pageForURL
+
+	^ self pageForPath: (URLBar current path)
 !
 
 show: aPage
@@ -370,16 +342,9 @@ showFirstPage
 
 showPageFromURLPath
 
-	| path page |
-	
-	path := URLBar current path.
-
-	page := Website current pages
-		detect: [:p | p path = path ]
-		ifNone: [ pages at: 1 ].
-	
+	self show: self pageForURL.
 	WebsiteAnnouncer current announce:
-		(LinkedPageRouted for: page)
+		(PageChange for: self pageForURL)
 !
 
 subscribeToPageChanges
@@ -390,11 +355,13 @@ subscribeToPageChanges
 		on: PageChange
 		send: #handlePageChange:
 		to: self.
-	
-	WebsiteAnnouncer current
-		on: LinkedPageRouted
-		send: #handlePageChange:
-		to: self
+		
+	window 
+		addEventListener: 'popstate'
+		do: [
+			WebsiteAnnouncer current announce:
+				(PageChange for: self pageForURL)
+		]
 ! !
 
 !Website methodsFor: 'rendering'!
@@ -456,28 +423,6 @@ render
 Object subclass: #WebsiteAnnouncement
 	instanceVariableNames: ''
 	package: 'SketchCode-Website'!
-
-WebsiteAnnouncement subclass: #LinkedPageRouted
-	instanceVariableNames: 'toPage'
-	package: 'SketchCode-Website'!
-
-!LinkedPageRouted methodsFor: 'accessing'!
-
-toPage
-	^ toPage
-!
-
-toPage: anObject
-	toPage := anObject
-! !
-
-!LinkedPageRouted class methodsFor: 'instance creation'!
-
-for: aPage
-	^ super new 
-		toPage: aPage ;
-		yourself.
-! !
 
 WebsiteAnnouncement subclass: #PageChange
 	instanceVariableNames: 'toPage'
