@@ -398,6 +398,21 @@ globals.Page);
 smalltalk.addClass('About', globals.Page, [], 'SketchCode-Website');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "path",
+protocol: 'properties',
+fn: function (){
+var self=this;
+return "/";
+},
+args: [],
+source: "path\x0a\x09\x22I am the root page, so my path is overriden to /\x22\x0a\x09\x0a\x09^ '/'",
+messageSends: [],
+referencedClasses: []
+}),
+globals.About);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "renderContentOn:",
 protocol: 'pageContent',
 fn: function (html) {
@@ -863,21 +878,25 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "showPageFromURLPath",
 protocol: 'navigation',
-fn: function () {
+fn: function (){
 var self=this;
+var page;
+function $URLBar(){return globals.URLBar||(typeof URLBar=="undefined"?nil:URLBar)}
 function $WebsiteAnnouncer(){return globals.WebsiteAnnouncer||(typeof WebsiteAnnouncer=="undefined"?nil:WebsiteAnnouncer)}
 function $PageChange(){return globals.PageChange||(typeof PageChange=="undefined"?nil:PageChange)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self._pageForURL();
+page=self._pageForURL();
 $ctx1.sendIdx["pageForURL"]=1;
-self._show_($1);
+$1=_st($URLBar())._current();
+$ctx1.sendIdx["current"]=1;
+_st($1)._path_(_st(page)._path());
 _st(_st($WebsiteAnnouncer())._current())._announce_(_st($PageChange())._for_(self._pageForURL()));
-return self}, function($ctx1) {$ctx1.fill(self,"showPageFromURLPath",{},globals.Website)});},
+return self}, function($ctx1) {$ctx1.fill(self,"showPageFromURLPath",{page:page},globals.Website)})},
 args: [],
-source: "showPageFromURLPath\x0a\x0a\x09self show: self pageForURL.\x0a\x09WebsiteAnnouncer current announce:\x0a\x09\x09(PageChange for: self pageForURL)",
-messageSends: ["show:", "pageForURL", "announce:", "current", "for:"],
-referencedClasses: ["WebsiteAnnouncer", "PageChange"]
+source: "showPageFromURLPath\x0a\x0a\x09| page |\x0a\x09\x0a\x09page := self pageForURL.\x0a\x09URLBar current path: page path.\x0a\x09WebsiteAnnouncer current announce:\x0a\x09\x09(PageChange for: self pageForURL).\x0a\x09",
+messageSends: ["pageForURL", "path:", "current", "path", "announce:", "for:"],
+referencedClasses: ["URLBar", "WebsiteAnnouncer", "PageChange"]
 }),
 globals.Website);
 

@@ -187,6 +187,14 @@ renderContentOn: html
 		p: '-- Siemen'.
 ! !
 
+!About methodsFor: 'properties'!
+
+path
+	"I am the root page, so my path is overriden to /"
+	
+	^ '/'
+! !
+
 Page subclass: #InstrumentalInteraction
 	instanceVariableNames: ''
 	package: 'SketchCode-Website'!
@@ -342,9 +350,12 @@ showFirstPage
 
 showPageFromURLPath
 
-	self show: self pageForURL.
+	| page |
+	
+	page := self pageForURL.
+	URLBar current path: page path.
 	WebsiteAnnouncer current announce:
-		(PageChange for: self pageForURL)
+		(PageChange for: self pageForURL).
 !
 
 subscribeToPageChanges
