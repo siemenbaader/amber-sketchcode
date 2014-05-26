@@ -201,11 +201,98 @@ Page subclass: #InstrumentalInteraction
 
 !InstrumentalInteraction methodsFor: 'pageContent'!
 
-renderContentOn: html
+introduction
+!
 
-	html with: 'A blog post and hopefylly live examples 
-	  on the use of instrumental interaction for the 
-	  workshop to come here'.
+renderContentOn: html
+	html div asJQuery html: (self htmlFrom:'
+# Instrumental Interaction in Small Business Workflow Management Systems
+In this essay, I will discuss Instrumental Interaction as an enabler for innovation within [small and medium sized enterprises (SMEs)] [SMEs], namely in making [Workflow Management Systems][Workflow Management Systems] more affordable for smaller companies. I will touch upon workshop themes two (Instrumental Interaction in a practical context) and three (technology to enable Instrumental Interaction). In doing so, I wish to elaborate the link between the conceptual and usability benefits of the Instrumental Interaction paradigm and the innovation and monetary gains that may arise from its adoption in practice.
+
+## Background
+I always wanted to be an inventor. I have always cared deeply about detailed observation, reflection and deep theoretical understanding of the world around us. But I have always needed a clear link to practical application and benefits for the quality of life of concrete people from these efforts. So, after I had completed my MSc at ITU, and before I came back to academia to pursue a PhD, I joined three friends who just had founded Contingent [] ; a startup company centred around quality of life, a 30 hr workweek, invention of mobile and web apps, and programming consultancy to pay the bills. I figured that the small setting of a startup was the most direct way to learn how to transfer my academic skills into practical value.
+
+At Contingent, we sold three kinds of services:
+
+  * Programming billed by hours
+  * Realising fellow entrepreneur’s visions for mobile & web apps
+  * Workflow Management Systems for small companies (micro SMEs, < 10 employees)
+
+I always found the latter by far the most interesting. [Workflow management systems] are systems that (semi) automate workflows in a business, ensure that all the steps have been carried out, and alert employees when specific steps need attention. In micro SMEs, the workflows that would be automated are typically procedures that have been collected and refined over the years. There are typically one or two persons who steward these procedures, document them in spreadsheets and train new employees. I found working in this setting very motivating because translating the informal descriptions of procedures into formal programs is a relatively open co-design process, with concrete goals (workflow efficiency and elimination of tedious tasks) and with domain experts (the people maintaining the spreadsheets) and end-users (the people carrying out the work) closely involved.
+
+The systems we developed involved email communication and collaboration between several different people, and were built on cloud and web technology by integrating web based services with a custom web application and front end.
+
+## The Problem
+The primary value for the SMEs in using Workflow Management Systems lies in being able to perform their business workflows more efficiently and with less risk for errors, typically to expand their business or to cut costs. At the same time, taking workflows out of their existing applications – eg. spreadsheets – requires that a new user interface at least provides the same level of relevant functionality in order to be satisfying for the user. Since user interface development is costly, and since the main value for the business lies in workflow automation, not usability, the user interfaces are often implemented to the level of bare minimum. While the business as a whole benefits, and the users are relieved of tedious and repetitive tasks, their daily user experience suffers. Even in this (from a co-design perspective rather dissatisfying) situation, a disproportional amount of development time is spent on re-implementing user interfaces, while the conceptually interesting parts – the definition and automation of the business workflow – are completed relatively quickly. 
+
+  - examples: PhD planner, Github, A-Kasse-system
+  - also, only larger SMEs can afford building UIs.
+
+In the following, I will present a concrete case of a Workflow Management System and illustrate the problems associated with its construction. I will then introduce the paradigm of Instrumental Interaction, and provide examples of how an implementation based on Instrumental Interaction on the web platform can address these problems. I will conclude by summing up general findings on how Instruments and software design according to Instrumental Interaction can be done in order to make the development of custom software, namely Workflow Management Systems, more affordable to SMEs by removing complexity from the user interface construction and allowing focus on the business workflows.
+
+## Case: A Competition Management System
+One organisation we built a Workflow Management System for organised competitions for student entrepreneurs. They run by-yearly competitions where student entrepreneurs send in a business plan, which is evaluated by a panel of experts from academia and business. A few teams are selected for a final round, where students pitch their business idea to the jury in a public event. The final winner is awarded a money prize, receives media attention and is assigned a mentor to realise the business. 
+
+The organisation wanted to automate the process of recruiting expert panelists, handling student submission and the selection of finalists, in order to expand their activities to other events of similar structure.
+
+The workflow goes as follows:
+
+[illustration here. Then explaining text.]
+
+## References
+  [Workflow management systems] : http://en.wikipedia.org/wiki/Workflow_management_system
+  [SMEs] : http://en.wikipedia.org/wiki/Small_and_medium_enterprises
+
+students design a business, validate it, write a report
+jury panel is recruited 
+previous panelists are invited, reminded via email, then phone
+option to opt-out & sign up for more
+agreement signed & filed
+manual nda intervention if sent via email
+submitted reports are given feedback & rated
+reminders are sent to jury
+winner is picked, and a ceremony is held 
+	' )
+!
+
+renderIntroductionOn: html
+
+	html div asJQuery html: (self htmlFrom:
+
+	'
+# 
+
+Abstract
+This 
+
+
+
+Introduction
+
+
+
+
+
+Background
+
+
+Problem
+
+
+Instrumental interaction, and how it might help
+
+A practitioner perspective. At contingent, we built three kinds of apps:
+
+* plain programming hours (YouSee)
+* hbuilding systems to entrepreneur’s vision (Babysigning, iBikeCph, Organizer)
+* Workfow systems and office automation (VentureCup)
+
+I found the latter by far the most interesting, because it was a design task with dialogue with real users & domain expertise. In this essay, I will describe how Instrumental Interaction could have helped us, and how I will use it in the future to address similar problems.
+
+-- custom views, workflows & reminders
+
+	'
+	)
 ! !
 
 Page subclass: #ResearchAgenda
@@ -216,7 +303,7 @@ Page subclass: #ResearchAgenda
 
 content
 
-	^ '#Hello form markdown'
+	^ '#Hello from markdown'
 !
 
 renderContentOn: html
@@ -235,9 +322,30 @@ Page subclass: #TryIt
 
 !TryIt methodsFor: 'pageContent'!
 
+content
+	^
+'	
+# A live environment
+	
+This website is implemented in SketchCode. It is built 
+on top of Amber Smalltalk, a port of Pharo Smalltalk that
+runs in the browser.
+
+If you click the button, the IDE will open i a pop up
+window. Make sure to allow pop-ups for this domain.
+		
+'
+!
+
 renderContentOn: html
 
-	html with: 'try it..'
+	html div asJQuery append: 
+		(self htmlFrom: self content).
+		
+	html button 
+		class: 'btn btn-primary center-block' ;
+		with: 'Open the IDE' ;
+		onClick: [(require value: 'amber/helpers') popupHelios]
 ! !
 
 Object subclass: #URLBar
